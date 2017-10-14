@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ink Man</title>
+    <link rel="icon" href="icon.png">
+</head>
+<body>
+<section id="header">
+    <h1 id="level">Level 0</h1>
+</section>
+<section id="content">
+    <div class="content_column">
+        <canvas></canvas>
+    </div>
+    <div class="content_column">
+        <div id="game_play"></div>
+        <div id="game_action">
+            <div class="game_action_row">
+                <img class="play" src="resources/play.svg">
+                <img class="forward" src="resources/fast_play.svg">
+                <img class="stop" src="resources/pause.svg">
+            </div>
+            <button id="run">Run Command</button>
+        </div>
+    </div>
+</section>
+<section id="footer">
+    <p class="rights">@ Game by Cristian Chivriga</p>
+</section>
+<link rel="stylesheet" type="text/css" href="style.css">
+<script type="text/javascript" src="levels.js"></script>
+<script type="text/javascript" src="script.js"></script>
+<script>let Ink_Man = new DOMDisplay(new Game(plan[0]));</script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background: url("resources/background.jpg") no-repeat;
+    background-size: cover;
+}
+
+#header {
+    display: flex;
+    justify-content: center;
+    height: 100px;
+}
+
+#level {
+    margin: 20px 0;
+    font-size: 24px;
+    color: black;
+    font-weight: 900;
+}
+
+#content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex: 1;
+}
+
+.content_column {
+    height: 100%;
+    display: flex;
+    margin: 30px 0;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.content_column:first-of-type {
+    flex: 2;
+}
+
+.content_column:last-of-type {
+    flex: 1;
+}
+
+.table_row {
+    display: table;
+    margin: 20px 0;
+    border-collapse: collapse;
+}
+
+.caption {
+    display: table-cell;
+    width: 50px;
+    height: 50px;
+    font-weight: 700;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.cell {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 18px;
+    font-weight: 700;
+    width: 50px;
+    height: 50px;
+    border: 2px solid black;
+}
+
+.left {
+    background: url("resources/left.svg") no-repeat center;
+    background-size: 20px 20px;
+}
+
+.right {
+    background: url("resources/right.svg") no-repeat center;
+    background-size: 20px 20px;
+}
+
+.down {
+    background: url("resources/down.svg") no-repeat center;
+    background-size: 20px 20px;
+}
+
+.up {
+    background: url("resources/up.svg") no-repeat center;
+    background-size: 20px 20px;
+}
+
+#game_play {
+    margin-left: -50px;
+}
+
+#game_action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 20px 0;
+}
+
+.game_action_row {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+img:hover {
+    cursor: pointer;
+}
+
+.play {
+    margin: 0 20px;
+    height: 15px;
+    width: auto;
+}
+
+.forward {
+    margin: 0 20px;
+    height: 15px;
+    width: auto;
+}
+
+.stop {
+    margin: 0 20px;
+    height: 15px;
+    width: auto;
+}
+
+#run {
+    background-color: #F47D47;
+    color: white;
+    font-weight: 600;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+#footer {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    height: 100px;
+}
+
+.rights {
+    position: relative;
+    font-size: 12px;
+    font-weight: 700;
+    color: black;
+    left: 50%;
+    transform: translate(-50%, -100%);
+}
