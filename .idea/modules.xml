@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Ink Man.iml" filepath="$PROJECT_DIR$/.idea/Ink Man.iml" />
+      <module fileurl="file://$PROJECT_DIR$/InkMan.iml" filepath="$PROJECT_DIR$/InkMan.iml" />
     </modules>
   </component>
 </project>
