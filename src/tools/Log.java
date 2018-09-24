@@ -12,6 +12,10 @@ public class Log {
         System.out.println(value);
     }
 
+    public static void v(float value) {
+        System.out.println(value);
+    }
+
     public static void v(Float[] values) {
         StringBuilder stringBuilder = new StringBuilder();
 
