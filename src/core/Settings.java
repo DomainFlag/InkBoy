@@ -10,4 +10,6 @@ public class Settings {
 
     public static final String PRODUCTION_MODE = "PRODUCTION_MODE";
     public static final String TESTING_MODE = "TESTING_MODE";
+
+    public static final String TEXTURE_DEFAULT = "PNG";
 }

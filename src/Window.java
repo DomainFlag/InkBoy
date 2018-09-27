@@ -1,12 +1,11 @@
 import core.Settings;
-import javafx.application.Application;
+import modules.Terrain;
 import modules.Triangle;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.MemoryStack;
-import tools.Log;
 import tools.Program;
 
 import javafx.scene.media.*;
@@ -69,7 +68,7 @@ public class Window {
         GLFWErrorCallback.createPrint(System.err).set();
 
         // Initialize GLFW. Most GLFW functions will not work before doing this.
-        if ( !glfwInit() )
+        if (!glfwInit())
             throw new IllegalStateException("Unable to initialize GLFW");
 
         // Configure GLFW
@@ -84,7 +83,7 @@ public class Window {
         GLFWVidMode vidmode = glfwGetVideoMode(primaryMonitor);
 
         // Create the window
-        window = glfwCreateWindow(vidmode.width(), vidmode.height(), "Obscurus", primaryMonitor, NULL);
+        window = glfwCreateWindow(vidmode.width(), vidmode.height(), "Ink Man", primaryMonitor, NULL);
         if(window == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
 
@@ -92,6 +91,14 @@ public class Window {
         glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
             if(key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
                 glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
+
+            for(Program program : programs)
+                program.keyCallback(key, action);
+        });
+
+        glfwSetScrollCallback(window, (window, xoffset, yoffset) -> {
+            for(Program program : programs)
+                program.scrollCallback(xoffset, yoffset);
         });
 
         // Get the thread stack and push a new frame
@@ -130,12 +137,13 @@ public class Window {
         // Generating the programs that need to be rendered
         programs.addAll(
                 Arrays.asList(
-                        new Triangle()
+                        new Terrain()
                 )
         );
 
         // Set the clear color
-        glClearColor(Settings.CLEAR_COLOR.x,
+        glClearColor(
+                Settings.CLEAR_COLOR.x,
                 Settings.CLEAR_COLOR.y,
                 Settings.CLEAR_COLOR.z,
                 Settings.CLEAR_COLOR.w);

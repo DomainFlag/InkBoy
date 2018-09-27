@@ -9,8 +9,6 @@ import static org.lwjgl.opengl.GL46.*;
 
 public class Utilities {
 
-    // TODO(0)
-
     private static String readShader(String pathName) {
         File file = new File(pathName);
         try {
@@ -74,6 +72,8 @@ public class Utilities {
 
     public static int createProgram(String pathSourceName) {
         int program = glCreateProgram();
+
+        pathSourceName = pathSourceName.toLowerCase();
 
         glAttachShader(program, createShader(pathSourceName, GL_VERTEX_SHADER));
         glAttachShader(program, createShader(pathSourceName, GL_FRAGMENT_SHADER));

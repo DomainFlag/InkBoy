@@ -11,6 +11,12 @@ public class Matrix extends MatrixCore {
         data[13] = y;
         data[14] = z;
     }
+
+    public void translate(float x, float y, float z) {
+        data[12] += x;
+        data[13] += y;
+        data[14] += z;
+    }
     
     public void rotationX(float rotation) {
         float c = (float) Math.cos(rotation);
