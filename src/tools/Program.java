@@ -224,7 +224,15 @@ public abstract class Program {
     public void addUniform(String name, Matrix matrix) {
         int uniform = checkUniform(name);
         if(uniform != -1) {
-            glUniformMatrix4fv(uniform, false, matrix.getData());
+            switch(matrix.getSize()) {
+                case 2 : {
+                    glUniformMatrix2fv(uniform, false, matrix.getData());
+                    break;
+                }
+                case 4 : {
+                    glUniformMatrix4fv(uniform, false, matrix.getData());
+                }
+            }
         }
     }
 

@@ -51,8 +51,9 @@ public class MatrixCore {
         Vector res = new Vector(vec.size());
 
         for(int h = 0; h < size; h++) {
+            res.data[h] = 0.0f;
             for(int i = 0; i < size; i++) {
-                res.data[h] += data[i*size+h] * vec.data[i];
+                res.data[h] += data[i*size + h] * vec.data[i];
             }
         }
 
@@ -71,7 +72,9 @@ public class MatrixCore {
         return res;
     }
 
-    public void inverseMatrix() {
+    public Matrix inverseMatrix() {
+        Matrix matrix = new Matrix(size);
+
         float m00 = data[0 * 4 + 0];
         float m01 = data[0 * 4 + 1];
         float m02 = data[0 * 4 + 2];
@@ -141,38 +144,40 @@ public class MatrixCore {
 
         float d = (float) 1.0 / (m00 * t0 + m10 * t1 + m20 * t2 + m30 * t3);
 
-        this.data[0] = d*t0;
-        this.data[1] = d*t1;
-        this.data[2] = d*t2;
-        this.data[3] = d*t3;
+        matrix.data[0] = d*t0;
+        matrix.data[1] = d*t1;
+        matrix.data[2] = d*t2;
+        matrix.data[3] = d*t3;
 
-        this.data[4] = d * ((tmp_1 * m10 + tmp_2 * m20 + tmp_5 * m30) -
+        matrix.data[4] = d * ((tmp_1 * m10 + tmp_2 * m20 + tmp_5 * m30) -
                 (tmp_0 * m10 + tmp_3 * m20 + tmp_4 * m30));
-        this.data[5] = d * ((tmp_0 * m00 + tmp_7 * m20 + tmp_8 * m30) -
+        matrix.data[5] = d * ((tmp_0 * m00 + tmp_7 * m20 + tmp_8 * m30) -
                 (tmp_1 * m00 + tmp_6 * m20 + tmp_9 * m30));
-        this.data[6] = d * ((tmp_3 * m00 + tmp_6 * m10 + tmp_11 * m30) -
+        matrix.data[6] = d * ((tmp_3 * m00 + tmp_6 * m10 + tmp_11 * m30) -
                 (tmp_2 * m00 + tmp_7 * m10 + tmp_10 * m30));
-        this.data[7] = d * ((tmp_4 * m00 + tmp_9 * m10 + tmp_10 * m20) -
+        matrix.data[7] = d * ((tmp_4 * m00 + tmp_9 * m10 + tmp_10 * m20) -
                 (tmp_5 * m00 + tmp_8 * m10 + tmp_11 * m20));
 
-        this.data[8] = d * ((tmp_12 * m13 + tmp_15 * m23 + tmp_16 * m33) -
+        matrix.data[8] = d * ((tmp_12 * m13 + tmp_15 * m23 + tmp_16 * m33) -
                 (tmp_13 * m13 + tmp_14 * m23 + tmp_17 * m33));
-        this.data[9] = d * ((tmp_13 * m03 + tmp_18 * m23 + tmp_21 * m33) -
+        matrix.data[9] = d * ((tmp_13 * m03 + tmp_18 * m23 + tmp_21 * m33) -
                 (tmp_12 * m03 + tmp_19 * m23 + tmp_20 * m33));
-        this.data[10] = d * ((tmp_14 * m03 + tmp_19 * m13 + tmp_22 * m33) -
+        matrix.data[10] = d * ((tmp_14 * m03 + tmp_19 * m13 + tmp_22 * m33) -
                 (tmp_15 * m03 + tmp_18 * m13 + tmp_23 * m33));
-        this.data[11] = d * ((tmp_17 * m03 + tmp_20 * m13 + tmp_23 * m23) -
+        matrix.data[11] = d * ((tmp_17 * m03 + tmp_20 * m13 + tmp_23 * m23) -
                 (tmp_16 * m03 + tmp_21 * m13 + tmp_22 * m23));
 
 
-        this.data[12] = d * ((tmp_14 * m22 + tmp_17 * m32 + tmp_13 * m12) -
+        matrix.data[12] = d * ((tmp_14 * m22 + tmp_17 * m32 + tmp_13 * m12) -
                 (tmp_16 * m32 + tmp_12 * m12 + tmp_15 * m22));
-        this.data[13] = d * ((tmp_20 * m32 + tmp_12 * m02 + tmp_19 * m22) -
+        matrix.data[13] = d * ((tmp_20 * m32 + tmp_12 * m02 + tmp_19 * m22) -
                 (tmp_18 * m22 + tmp_21 * m32 + tmp_13 * m02));
-        this.data[14] = d * ((tmp_18 * m12 + tmp_23 * m32 + tmp_15 * m02) -
+        matrix.data[14] = d * ((tmp_18 * m12 + tmp_23 * m32 + tmp_15 * m02) -
                 (tmp_22 * m32 + tmp_14 * m02 + tmp_19 * m12));
-        this.data[15] = d * ((tmp_22 * m22 + tmp_16 * m02 + tmp_21 * m12) -
+        matrix.data[15] = d * ((tmp_22 * m22 + tmp_16 * m02 + tmp_21 * m12) -
                 (tmp_20 * m12 + tmp_23 * m22 + tmp_17 * m02));
+
+        return matrix;
     }
 
 

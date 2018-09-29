@@ -5,6 +5,7 @@ import core.math.Matrix;
 import core.math.MatrixCore;
 import core.tools.SimplexNoise;
 import org.lwjgl.BufferUtils;
+import tools.Log;
 import tools.Program;
 
 import java.nio.FloatBuffer;
@@ -22,16 +23,17 @@ public class Terrain extends Program {
 
     private static final float PLAIN_SPEED = 0.2f;
 
-    private static final int GRID_COMPLEXITY = 300;
-    private static final float GRID_MIN = -1.0f;
-    private static final float GRID_MAX = 1.0f;
+    private static final int GRID_COMPLEXITY = 16;
+    private static final float GRID_MIN = -6.0f;
+    private static final float GRID_MAX = 6.0f;
 
-    private static final float PARTITION = (GRID_MAX - GRID_MIN) / (GRID_COMPLEXITY - 1) * 5;
+    private static final float PARTITION = (GRID_MAX - GRID_MIN) / (GRID_COMPLEXITY - 1);
 
     private int gridLookingAtX = GRID_COMPLEXITY / 2;
     private int gridLookingAtY = GRID_COMPLEXITY / 2;
 
-    private int gridLookingStep = 3;
+    private int gridLookingStep = 1;
+    private float GRID_LOOKING_PARTITION_STEP = PARTITION * gridLookingStep;
 
     private FloatBuffer floatBuffer;
 
@@ -54,14 +56,13 @@ public class Terrain extends Program {
         if(floatBuffer != null)
             addAttribute("a_position", floatBuffer);
 
-        camera.rotationX(45);
-        camera.translation(0.0f, 0.0f, 0.0f);
-        camera.inverseMatrix();
-        addUniform("u_camera", camera);
+        camera.rotationX((float) 0.0f);
+        camera.translation(0.0f, 0.0f, 2.5f);
+        addUniform("u_camera", camera.inverseMatrix());
 
         addUniform("u_model", model);
 
-        projection.perspective((float) Math.PI/3, 1.0f, 0.001f, 30.0f);
+        projection.perspective((float) Math.PI/3, 1.0f, 0.00001f, 30.0f);
         addUniform("u_projection", projection);
 
         // HSV colors that are normalized to [0, 1]
@@ -163,40 +164,38 @@ public class Terrain extends Program {
         return floatBuffer;
     }
 
-    public boolean checkCollision() {
-        Vector center;
-        float radius;
+    public boolean checkCollision(float x, float y, float z) {
+        int index = ((gridLookingAtY * (GRID_COMPLEXITY - 1)) + gridLookingAtX) * TILE_DIMENSIONS * TILE_VERTICES;
 
-        int index = gridLookingAtX * gridLookingAtY * TILE_DIMENSIONS * TILE_VERTICES;
-
-        Vector minCoordinates = new Vector(3);
-        Vector maxCoordinates = new Vector(3);
+        Matrix newCamera = new Matrix(camera);
+        newCamera.translate(x, y, z);
+        Matrix inverseMatrix = newCamera.inverseMatrix();
 
         Vector vector = new Vector(3);
-        for(int i = 0; i < TILE_VERTICES; i += TILE_DIMENSIONS) {
+        for(int i = 0; i < TILE_VERTICES * TILE_DIMENSIONS; i += TILE_DIMENSIONS) {
             vector.set(
                     floatBuffer.get(index + i),
-                    floatBuffer.get(index + i+1),
-                    floatBuffer.get(index + i+2)
+                    floatBuffer.get(index + (i+1)),
+                    floatBuffer.get(index + (i+2))
             );
 
-            minCoordinates.min(vector);
-            maxCoordinates.max(vector);
+            Vector cameraPoint = inverseMatrix.multiplyVector(vector);
+            Vector projectedPoint = projection.multiplyVector(cameraPoint);
+
+            projectedPoint.divide(projectedPoint.data[3]);
+
+            if((projectedPoint.data[2] < -1.0f || projectedPoint.data[2] > 1.0f))
+                return false;
         }
 
-        center = minCoordinates.center(maxCoordinates);
-        radius = minCoordinates.radius(maxCoordinates);
-
-        Vector pointCameraSpace = camera.multiplyVector(center);
-
-        return (new Vector(3)).distance(pointCameraSpace) > radius && pointCameraSpace.get(3) >= 0.0f;
+        return true;
     }
 
     public void updateTile(float x, float y, float z) {
-        if(checkCollision()) {
+        if(checkCollision(x, y, z)) {
             camera.translate(x, y, z);
 
-            updateUniform("u_camera", camera);
+            updateUniform("u_camera", camera.inverseMatrix());
         };
     }
 
@@ -204,31 +203,31 @@ public class Terrain extends Program {
     public void keyCallback(int key, int action) {
         switch(key) {
             case GLFW_KEY_W : {
-                if(gridLookingAtY < GRID_COMPLEXITY - gridLookingStep) {
-                    gridLookingAtY += gridLookingStep;
-                    updateTile(0, PARTITION, 0);
+                if(gridLookingAtY >= gridLookingStep) {
+                    gridLookingAtY -= gridLookingStep;
+                    updateTile(0, GRID_LOOKING_PARTITION_STEP, 0);
                 }
                 break;
             }
             case GLFW_KEY_A : {
-                if(gridLookingAtX < GRID_COMPLEXITY - gridLookingStep) {
-                    gridLookingAtX += gridLookingStep;
-                    updateTile(PARTITION, 0, 0);
-                }
+                if(gridLookingAtX >= gridLookingStep) {
+                    gridLookingAtX -= gridLookingStep;
+                    updateTile(-GRID_LOOKING_PARTITION_STEP, 0, 0);
+                };
                 break;
             }
             case GLFW_KEY_S : {
-                if(gridLookingAtY > gridLookingStep) {
-                    gridLookingAtY -= gridLookingStep;
-                    updateTile(0, -PARTITION, 0);
+                if(gridLookingAtY < GRID_COMPLEXITY - gridLookingStep - 1) {
+                    gridLookingAtY += gridLookingStep;
+                    updateTile(0, -GRID_LOOKING_PARTITION_STEP, 0);
                 };
                 break;
             }
             case GLFW_KEY_D : {
-                if(gridLookingAtX > gridLookingStep) {
-                    gridLookingAtX -= gridLookingStep;
-                    updateTile(-PARTITION, 0, 0);
-                };
+                if(gridLookingAtX < GRID_COMPLEXITY - gridLookingStep - 1) {
+                    gridLookingAtX += gridLookingStep;
+                    updateTile(GRID_LOOKING_PARTITION_STEP, 0, 0);
+                }
                 break;
             }
         }
@@ -237,11 +236,9 @@ public class Terrain extends Program {
     @Override
     public void scrollCallback(double xoffset, double yoffset) {
         if(yoffset > 0.0f) {
-            updateTile(0, 0, PARTITION);
+            updateTile(0, 0, -GRID_LOOKING_PARTITION_STEP);
         } else {
-            updateTile(0, 0, -PARTITION);
+            updateTile(0, 0, GRID_LOOKING_PARTITION_STEP);
         }
-
-        updateUniform("u_camera", camera);
     }
 }

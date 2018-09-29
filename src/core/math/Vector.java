@@ -13,6 +13,12 @@ public class Vector {
         set(0, 0, 0, 1.0f);
     }
 
+    public Vector(int size, int nb) {
+        data = new float[4];
+
+        set(nb, nb, nb, 1.0f);
+    }
+
     public Vector(float x, float y, float z) {
         data = new float[4];
 
@@ -54,6 +60,11 @@ public class Vector {
 
         for(int it = 0; it < size(); it++)
             data[it] = Math.max(data[it], vector.get(it));
+    }
+
+    public void divide(float division) {
+        for(int it = 0; it < size; it++)
+            data[it] /= division;
     }
 
     public float radius(Vector vector) {

@@ -5,6 +5,13 @@ public class Matrix extends MatrixCore {
     public Matrix(int size) {
         super(size);
     }
+
+    public Matrix(Matrix matrix) {
+        super(matrix.getSize());
+
+        for(int it = 0; it < matrix.getData().length; it++)
+            data[it] = matrix.getData()[it];
+    }
     
     public void translation(float x, float y, float z) {
         data[12] = x;
@@ -73,8 +80,6 @@ public class Matrix extends MatrixCore {
         data[14] = near*far*rangeInv*2;
         data[15] = 0;
     }
-
-
 
     void lookAt(Vector cameraPosition, Vector target, Vector up) {
         Vector zAxis = normalize(MatrixCore.subtractValues(cameraPosition, target));
