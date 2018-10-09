@@ -24,6 +24,14 @@ public class Matrix extends MatrixCore {
         data[13] += y;
         data[14] += z;
     }
+
+    public void translate(float translation) {
+        translate(translation, translation, translation);
+    }
+
+    public void translate(Vector translation) {
+        translate(translation.get(0), translation.get(1), translation.get(2));
+    }
     
     public void rotationX(float rotation) {
         float c = (float) Math.cos(rotation);
@@ -60,6 +68,14 @@ public class Matrix extends MatrixCore {
         data[15] = 1;
     }
 
+    public void scaling(float scale) {
+        scaling(scale, scale, scale);
+    }
+
+    public void scaling(Vector scalar) {
+        scaling(scalar.get(0), scalar.get(1), scalar.get(2));
+    }
+
     public void projection(float x, float y, float z) {
         data[0] = 2.0f/x;
         data[5] = -2.0f/y;
@@ -82,7 +98,7 @@ public class Matrix extends MatrixCore {
     }
 
     void lookAt(Vector cameraPosition, Vector target, Vector up) {
-        Vector zAxis = normalize(MatrixCore.subtractValues(cameraPosition, target));
+        Vector zAxis = normalize(Vector.subtractValues(cameraPosition, target));
         Vector xAxis = cross(up, zAxis);
         Vector yAxis = cross(zAxis, xAxis);
 

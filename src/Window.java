@@ -1,11 +1,11 @@
 import core.Settings;
-import modules.Terrain;
-import modules.Triangle;
+import modules.terrain.Terrain;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.MemoryStack;
+import tools.Camera;
 import tools.Program;
 
 import javafx.scene.media.*;
@@ -134,10 +134,12 @@ public class Window {
         // bindings available for use.
         GL.createCapabilities();
 
+        Camera camera = new Camera();
+
         // Generating the programs that need to be rendered
         programs.addAll(
                 Arrays.asList(
-                        new Terrain()
+                        new Terrain(camera)
                 )
         );
 

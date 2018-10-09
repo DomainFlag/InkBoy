@@ -206,18 +206,6 @@ public class MatrixCore {
         return res;
     }
 
-    public static Vector subtractValues(Vector a, Vector b) {
-        Vector res = new Vector(3);
-        
-        res.set(
-            a.data[0]-b.data[0],
-                a.data[1]-b.data[1],
-                a.data[2]-b.data[2]
-        );
-
-        return res;
-    }
-
     public float dot(Vector a, Vector b) {
         return a.data[0] * b.data[0] + a.data[1] * b.data[1] + a.data[2] * b.data[2];
     }
@@ -248,7 +236,7 @@ public class MatrixCore {
         }
     }
 
-    public float distanceVectors(Vector a, Vector b) {
+    public static float distanceVectors(Vector a, Vector b) {
         float x = b.data[0] - a.data[0];
         float y = b.data[1] - a.data[1];
         float z = b.data[2] - a.data[2];

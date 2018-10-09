@@ -2,6 +2,7 @@ package tools;
 
 import core.Settings;
 import core.math.Matrix;
+import core.math.Vector;
 import javafx.util.Pair;
 import org.lwjgl.BufferUtils;
 import org.newdawn.slick.opengl.Texture;
@@ -117,6 +118,25 @@ public abstract class Program {
         } else {
             Log.v(buffer);
         }
+    }
+
+    public static int createBoundBuffer(FloatBuffer vertices) {
+        int buffer = glGenBuffers();
+
+        vertices.flip();
+
+        glBindBuffer(GL_ARRAY_BUFFER, buffer);
+        glBufferData(GL_ARRAY_BUFFER, vertices, GL_DYNAMIC_DRAW);
+
+        return buffer;
+    }
+
+    public static int createBoundBuffer(float[] vertices) {
+        int buffer = glGenBuffers();
+        glBindBuffer(GL_ARRAY_BUFFER, buffer);
+        glBufferData(GL_ARRAY_BUFFER, vertices, GL_DYNAMIC_DRAW);
+
+        return buffer;
     }
 
     public void addAttribute(String name, FloatBuffer vertices) {
@@ -237,8 +257,42 @@ public abstract class Program {
     }
 
     public void updateUniform(String name, Matrix matrix) {
+        if(uniforms.containsKey(name)) {
+            int uniform = uniforms.get(name);
+
+            glUniformMatrix4fv(uniform, false, matrix.getData());
+        } else addUniform(name, matrix);
+    }
+
+    public void updateUniform(String name, float value) {
         int uniform = uniforms.get(name);
-        glUniformMatrix4fv(uniform, false, matrix.getData());
+        glUniform1f(uniform, value);
+    }
+
+    public void updateUniform(String name, Vector vector) {
+        int uniform = uniforms.get(name);
+        switch(vector.size()) {
+            case 2 : {
+                glUniform2fv(uniform, vector.getData());
+                break;
+            }
+            case 3 : {
+                glUniform3fv(uniform, vector.getData());
+                break;
+            }
+            case 4 : {
+                glUniform4fv(uniform, vector.getData());
+                break;
+            }
+            default : {
+                throw new Error("Undefined");
+            }
+        }
+    }
+
+    public void updateUniform(String name, int value) {
+        int uniform = uniforms.get(name);
+        glUniform1i(uniform, value);
     }
 
     public void addTexture(String pathSourceName, String sourceType) {

@@ -1,18 +1,20 @@
 package tools;
 
+import sun.security.provider.SHA;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 
 import static org.lwjgl.opengl.GL46.*;
 
 public class Utilities {
 
-    private static String readShader(String pathName) {
-        File file = new File(pathName);
+    private static String readShader(File shaderFile) {
         try {
-            FileReader fileReader = new FileReader("res/shaders/" + file);
+            FileReader fileReader = new FileReader(shaderFile);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             StringBuilder stringBuilder = new StringBuilder();
@@ -32,27 +34,9 @@ public class Utilities {
         return null;
     };
 
-    private static String resolvePath(String pathSourceName, int shaderType) {
-        if(pathSourceName == null)
-            return null;
-
-        String extension;
-        if(shaderType == GL_VERTEX_SHADER)
-            extension = ".vert";
-        else if(shaderType == GL_FRAGMENT_SHADER)
-            extension = ".frag";
-        else return null;
-
-        return pathSourceName + "/" + pathSourceName + extension;
-    }
-
-    private static int createShader(String pathSourceName, int shaderType) {
-        String path = resolvePath(pathSourceName, shaderType);
-        if(path == null)
-            return -1;
-
+    private static int createShader(File shaderFile, int shaderType) {
         int shader = glCreateShader(shaderType);
-        glShaderSource(shader, readShader(path));
+        glShaderSource(shader, readShader(shaderFile));
         glCompileShader(shader);
 
         int[] status = new int[]{0};
@@ -62,7 +46,7 @@ public class Utilities {
             return shader;
         } else {
             String info = glGetShaderInfoLog(shader);
-            System.out.println(info);
+            Log.v(info);
 
             glDeleteShader(shader);
         }
@@ -70,13 +54,37 @@ public class Utilities {
         return -1;
     };
 
+    public static File[] listShaders(String pathDirectorySourceName) {
+        File file = new File("res/shaders/" + pathDirectorySourceName);
+        return file.listFiles();
+    }
+
+    private static String getFileExtension(File file) {
+        String name = file.getName();
+        int lastIndexOf = name.lastIndexOf(".");
+        if(lastIndexOf == -1) {
+            return null;
+        }
+
+        return name.substring(lastIndexOf);
+    }
+
     public static int createProgram(String pathSourceName) {
         int program = glCreateProgram();
 
         pathSourceName = pathSourceName.toLowerCase();
 
-        glAttachShader(program, createShader(pathSourceName, GL_VERTEX_SHADER));
-        glAttachShader(program, createShader(pathSourceName, GL_FRAGMENT_SHADER));
+        File[] shaderFiles = listShaders(pathSourceName);
+        for(File shaderFile : shaderFiles) {
+            String extension = getFileExtension(shaderFile);
+            if(extension != null) {
+                int shaderType = SHADER_TYPES.get(extension);
+
+                int shader = createShader(shaderFile, shaderType);
+                glAttachShader(program, shader);
+            }
+        }
+
         glLinkProgram(program);
 
         int[] status = new int[]{0};
@@ -86,11 +94,23 @@ public class Utilities {
             return program;
         } else {
             String info = glGetProgramInfoLog(program);
-            System.out.println(info);
+            Log.v(info);
 
             glDeleteProgram(program);
         }
 
         return -1;
+    }
+
+    public static final HashMap<String, Integer> SHADER_TYPES;
+
+    static {
+        SHADER_TYPES = new HashMap<>();
+
+        SHADER_TYPES.put(".vert", GL_VERTEX_SHADER);
+        SHADER_TYPES.put(".geom", GL_GEOMETRY_SHADER);
+        SHADER_TYPES.put(".frag", GL_FRAGMENT_SHADER);
+        SHADER_TYPES.put(".tesc", GL_TESS_CONTROL_SHADER);
+        SHADER_TYPES.put(".tese", GL_TESS_EVALUATION_SHADER);
     }
 }

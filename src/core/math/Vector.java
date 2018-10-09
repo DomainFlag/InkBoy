@@ -1,6 +1,9 @@
 package core.math;
 
+import org.lwjgl.BufferUtils;
 import tools.Log;
+
+import java.nio.FloatBuffer;
 
 public class Vector {
 
@@ -8,9 +11,25 @@ public class Vector {
     public float[] data;
 
     public Vector(int size) {
-        data = new float[4];
+        data = new float[size];
 
-        set(0, 0, 0, 1.0f);
+        switch(size) {
+            case 4 :  {
+                this.size = 4;
+                set(0, 0, 0, 1.0f);
+                break;
+            }
+            case 3 :  {
+                this.size = 3;
+                set(0, 0, 0);
+                break;
+            }
+            case 2 :  {
+                this.size = 2;
+                set(0, 0);
+                break;
+            }
+        }
     }
 
     public Vector(int size, int nb) {
@@ -19,14 +38,27 @@ public class Vector {
         set(nb, nb, nb, 1.0f);
     }
 
+    public Vector(float x, float y) {
+        data = new float[2];
+        size = 2;
+
+        set(x, y);
+    }
+
     public Vector(float x, float y, float z) {
         data = new float[4];
+        size = 3;
 
         set(x, y, z,1.0f);
     }
 
     public void print() {
         Log.v(this.data);
+    }
+
+    public void set(float x, float y) {
+        data[0] = x;
+        data[1] = y;
     }
 
     public void set(float x, float y, float z) {
@@ -44,6 +76,60 @@ public class Vector {
 
     public float[] getData() {
         return data;
+    }
+
+    public static FloatBuffer createFloatBuffer(Vector[] vectors) {
+        FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(vectors.length * vectors[0].size());
+        for(Vector vector : vectors) {
+            for(int it = 0; it < vector.size(); it++)
+                floatBuffer.put(vector.get(it));
+        }
+
+        floatBuffer.flip();
+
+        return floatBuffer;
+    }
+
+    public void add(float x, float y) {
+        if(size != 2)
+            return;
+
+        data[0] += x;
+        data[1] += y;
+    }
+
+    public void add(Vector vector) {
+        add(vector.get(0), vector.get(1));
+    }
+
+    public Vector add(float adder) {
+        add(adder, adder);
+
+        return this;
+    }
+
+    public Vector substitute(float value) {
+        for(int it = 0; it < size(); it++) {
+            data[it] -= value;
+        }
+
+        return this;
+    }
+
+    public Vector multiply(Vector vector) {
+        for(int it = 0; it < size(); it++) {
+            data[it] *=  vector.get(it);
+        }
+
+        return this;
+    }
+
+    public Vector multiply(float scalar) {
+        for(int it = 0; it < size(); it++) {
+            data[it] *= scalar;
+        }
+
+        return this;
     }
 
     public void min(Vector vector) {
@@ -102,6 +188,66 @@ public class Vector {
             dist += Math.pow(data[it] - vector.get(it), 2.0f);
 
         return (float) Math.sqrt(dist);
+    }
+
+    public static Vector subtractValues(Vector a, Vector b) {
+        Vector res;
+        switch(a.size()) {
+            case 3 : {
+                res = new Vector(3);
+
+                res.set(
+                        a.data[0]-b.data[0],
+                        a.data[1]-b.data[1],
+                        a.data[2]-b.data[2]
+                );
+
+                break;
+            }
+            case 2 : {
+                res = new Vector(2);
+
+                res.set(
+                        a.data[0]-b.data[0],
+                        a.data[1]-b.data[1]
+                );
+
+                break;
+            }
+            default: res = null;
+        }
+
+        return res;
+    }
+
+    public static Vector addValues(Vector a, Vector b) {
+        Vector res;
+        switch(a.size) {
+            case 3 : {
+                res = new Vector(3);
+
+                res.set(
+                        a.data[0] + b.data[0],
+                        a.data[1] + b.data[1],
+                        a.data[2] + b.data[2]
+                );
+
+                break;
+            }
+            case 2 : {
+                res = new Vector(2);
+
+                res.set(
+                        a.data[0] + b.data[0],
+                        a.data[1] + b.data[1]
+                );
+
+                break;
+            }
+            default: res = null;
+        }
+
+        return res;
     }
 
     public float get(int index) {
