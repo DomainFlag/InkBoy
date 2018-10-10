@@ -1,64 +1,42 @@
 package core.math;
 
-import org.lwjgl.BufferUtils;
 import tools.Log;
-
-import java.nio.FloatBuffer;
 
 public class Vector {
 
-    private int size = 4;
-    public float[] data;
+    private float[] data;
+    private int size;
+
+    public Vector() {}
 
     public Vector(int size) {
-        data = new float[size];
-
-        switch(size) {
-            case 4 :  {
-                this.size = 4;
-                set(0, 0, 0, 1.0f);
-                break;
-            }
-            case 3 :  {
-                this.size = 3;
-                set(0, 0, 0);
-                break;
-            }
-            case 2 :  {
-                this.size = 2;
-                set(0, 0);
-                break;
-            }
-        }
+        initData(size);
     }
 
-    public Vector(int size, int nb) {
-        data = new float[4];
-
-        set(nb, nb, nb, 1.0f);
+    public void setData(float[] data) {
+        this.data = data;
     }
 
-    public Vector(float x, float y) {
-        data = new float[2];
-        size = 2;
-
-        set(x, y);
+    public float[] getData() {
+        return data;
     }
 
-    public Vector(float x, float y, float z) {
-        data = new float[4];
-        size = 3;
+    public void initData(int size) {
+        this.data = new float[size];
 
-        set(x, y, z,1.0f);
+        this.size = size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public int getSize() {
+        return size;
     }
 
     public void print() {
         Log.v(this.data);
-    }
-
-    public void set(float x, float y) {
-        data[0] = x;
-        data[1] = y;
     }
 
     public void set(float x, float y, float z) {
@@ -74,41 +52,23 @@ public class Vector {
         data[3] = w;
     }
 
-    public float[] getData() {
-        return data;
+    public float get(int index) {
+        return data[index];
     }
 
-    public static FloatBuffer createFloatBuffer(Vector[] vectors) {
-        FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(vectors.length * vectors[0].size());
-        for(Vector vector : vectors) {
-            for(int it = 0; it < vector.size(); it++)
-                floatBuffer.put(vector.get(it));
-        }
-
-        floatBuffer.flip();
-
-        return floatBuffer;
+    public float getX() {
+        return data[0];
     }
 
-    public void add(float x, float y) {
-        if(size != 2)
-            return;
-
-        data[0] += x;
-        data[1] += y;
+    public float getY() {
+        return data[1];
     }
 
-    public void add(Vector vector) {
-        add(vector.get(0), vector.get(1));
+    public void set(int index, float value) {
+        data[index] = value;
     }
 
-    public Vector add(float adder) {
-        add(adder, adder);
-
-        return this;
-    }
-
-    public Vector substitute(float value) {
+    public Vector subtract(float value) {
         for(int it = 0; it < size(); it++) {
             data[it] -= value;
         }
@@ -118,7 +78,7 @@ public class Vector {
 
     public Vector multiply(Vector vector) {
         for(int it = 0; it < size(); it++) {
-            data[it] *=  vector.get(it);
+            data[it] *= vector.get(it);
         }
 
         return this;
@@ -190,71 +150,126 @@ public class Vector {
         return (float) Math.sqrt(dist);
     }
 
-    public static Vector subtractValues(Vector a, Vector b) {
-        Vector res;
-        switch(a.size()) {
-            case 3 : {
-                res = new Vector(3);
-
-                res.set(
-                        a.data[0]-b.data[0],
-                        a.data[1]-b.data[1],
-                        a.data[2]-b.data[2]
-                );
-
-                break;
-            }
-            case 2 : {
-                res = new Vector(2);
-
-                res.set(
-                        a.data[0]-b.data[0],
-                        a.data[1]-b.data[1]
-                );
-
-                break;
-            }
-            default: res = null;
-        }
-
-        return res;
-    }
-
-    public static Vector addValues(Vector a, Vector b) {
-        Vector res;
-        switch(a.size) {
-            case 3 : {
-                res = new Vector(3);
-
-                res.set(
-                        a.data[0] + b.data[0],
-                        a.data[1] + b.data[1],
-                        a.data[2] + b.data[2]
-                );
-
-                break;
-            }
-            case 2 : {
-                res = new Vector(2);
-
-                res.set(
-                        a.data[0] + b.data[0],
-                        a.data[1] + b.data[1]
-                );
-
-                break;
-            }
-            default: res = null;
-        }
-
-        return res;
-    }
-
-    public float get(int index) {
-        return data[index];
-    }
-
     public int size() {
         return size;
+    }
+
+    public static Vector subtractValues(Vector a, Vector b) {
+        if(a.size != b.size)
+            throw new Error("Error while subtracting values, unequal sizes of vectors");
+
+        Vector res = new Vector();
+        res.initData(a.size);
+
+        for(int it = 0; it < a.size; it++) {
+            float value = a.get(it) - b.get(it);
+
+            res.set(it, value);
+        }
+
+        return res;
+    }
+
+    public static Vector addition(Vector a, Vector b) {
+        if(a.size != b.size)
+            throw new Error("Error while adding values, unequal size of vectors");
+
+        Vector res = new Vector(a.size);
+
+        for(int it = 0; it < a.size; it++) {
+            float value = a.get(it) + b.get(it);
+
+            res.set(it, value);
+        }
+
+        return res;
+    }
+
+    public static Vector cross(Vector a, Vector b) {
+        if(a.size != b.size && a.size != 3)
+            throw new Error("Error while doing the cross of 2 vectors, unequal size of vectors");
+
+        Vector res = new Vector(a.size);
+
+        res.set(
+                a.get(1)*b.get(2)-a.get(2)*b.get(1),
+                a.get(2)*b.get(0)-a.get(0)*b.get(2),
+                a.get(0)*b.get(1)-a.get(1)*b.get(0)
+        );
+
+        return res;
+    }
+
+    public static float dot(Vector a, Vector b) {
+        float value = 0.0f;
+
+        for(int it = 0; it < a.size; it++)
+            value += a.get(it) * b.get(it);
+
+        return value;
+    }
+
+    public static Vector4f fromEuler(float x, float y, float z) {
+        Vector4f res = new Vector4f();
+
+        float halfToRad = (float) (0.5 * Math.PI / 180.0);
+
+        x *= halfToRad;
+        y *= halfToRad;
+        z *= halfToRad;
+
+        float sx = (float) Math.sin(x);
+        float cx = (float) Math.cos(x);
+        float sy = (float) Math.sin(y);
+        float cy = (float) Math.cos(y);
+        float sz = (float) Math.sin(z);
+        float cz = (float) Math.cos(z);
+
+        res.set(0, sx * cy * cz - cx * sy * sz);
+        res.set(1, cx * sy * cz + sx * cy * sz);
+        res.set(2, cx * cy * sz - sx * sy * cz);
+        res.set(3, cx * cy * cz + sx * sy * sz);
+
+        return res;
+    }
+
+    public static Vector4f fromEuler(Vector vector) {
+        return fromEuler(vector.get(0), vector.get(1), vector.get(2));
+    }
+
+    public static Vector normalize(Vector v) {
+        Vector res = new Vector(v.size);
+
+        float magnitude = 0.0f;
+        for(int it = 0; it < v.size(); it++)
+            magnitude += v.get(it) * v.get(it);
+
+        magnitude = (float) Math.sqrt(magnitude);
+
+        if(magnitude > 0.0001) {
+            for(int it = 0; it < v.size(); it++)
+                res.set(it, v.get(it) / magnitude);
+        };
+
+        return res;
+    }
+
+    public static float angle(Vector a, Vector b) {
+        float cosine = dot(normalize(a), normalize(b));
+        if(cosine > 1.0) {
+            return 0;
+        } else if(cosine < -1.0) {
+            return (float) Math.PI;
+        } else {
+            return (float) Math.acos(cosine);
+        }
+    }
+
+    public static float distanceVectors(Vector a, Vector b) {
+        float x = b.data[0] - a.data[0];
+        float y = b.data[1] - a.data[1];
+        float z = b.data[2] - a.data[2];
+
+        return (float) Math.sqrt(x*x + y*y + z*z);
     }
 }

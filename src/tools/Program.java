@@ -77,7 +77,7 @@ public abstract class Program {
         parameters.add(parameter);
     }
 
-    private void applySettings() {
+    public void applySettings() {
         for(int parameter : parameters) {
             glEnable(parameter);
         }
@@ -339,15 +339,5 @@ public abstract class Program {
         }
     }
 
-    public void render() {
-        applySettings();
-
-        if(nb == 0) {
-            throw new Error("You are rendering 0 vertices, check a_position attribute");
-        } else glDrawArrays(renderingType, 0, nb);
-    }
-
-    public abstract void keyCallback(int key, int action);
-
-    public abstract void scrollCallback(double xoffset, double yoffset);
+    public abstract void render();
 }

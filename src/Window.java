@@ -1,11 +1,14 @@
 import core.Settings;
+import modules.Triangle;
 import modules.terrain.Terrain;
 import org.lwjgl.Version;
+import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.MemoryStack;
 import tools.Camera;
+import tools.Log;
 import tools.Program;
 
 import javafx.scene.media.*;
@@ -25,8 +28,12 @@ public class Window {
 
     private HashSet<Program> programs = new HashSet<>();
 
+    private Camera camera = null;
+
     // The window handle
     private long window;
+
+    private GLFWVidMode vidmode = null;
 
     public Window() {
         run();
@@ -45,9 +52,6 @@ public class Window {
     }
 
     private void run() {
-        System.out.println("InkMan " + Version.getVersion() + "!");
-
-
 //        audio();
         init();
         loop();
@@ -79,11 +83,12 @@ public class Window {
         // Get the primary Monitor - default one
         long primaryMonitor = glfwGetPrimaryMonitor();
 
-        // Get the dimensions & resolution of the primary monitor
-        GLFWVidMode vidmode = glfwGetVideoMode(primaryMonitor);
+        // Get the dimensions & resolution of the primary monitor and set it to global vidmode variable
+        vidmode = glfwGetVideoMode(primaryMonitor);
 
         // Create the window
-        window = glfwCreateWindow(vidmode.width(), vidmode.height(), "Ink Man", primaryMonitor, NULL);
+        window = glfwCreateWindow(800, 450, "Ink Man", NULL, NULL);
+//        window = glfwCreateWindow(vidmode.width(), vidmode.height(), "Ink Man", primaryMonitor, NULL);
         if(window == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
 
@@ -92,13 +97,19 @@ public class Window {
             if(key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
                 glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
 
-            for(Program program : programs)
-                program.keyCallback(key, action);
+            if(camera != null)
+                camera.keyCallback(key, action);
         });
 
         glfwSetScrollCallback(window, (window, xoffset, yoffset) -> {
-            for(Program program : programs)
-                program.scrollCallback(xoffset, yoffset);
+            if(camera != null)
+                camera.scrollCallback(xoffset, yoffset);
+        });
+
+
+        glfwSetCursorPosCallback(window, (window, xpos, ypos) -> {
+            if(camera != null)
+                camera.cursorPosCallback(xpos, ypos);
         });
 
         // Get the thread stack and push a new frame
@@ -134,7 +145,10 @@ public class Window {
         // bindings available for use.
         GL.createCapabilities();
 
-        Camera camera = new Camera();
+        Log.v("OpenGL version: " + GL11.glGetString(GL11.GL_VERSION));
+        Log.v("InkMan " + Version.getVersion() + "! on shading language:" + glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+        camera = new Camera(800, 450);
 
         // Generating the programs that need to be rendered
         programs.addAll(

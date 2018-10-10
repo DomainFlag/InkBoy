@@ -51,7 +51,6 @@ public class Matrix extends MatrixCore {
         data[10] = c;
     }
 
-
     public void rotationZ(float rotation) {
         float c = (float) Math.cos(rotation);
         float s = (float) Math.sin(rotation);
@@ -98,28 +97,29 @@ public class Matrix extends MatrixCore {
     }
 
     void lookAt(Vector cameraPosition, Vector target, Vector up) {
-        Vector zAxis = normalize(Vector.subtractValues(cameraPosition, target));
-        Vector xAxis = cross(up, zAxis);
-        Vector yAxis = cross(zAxis, xAxis);
+        Vector zAxis = Vector.normalize(Vector.subtractValues(cameraPosition, target));
+        Vector xAxis = Vector.cross(up, zAxis);
+        Vector yAxis = Vector.cross(zAxis, xAxis);
 
-        data[0] = xAxis.data[0];
-        data[1] = xAxis.data[1];
-        data[2] = xAxis.data[2];
-        data[4] = yAxis.data[0];
-        data[5] = yAxis.data[1];
-        data[6] = yAxis.data[2];
-        data[8] = zAxis.data[0];
-        data[9] = zAxis.data[1];
-        data[10] = zAxis.data[2];
-        data[12] = cameraPosition.data[0];
-        data[13] = cameraPosition.data[1];
-        data[14] = cameraPosition.data[2];
+        data[0] = xAxis.get(0);
+        data[1] = xAxis.get(1);
+        data[2] = xAxis.get(2);
+        data[4] = yAxis.get(0);
+        data[5] = yAxis.get(1);
+        data[6] = yAxis.get(2);
+        data[8] = zAxis.get(0);
+        data[9] = zAxis.get(1);
+        data[10] = zAxis.get(2);
+        data[12] = cameraPosition.get(0);
+        data[13] = cameraPosition.get(1);
+        data[14] = cameraPosition.get(2);
         data[15] = 1;
     }
 
+    public static Matrix fromQuat(Vector quaternion) {
+        Matrix matrix = new Matrix(4);
 
-    void fromQuat(Vector quaternion) {
-        float x = quaternion.data[0], y = quaternion.data[1], z = quaternion.data[2], w = quaternion.data[3];
+        float x = quaternion.get(0), y = quaternion.get(1), z = quaternion.get(2), w = quaternion.get(3);
         float x2 = x + x;
         float y2 = y + y;
         float z2 = z + z;
@@ -132,74 +132,52 @@ public class Matrix extends MatrixCore {
         float wx = w * x2;
         float wy = w * y2;
         float wz = w * z2;
-        data[0] = 1 - yy - zz;
-        data[1] = yx + wz;
-        data[2] = zx - wy;
-        data[3] = 0;
-        data[4] = yx - wz;
-        data[5] = 1 - xx - zz;
-        data[6] = zy + wx;
-        data[7] = 0;
-        data[8] = zx + wy;
-        data[9] = zy - wx;
-        data[10] = 1 - xx - yy;
-        data[11] = 0;
-        data[12] = 0;
-        data[13] = 0;
-        data[14] = 0;
-        data[15] = 1;
+
+        matrix.getData()[0] = 1 - yy - zz;
+        matrix.getData()[1] = yx + wz;
+        matrix.getData()[2] = zx - wy;
+        matrix.getData()[3] = 0;
+        matrix.getData()[4] = yx - wz;
+        matrix.getData()[5] = 1 - xx - zz;
+        matrix.getData()[6] = zy + wx;
+        matrix.getData()[7] = 0;
+        matrix.getData()[8] = zx + wy;
+        matrix.getData()[9] = zy - wx;
+        matrix.getData()[10] = 1 - xx - yy;
+        matrix.getData()[11] = 0;
+        matrix.getData()[12] = 0;
+        matrix.getData()[13] = 0;
+        matrix.getData()[14] = 0;
+        matrix.getData()[15] = 1;
+
+        return matrix;
     }
 
     Vector quaternion() {
         Vector res = new Vector(4);
 
-        res.data[0] = 0;
-        res.data[1] = 0;
-        res.data[2] = 0;
-        res.data[3] = 1;
+        res.set(0, 0);
+        res.set(1, 0);
+        res.set(2, 0);
+        res.set(3, 1);
 
         return res;
     }
 
-
-    Vector fromEuler(float x, float y, float z) {
-        Vector res = new Vector(4);
-
-        float halfToRad = (float) (0.5 * Math.PI / 180.0);
-        
-        x *= halfToRad;
-        y *= halfToRad;
-        z *= halfToRad;
-        
-        float sx = (float) Math.sin(x);
-        float cx = (float) Math.cos(x);
-        float sy = (float) Math.sin(y);
-        float cy = (float) Math.cos(y);
-        float sz = (float) Math.sin(z);
-        float cz = (float) Math.cos(z);
-
-        res.data[0] = sx * cy * cz - cx * sy * sz;
-        res.data[1] = cx * sy * cz + sx * cy * sz;
-        res.data[2] = cx * cy * sz - sx * sy * cz;
-        res.data[3] = cx * cy * cz + sx * sy * sz;
-
-        return res;
-    }
-
-    public Vector transformQuat(Vector vec, Vector quaternion) {
+    public static Vector transformQuat(Vector vec, Vector quaternion) {
         Vector res = new Vector(3);
 
-        float x = vec.data[0], y = vec.data[1], z = vec.data[2];
-        float qx = quaternion.data[0], qy = quaternion.data[1], qz = quaternion.data[2], qw = quaternion.data[3];
+        float x = vec.get(0), y = vec.get(1), z = vec.get(2);
+        float qx = quaternion.get(0), qy = quaternion.get(1), qz = quaternion.get(2), qw = quaternion.get(3);
 
         float ix = qw * x + qy * z - qz * y;
         float iy = qw * y + qz * x - qx * z;
         float iz = qw * z + qx * y - qy * x;
         float iw = -qx * x - qy * y - qz * z;
 
-        res.data[0] = ix * qw + iw * -qx + iy * -qz - iz * -qy;
-        res.data[1] = iy * qw + iw * -qy + iz * -qx - ix * -qz;
-        res.data[2] = iz * qw + iw * -qz + ix * -qy - iy * -qx;
+        res.set(0, ix * qw + iw * -qx + iy * -qz - iz * -qy);
+        res.set(1, iy * qw + iw * -qy + iz * -qx - ix * -qz);
+        res.set(2, iz * qw + iw * -qz + ix * -qy - iy * -qx);
 
         return res;
     }

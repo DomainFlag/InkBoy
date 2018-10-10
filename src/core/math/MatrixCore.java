@@ -31,7 +31,7 @@ public class MatrixCore {
         return data;
     }
 
-    public Matrix add(Matrix mat) {
+    public Matrix multiply(Matrix mat) {
         Matrix result = new Matrix(mat.getSize());
 
         for(int g = 0; g < size; g++) {
@@ -51,9 +51,11 @@ public class MatrixCore {
         Vector res = new Vector(vec.size());
 
         for(int h = 0; h < size; h++) {
-            res.data[h] = 0.0f;
+            res.set(h, 0.0f);
             for(int i = 0; i < size; i++) {
-                res.data[h] += data[i*size + h] * vec.data[i];
+                float value = data[i*size + h] * vec.get(i) + res.get(h);
+
+                res.set(h, value);
             }
         }
 
@@ -178,69 +180,5 @@ public class MatrixCore {
                 (tmp_20 * m12 + tmp_23 * m22 + tmp_17 * m02));
 
         return matrix;
-    }
-
-
-
-    public Vector cross(Vector a, Vector b) {
-        Vector res = new Vector(3);
-        
-        res.set(
-            a.data[1]*b.data[2]-a.data[2]*b.data[1],
-                    a.data[2]*b.data[0]-a.data[0]*b.data[2],
-                    a.data[0]*b.data[1]-a.data[1]*b.data[0]
-        );
-        
-        return res;
-    }
-
-    public Vector addValues(Vector a, Vector b) {
-        Vector res = new Vector(3);
-        
-        res.set(
-                a.data[0]+b.data[0],
-                    a.data[1]+b.data[1],
-                    a.data[2]+b.data[2]
-        );
-
-        return res;
-    }
-
-    public float dot(Vector a, Vector b) {
-        return a.data[0] * b.data[0] + a.data[1] * b.data[1] + a.data[2] * b.data[2];
-    }
-
-    public Vector normalize(Vector v) {
-        Vector res = new Vector(3);
-        
-        float length = (float) Math.sqrt(v.data[0]*v.data[0]+v.data[1]*v.data[1]+v.data[2]*v.data[2]);
-
-        if(length > 0.0001) {
-            res.set(
-                    v.data[0]/length,
-                    v.data[1]/length,
-                    v.data[2]/length);
-        };
-
-        return res;
-    }
-
-    public float angle(Vector a, Vector b) {
-        float cosine = dot(normalize(a), normalize(b));
-        if(cosine > 1.0) {
-            return 0;
-        } else if(cosine < -1.0) {
-            return (float) Math.PI;
-        } else {
-            return (float) Math.acos(cosine);
-        }
-    }
-
-    public static float distanceVectors(Vector a, Vector b) {
-        float x = b.data[0] - a.data[0];
-        float y = b.data[1] - a.data[1];
-        float z = b.data[2] - a.data[2];
-
-        return (float) Math.sqrt(x*x + y*y + z*z);
     }
 }

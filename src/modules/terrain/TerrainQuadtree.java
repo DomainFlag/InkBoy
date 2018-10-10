@@ -1,13 +1,17 @@
 package modules.terrain;
 
-import core.math.Vector;
+import core.math.Vector2f;
 
 public class TerrainQuadtree {
 
     private Node rootNode;
 
     public TerrainQuadtree() {
-        rootNode = new Node(generateRootPatch(), 0);
+        rootNode = new Node(generateRootPatch(), null, 0);
+    }
+
+    public Node getRootNode() {
+        return rootNode;
     }
 
     public void render() {
@@ -16,8 +20,8 @@ public class TerrainQuadtree {
 
     private Extremity generateRootPatch() {
         return new Extremity(
-                new Vector(-1.0f, -1.0f),
-                new Vector(1.0f, 1.0f)
+                new Vector2f( -0.5f, -0.5f),
+                new Vector2f(0.5f, 0.5f)
         );
     }
 }
