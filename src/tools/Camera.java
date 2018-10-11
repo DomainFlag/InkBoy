@@ -9,7 +9,8 @@ import static org.lwjgl.glfw.GLFW.*;
 public class Camera {
 
     private static final float ROTATION = 0.4f;
-    private float speed = 0.002f;
+    private static final float SPEED_RATIO = 0.0002f * Settings.SCALE_XZ;
+    private float speed = 0;
 
     private Vector3f rotation = new Vector3f();
     private Vector2f currentRotation = new Vector2f();
@@ -73,12 +74,14 @@ public class Camera {
     public void keyCallback(int key, int action) {
         switch(key) {
             case GLFW_KEY_W : {
+                speed += SPEED_RATIO;
                 break;
             }
             case GLFW_KEY_A : {
                 break;
             }
             case GLFW_KEY_S : {
+                speed -= SPEED_RATIO;
                 break;
             }
             case GLFW_KEY_D : {

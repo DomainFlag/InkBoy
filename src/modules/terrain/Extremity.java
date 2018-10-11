@@ -1,7 +1,10 @@
 package modules.terrain;
 
+import core.Settings;
 import core.math.Vector;
 import core.math.Vector2f;
+import core.math.Vector3f;
+import core.math.Vector4f;
 import tools.Log;
 
 public class Extremity {
@@ -9,41 +12,59 @@ public class Extremity {
     private Vector leftBottomCorner;
     private Vector rightUpCorner;
 
+    private Vector scaledLeftBottomCorner;
+    private Vector scaledRightUpCorner;
+
     public Extremity(Vector2f leftBottomCorner, Vector2f rightUpCorner) {
         this.leftBottomCorner = leftBottomCorner;
         this.rightUpCorner = rightUpCorner;
+
+        scale();
     }
 
     public Extremity(Vector leftBottomCorner, Vector rightUpCorner) {
         this.leftBottomCorner = leftBottomCorner;
         this.rightUpCorner = rightUpCorner;
+
+        scale();
+    }
+
+    private void scale() {
+        scaledLeftBottomCorner = Vector.multiply(leftBottomCorner, Settings.SCALE_XZ);
+        scaledRightUpCorner = Vector.multiply(rightUpCorner, Settings.SCALE_XZ);
     }
 
     public float[] extractTrianglesData() {
         return new float[] {
-                leftBottomCorner.get(0), 0.0f,  leftBottomCorner.get(1),
-                leftBottomCorner.get(0), 0.0f,  rightUpCorner.get(1),
-                rightUpCorner.get(0), 0.0f,  rightUpCorner.get(1),
-                rightUpCorner.get(0), 0.0f,  rightUpCorner.get(1),
-                rightUpCorner.get(0), 0.0f,  leftBottomCorner.get(1),
-                leftBottomCorner.get(0), 0.0f,  leftBottomCorner.get(1),
+                scaledLeftBottomCorner.get(0), 0.0f,  scaledLeftBottomCorner.get(1),
+                scaledLeftBottomCorner.get(0), 0.0f,  scaledRightUpCorner.get(1),
+                scaledRightUpCorner.get(0), 0.0f,  scaledRightUpCorner.get(1),
+                scaledRightUpCorner.get(0), 0.0f,  scaledRightUpCorner.get(1),
+                scaledRightUpCorner.get(0), 0.0f,  scaledLeftBottomCorner.get(1),
+                scaledLeftBottomCorner.get(0), 0.0f,  scaledLeftBottomCorner.get(1),
         };
     }
 
     public float[] extractLinesData() {
         return new float[] {
-                leftBottomCorner.get(0), 0.0f,  leftBottomCorner.get(1),
-                leftBottomCorner.get(0), 0.0f,  rightUpCorner.get(1),
-                leftBottomCorner.get(0), 0.0f,  rightUpCorner.get(1),
-                rightUpCorner.get(0), 0.0f,  rightUpCorner.get(1),
-                rightUpCorner.get(0), 0.0f,  rightUpCorner.get(1),
-                leftBottomCorner.get(0), 0.0f,  leftBottomCorner.get(1),
-                leftBottomCorner.get(0), 0.0f,  leftBottomCorner.get(1),
-                rightUpCorner.get(0), 0.0f,  leftBottomCorner.get(1),
-                rightUpCorner.get(0), 0.0f,  leftBottomCorner.get(1),
-                rightUpCorner.get(0), 0.0f,  rightUpCorner.get(1)
+                scaledLeftBottomCorner.get(0), 0.0f,  scaledLeftBottomCorner.get(1),
+                scaledLeftBottomCorner.get(0), 0.0f,  scaledRightUpCorner.get(1),
+                scaledLeftBottomCorner.get(0), 0.0f,  scaledRightUpCorner.get(1),
+                scaledRightUpCorner.get(0), 0.0f,  scaledRightUpCorner.get(1),
+                scaledRightUpCorner.get(0), 0.0f,  scaledRightUpCorner.get(1),
+                scaledLeftBottomCorner.get(0), 0.0f,  scaledLeftBottomCorner.get(1),
+                scaledLeftBottomCorner.get(0), 0.0f,  scaledLeftBottomCorner.get(1),
+                scaledRightUpCorner.get(0), 0.0f,  scaledLeftBottomCorner.get(1),
+                scaledRightUpCorner.get(0), 0.0f,  scaledLeftBottomCorner.get(1),
+                scaledRightUpCorner.get(0), 0.0f,  scaledRightUpCorner.get(1)
         };
     }
+
+    public Vector getLocation() {
+        Vector center = Vector.center(scaledLeftBottomCorner, scaledRightUpCorner);
+
+        return new Vector4f(center.getX(), 0, center.getY(), 1.0f);
+    };
 
     public Extremity extract(int i, int j) {
         Vector dist = Vector.subtractValues(rightUpCorner, leftBottomCorner);

@@ -23,7 +23,7 @@ public class Terrain extends Program {
 
         updateUniforms();
 
-        terrainQuadtree = new TerrainQuadtree();
+        terrainQuadtree = new TerrainQuadtree(camera);
 	}
 	
 	public void updateUniforms() {
@@ -35,7 +35,9 @@ public class Terrain extends Program {
     @Override
     public void render() {
         camera.change();
+
 	    terrainQuadtree.render();
+        terrainQuadtree.updateTree();
 
         updateUniform("u_camera", camera.getCamera());
         updateUniform("u_projection", camera.getProjection());

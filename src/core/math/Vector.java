@@ -92,6 +92,23 @@ public class Vector {
         return this;
     }
 
+    public static Vector multiply(Vector vector, float scalar) {
+        Vector res = new Vector(vector.getSize());
+
+        for(int it = 0; it < vector.getSize(); it++) {
+            res.set(it, vector.get(it) * scalar);
+        }
+
+        return res;
+    }
+
+    public static Vector center(Vector vector1, Vector vector2) {
+        Vector vector = Vector.subtractValues(vector2, vector1);
+        vector.multiply(0.5f);
+
+        return Vector.subtractValues(vector2, vector);
+    }
+
     public void min(Vector vector) {
         if(vector.size() != size())
             return;
@@ -271,5 +288,18 @@ public class Vector {
         float z = b.data[2] - a.data[2];
 
         return (float) Math.sqrt(x*x + y*y + z*z);
+    }
+
+    public static float distanceVectors(Vector a) {
+        return (float) Math.sqrt(a.data[0]*a.data[0] + a.data[2]*a.data[2] + a.data[2]*a.data[2]);
+    }
+
+    public Vector normalize() {
+        if(size == 4) {
+            for(int g = 0; g < 3; g++)
+                data[g] /= data[3];
+        }
+
+        return this;
     }
 }
