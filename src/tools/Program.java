@@ -192,9 +192,9 @@ public abstract class Program {
             return uniform;
         } else {
             Log.v("Check the shader, the location is inappropriate: " + name);
-
-            return -1;
         }
+
+        return -1;
     }
 
     public void assignUniformValues(int uniform, float[] values) {
@@ -216,6 +216,10 @@ public abstract class Program {
                 break;
             }
         }
+    }
+
+    public void addUniform(String name) {
+        int uniform = checkUniform(name);
     }
 
     public void addUniform(String name, float[] values) {

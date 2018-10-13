@@ -5,33 +5,33 @@ import core.features.VertexBufferObject;
 import core.math.*;
 import tools.Camera;
 import tools.Log;
+import tools.Program;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Node {
-
-    private static final int maxDepth = 2;
     private static final int rootNodes = 2;
 
-    private int depth;
+    private int lod;
 
     private VertexBufferObject vertexBufferObject;
 	private List<Node> children;
 	private Camera camera;
 	private Vector location;
 	private Vector worldLocation;
+	private Vector center;
 
 	private Extremity extremity;
 
-	public Node(Extremity extremity, Camera camera, Vector location, int depth) {
+	public Node(Extremity extremity, Camera camera, Vector center, Vector location, int lod) {
 	    this.children = new ArrayList<>();
 	    this.camera = camera;
 	    this.extremity = extremity;
 	    this.location = location;
+	    this.center = center;
 	    this.worldLocation = computeWorldPosition();
-
-        this.depth = depth;
+        this.lod = lod;
 
 	    float[] data = extremity.extractLinesData();
 
@@ -42,7 +42,8 @@ public class Node {
 	}
 
 	public Vector computeWorldPosition() {
-        return camera.getCamera().multiplyVector(extremity.getLocation());
+        Vector vector = camera.getCamera().multiplyVector(extremity.getLocation());
+        return vector;
     }
 
     public List<Node> getChildren() {
@@ -50,8 +51,8 @@ public class Node {
     }
 
     public void addNodes() {
-        if(Vector.distanceVectors(this.worldLocation) < Settings.TERRAIN_THRESHOLDS[depth])
-            addNodes(depth);
+        if(Vector.distanceVectors(this.worldLocation) < Settings.TERRAIN_THRESHOLDS[lod])
+            addNodes(lod);
         else removeNodes();
     }
 
@@ -65,7 +66,7 @@ public class Node {
 	    children.clear();
     }
 
-    public void addNodes(int depth) {
+    public void addNodes(int lod) {
 	    if(children.size() != 0) {
             for(Node child : children)
                 child.updateNode();
@@ -74,7 +75,7 @@ public class Node {
                 for(int j = 0; j < rootNodes; j++) {
                     Extremity childExtremity = extremity.extract(i, j);
 
-                    Node node = new Node(childExtremity, camera, new Vector2f(i, j), depth + 1);
+                    Node node = new Node(childExtremity, camera, extremity.getLocation(), new Vector2f(i, j), lod + 1);
 
                     children.add(node);
                 }
@@ -82,10 +83,20 @@ public class Node {
         }
     }
 
-	public void render() {
-	    for(int it = 0; it < children.size(); it++)
-	        children.get(it).render();
+    public void updateUniforms(Program program) {
+	    program.updateUniform("u_center", center);
+	    program.updateUniform("u_location", location);
+        program.updateUniform("u_span", extremity.getSpan());
+        program.updateUniform("u_lod", lod);
+    }
 
-        vertexBufferObject.render();
+	public void render(Program program) {
+	    for(int it = 0; it < children.size(); it++)
+	        children.get(it).render(program);
+
+	    if(children.size() == 0) {
+            updateUniforms(program);
+            vertexBufferObject.render();
+        }
     }
 }

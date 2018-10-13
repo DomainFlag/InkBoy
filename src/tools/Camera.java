@@ -10,11 +10,12 @@ public class Camera {
 
     private static final float ROTATION = 0.4f;
     private static final float SPEED_RATIO = 0.0002f * Settings.SCALE_XZ;
+    private boolean freeze = false;
     private float speed = 0;
 
-    private Vector3f rotation = new Vector3f();
+    private Vector3f rotation = new Vector3f(0, 0, 0);
     private Vector2f currentRotation = new Vector2f();
-    private Vector3f translation = new Vector3f();
+    private Vector3f translation = new Vector3f(0, 0, 0);
 
     private Matrix model = new Matrix(4);
     private Matrix projection = new Matrix(4);
@@ -87,12 +88,19 @@ public class Camera {
             case GLFW_KEY_D : {
                 break;
             }
+            case GLFW_KEY_P : {
+                Log.v(freeze);
+                freeze = !freeze;
+                break;
+            }
         }
     }
 
     public void change() {
-        rotation.add(currentRotation.get(0), currentRotation.get(1), 0.0f);
-        translation.add(getRealWorldTranslation());
+        if(!freeze) {
+            rotation.add(currentRotation.get(0), currentRotation.get(1), 0.0f);
+            translation.add(getRealWorldTranslation());
+        }
     }
 
     public void scrollCallback(double xoffset, double yoffset) {

@@ -291,7 +291,7 @@ public class Vector {
     }
 
     public static float distanceVectors(Vector a) {
-        return (float) Math.sqrt(a.data[0]*a.data[0] + a.data[2]*a.data[2] + a.data[2]*a.data[2]);
+        return (float) Math.sqrt(a.data[0]*a.data[0] + a.data[1]*a.data[1] + a.data[2]*a.data[2]);
     }
 
     public Vector normalize() {

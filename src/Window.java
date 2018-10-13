@@ -97,7 +97,7 @@ public class Window {
             if(key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
                 glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
 
-            if(camera != null)
+            if(camera != null && action == GLFW_PRESS)
                 camera.keyCallback(key, action);
         });
 

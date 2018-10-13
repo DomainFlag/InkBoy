@@ -2,13 +2,14 @@ package modules.terrain;
 
 import core.math.Vector2f;
 import tools.Camera;
+import tools.Program;
 
 public class TerrainQuadtree {
 
     private Node rootNode;
 
     public TerrainQuadtree(Camera camera) {
-        rootNode = new Node(generateRootPatch(), camera, null, 0);
+        rootNode = new Node(generateRootPatch(), camera, null,null, 0);
     }
 
     public Node getRootNode() {
@@ -19,8 +20,10 @@ public class TerrainQuadtree {
         rootNode.updateNode();
     }
 
-    public void render() {
-        rootNode.render();
+    public void render(Program program) {
+        for(Node child : rootNode.getChildren()) {
+            child.render(program);
+        }
     }
 
     private Extremity generateRootPatch() {
