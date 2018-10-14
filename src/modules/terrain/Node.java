@@ -33,7 +33,7 @@ public class Node {
 	    this.worldLocation = computeWorldPosition();
         this.lod = lod;
 
-	    float[] data = extremity.extractLinesData();
+	    float[] data = extremity.extractTrianglesData();
 
         vertexBufferObject = new VertexBufferObject();
         vertexBufferObject.allocate(data, 3);

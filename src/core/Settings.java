@@ -20,7 +20,7 @@ public class Settings {
     public static final float Z_FAR = 50.0f;
     public static final float Z_NEAR = 0.0001f;
 
-    public static final int TERRAIN_DRAWING_TYPE = GL_LINES;
+    public static final int TERRAIN_DRAWING_TYPE = GL_TRIANGLES;
 
     public static final float SCALE_XZ = 25;
 
