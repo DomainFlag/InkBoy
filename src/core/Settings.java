@@ -15,23 +15,23 @@ public class Settings {
     public static final String PRODUCTION_MODE = "PRODUCTION_MODE";
     public static final String TESTING_MODE = "TESTING_MODE";
 
-    public static final String TEXTURE_DEFAULT = "PNG";
-
-    public static final float Z_FAR = 50.0f;
+    public static final float Z_FAR = 3000.0f;
     public static final float Z_NEAR = 0.0001f;
 
-    public static final int TERRAIN_DRAWING_TYPE = GL_TRIANGLES;
+    public static final int TERRAIN_DRAWING_TYPE = GL_PATCHES;
 
-    public static final float SCALE_XZ = 25;
+    public static final float SCALE_XZ = 1750;
 
     public static final float[] TERRAIN_THRESHOLDS = new float[] {
-            22,
-            19,
-            15,
-            12,
-            9,
-            5,
-            2,
-            0
+            1750,
+            1400,
+            990,
+            710,
+            455,
+            320,
+            230,
+            140,
+            50,
+            0,
     };
 }

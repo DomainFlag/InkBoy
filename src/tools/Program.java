@@ -3,20 +3,18 @@ package tools;
 import core.Settings;
 import core.math.Matrix;
 import core.math.Vector;
-import javafx.util.Pair;
 import org.lwjgl.BufferUtils;
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
+import org.lwjgl.system.MemoryStack;
 
 import static org.lwjgl.opengl.GL46.*;
+import static org.lwjgl.stb.STBImage.stbi_failure_reason;
+import static org.lwjgl.stb.STBImage.stbi_load;
+import static org.lwjgl.stb.STBImage.stbi_set_flip_vertically_on_load;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -137,6 +135,14 @@ public abstract class Program {
         glBufferData(GL_ARRAY_BUFFER, vertices, GL_DYNAMIC_DRAW);
 
         return buffer;
+    }
+
+    public void setTessellationShaders(int verticesPerPatch) {
+        int[] parameters = new int[1];
+        glGetIntegerv(GL_MAX_PATCH_VERTICES, parameters);
+        glPatchParameteri(GL_PATCH_VERTICES, verticesPerPatch);
+
+        Log.v("Max supported patch vertices " + parameters[0]);
     }
 
     public void addAttribute(String name, FloatBuffer vertices) {
@@ -268,13 +274,26 @@ public abstract class Program {
         } else addUniform(name, matrix);
     }
 
+    public int getUniform(String name) {
+        if(uniforms.containsKey(name))
+            return uniforms.get(name);
+        else {
+            throw new Error("Null pointer exception while getting uniform for " + name);
+        }
+    }
+
     public void updateUniform(String name, float value) {
-        int uniform = uniforms.get(name);
+        int uniform = getUniform(name);
         glUniform1f(uniform, value);
     }
 
+    public void updateUniform(String name, double value) {
+        int uniform = getUniform(name);
+        glUniform1f(uniform, (float) value);
+    }
+
     public void updateUniform(String name, Vector vector) {
-        int uniform = uniforms.get(name);
+        int uniform = getUniform(name);
         switch(vector.size()) {
             case 2 : {
                 glUniform2fv(uniform, vector.getData());
@@ -299,22 +318,26 @@ public abstract class Program {
         glUniform1i(uniform, value);
     }
 
-    public void addTexture(String pathSourceName, String sourceType) {
+    public void addTexture(String pathSourceName) {
         int tex = glGenTextures();
         glBindTexture(GL_TEXTURE_2D, tex);
 
-        try {
-            Texture texture = TextureLoader.getTexture(sourceType.toUpperCase(), new FileInputStream("res/textures/" + pathSourceName));
-            ByteBuffer textureByteBuffer = BufferUtils.createByteBuffer(texture.getTextureData().length);
-            textureByteBuffer.put(texture.getTextureData());
-            textureByteBuffer.flip();
+        MemoryStack stack = MemoryStack.stackGet();
+        IntBuffer w = stack.mallocInt(1);
+        IntBuffer h = stack.mallocInt(1);
+        IntBuffer comp = stack.mallocInt(1);
 
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, (int) texture.getWidth(), (int) texture.getHeight(), 0, GL_RGB, GL_BYTE, textureByteBuffer);
-        } catch(FileNotFoundException e) {
-            Log.v("Texture couldn't be loaded properly, the path is inappropriate");
-        } catch(IOException e) {
-            Log.v("Error while reading the texture");
+        stbi_set_flip_vertically_on_load(true);
+        ByteBuffer image = stbi_load("./res/heightmaps/" + pathSourceName, w, h, comp, 4);
+        if(image == null) {
+            throw new RuntimeException("Failed to load a texture file!"
+                    + System.lineSeparator() + stbi_failure_reason());
         }
+
+        int width = w.get();
+        int height = h.get();
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_BYTE, image);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -331,7 +354,7 @@ public abstract class Program {
     public void spawnTextures(String[] textures) {
         for(int it = 0; it < textures.length; it++) {
             generateTexture(it);
-            addTexture(textures[it], Settings.TEXTURE_DEFAULT);
+            addTexture(textures[it]);
         }
     }
 

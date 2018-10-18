@@ -2,36 +2,37 @@
 
 layout (location = 0) in vec4 position;
 
-uniform vec4 u_center;
-uniform vec2 u_location;
-uniform float u_span;
-uniform int u_lod;
-uniform float[8] u_morphing_thresholds;
-
+uniform mat4 u_projection;
 uniform mat4 u_camera;
 uniform mat4 u_model;
-uniform mat4 u_projection;
+
+uniform vec4 u_center;
+uniform vec2 u_location;
+uniform vec2 u_index;
+uniform float u_span;
+uniform int u_lod;
+uniform float[10] u_morphing_thresholds;
 
 float morphLatitude(float gap) {
     float morphing = 0.0f;
 
-    if(u_location == vec2(0, 0)) {
+    if(u_index == vec2(0, 0)) {
         // Good
-        if(position.xz == u_center.xz + vec2(0, -gap)) {
+        if(u_location == u_center.xz + vec2(0, -gap)) {
             morphing += gap;
         }
-    } else if(u_location == vec2(0, 1)) {
+    } else if(u_index == vec2(0, 1)) {
         // Good
-        if(position.xz == u_center.xz + vec2(0, -gap)) {
+        if(u_location == u_center.xz + vec2(0, -gap)) {
             morphing -= gap;
         }
-    } else if(u_location == vec2(1, 0)) {
+    } else if(u_index == vec2(1, 0)) {
         // Good
-        if(position.xz == u_center.xz + vec2(0, gap)) {
+        if(u_location == u_center.xz + vec2(0, gap)) {
             morphing += gap;
         }
-    } else if(u_location == vec2(1, 1)) {
-        if(position.xz == u_center.xz + vec2(0, gap)) {
+    } else if(u_index == vec2(1, 1)) {
+        if(u_location == u_center.xz + vec2(0, gap)) {
             morphing -= gap;
         }
     }
@@ -42,20 +43,20 @@ float morphLatitude(float gap) {
 float morphLongitude(float gap) {
     float morphing = 0.0f;
 
-    if(u_location == vec2(0, 0)) {
-        if(position.xz == u_center.xz + vec2(-gap, 0)) {
+    if(u_index == vec2(0, 0)) {
+        if(u_location == u_center.xz + vec2(-gap, 0)) {
             morphing += gap;
         }
-    } else if(u_location == vec2(0, 1)) {
-        if(position.xz == u_center.xz + vec2(gap, 0)) {
+    } else if(u_index == vec2(0, 1)) {
+        if(u_location == u_center.xz + vec2(gap, 0)) {
             morphing += gap;
         }
-    } else if(u_location == vec2(1, 0)) {
-        if(position.xz == u_center.xz + vec2(-gap, 0)) {
+    } else if(u_index == vec2(1, 0)) {
+        if(u_location == u_center.xz + vec2(-gap, 0)) {
             morphing -= gap;
         }
-    } else if(u_location == vec2(1, 1)) {
-        if(position.xz == u_center.xz + vec2(gap, 0)) {
+    } else if(u_index == vec2(1, 1)) {
+        if(u_location == u_center.xz + vec2(gap, 0)) {
             morphing -= gap;
         }
     }
@@ -67,19 +68,19 @@ vec4 morph(vec4 position, float morph_area) {
     vec2 pos = u_center.xz;
     vec2 longitude, latitude;
 
-    if(u_location == vec2(0, 0)) {
+    if(u_index == vec2(0, 0)) {
         // Left bottom corner
         longitude = pos + vec2(0, -u_span);
         latitude = pos + vec2(-u_span, 0);
-    } else if(u_location == vec2(0, 1)) {
+    } else if(u_index == vec2(0, 1)) {
         // Right bottom coner
         longitude = pos + vec2(0, -u_span);
         latitude = pos + vec2(u_span, 0);
-    } else if(u_location == vec2(1, 0)) {
+    } else if(u_index == vec2(1, 0)) {
         // Left up corner
         longitude = pos + vec2(0, u_span);
         latitude = pos + vec2(-u_span, 0);
-    } else if(u_location == vec2(1, 1)) {
+    } else if(u_index == vec2(1, 1)) {
         // Right up corner vec2(1, 1)
         longitude = pos + vec2(0, u_span);
         latitude = pos + vec2(u_span, 0);
@@ -107,7 +108,8 @@ vec4 morph(vec4 position, float morph_area) {
 }
 
 void main() {
-    vec4 pos = position + morph(position, u_morphing_thresholds[u_lod - 1]);
+    vec4 pos_m = vec4(position.x - 0.5, 0, position.y - 0.5, 1.0f);
+    vec4 pos = position - morph(pos_m, u_morphing_thresholds[u_lod - 1]);
 
-	gl_Position = u_projection * u_camera * u_model * pos;
+	gl_Position = pos;
 }

@@ -22,6 +22,7 @@ public class Terrain extends Program {
         addSetting(GL_CULL_FACE);
         addSetting(GL_DEPTH_TEST);
 
+        setTessellationShaders(16);
         addUniforms();
 
         terrainQuadtree = new TerrainQuadtree(camera);
@@ -30,6 +31,7 @@ public class Terrain extends Program {
 	public void addUniforms() {
 	    addUniform("u_center");
 	    addUniform("u_location");
+	    addUniform("u_index");
 	    addUniform("u_span");
 	    addUniform("u_lod");
 

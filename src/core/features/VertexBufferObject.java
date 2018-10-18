@@ -3,7 +3,6 @@ package core.features;
 import core.Settings;
 import core.math.Vector;
 import core.tools.BufferTools;
-import tools.Log;
 
 import static org.lwjgl.opengl.ARBVertexArrayObject.glBindVertexArray;
 import static org.lwjgl.opengl.ARBVertexArrayObject.glGenVertexArrays;
@@ -13,6 +12,8 @@ import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
+import static org.lwjgl.opengl.GL40.GL_PATCH_VERTICES;
+import static org.lwjgl.opengl.GL40.glPatchParameteri;
 
 public class VertexBufferObject {
 
@@ -39,8 +40,22 @@ public class VertexBufferObject {
         glBindVertexArray(0);
     }
 
+    public void allocate(Vector[] vertices, int mode) {
+        this.size = vertices.length;
+
+        glBindVertexArray(vertexArrayObject);
+
+        glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
+        glBufferData(GL_ARRAY_BUFFER, BufferTools.createFlippedBuffer(vertices), GL_STATIC_DRAW);
+
+        glVertexAttribPointer(0, 2, GL_FLOAT, false, Float.BYTES * 2, 0);
+        glPatchParameteri(GL_PATCH_VERTICES, size);
+
+        glBindVertexArray(0);
+    }
+
     public void allocate(float[] vertices, int size) {
-        this.size = vertices.length / 2;
+        this.size = vertices.length / size;
 
         glBindVertexArray(vertexArrayObject);
 
@@ -48,6 +63,20 @@ public class VertexBufferObject {
         glBufferData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW);
 
         glVertexAttribPointer(0, size, GL_FLOAT, false, 0, 0);
+
+        glBindVertexArray(0);
+    }
+
+    public void allocate(float[] vertices, int size, int drawingMode) {
+        this.size = vertices.length;
+
+        glBindVertexArray(vertexArrayObject);
+
+        glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
+        glBufferData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW);
+
+        glVertexAttribPointer(0, 2, GL_FLOAT, false, Float.BYTES * 2, 0);
+        glPatchParameteri(GL_PATCH_VERTICES, size);
 
         glBindVertexArray(0);
     }

@@ -18,4 +18,20 @@ public class BufferTools {
 
         return floatBuffer;
     }
+
+    public static float[] createFloatArray(Vector[] vectors) {
+        if(vectors.length == 0)
+            return null;
+
+        float[] data = new float[vectors.length * vectors[0].getSize()];
+        int index = 0;
+        for(Vector vector : vectors) {
+            for(int it = 0; it < vector.size(); it++) {
+                data[index] = vector.get(it);
+                index++;
+            }
+        }
+
+        return data;
+    }
 }

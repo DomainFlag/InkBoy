@@ -3,9 +3,12 @@ package modules;
 import core.features.VertexBufferObject;
 import core.math.Matrix;
 import core.math.Vector;
+import core.math.Vector2f;
 import core.math.Vector3f;
+import core.tools.BufferTools;
 import org.lwjgl.BufferUtils;
 import sun.security.provider.certpath.Vertex;
+import tools.Camera;
 import tools.Program;
 import core.Settings;
 
@@ -18,40 +21,44 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Triangle extends Program {
 
-    private VertexBufferObject vertexBufferObject1;
-    private VertexBufferObject vertexBufferObject2;
+    private VertexBufferObject vertexBufferObject;
 
-    public Triangle() {
+    private Camera camera;
+
+    private int size = 0;
+
+    public Triangle(Camera camera) {
         super("Triangle", GL_STATIC_DRAW, GL_TRIANGLES, null);
 
-        addSetting(GL_CULL_FACE);
-        addSetting(GL_DEPTH_TEST);
+        this.camera = camera;
 
-        float[] vectors1 = new float[] {
-                -1.0f, 1.0f, -1.0f,
-                -1.0f, -0.5f, 0.5f,
-                0.5f, 0.5f, 0.5f
+        addSetting(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        addTexture("heightmap.bmp");
+
+        setTessellationShaders(4);
+
+        vertexBufferObject = new VertexBufferObject();
+        vertexBufferObject.allocate(BufferTools.createFloatArray(generatePatch()), 4, -1);
+    }
+
+    public Vector2f[] generatePatch(){
+        // 6 vertices for each patch
+        Vector2f[] vertices = new Vector2f[] {
+                new Vector2f(-0.5f, -0.5f),
+                new Vector2f(0.5f,-0.5f),
+                new Vector2f(0.5f,0.5f),
+                new Vector2f(-0.5f,0.5f)
         };
 
-        vertexBufferObject1 = new VertexBufferObject();
-        vertexBufferObject1.allocate(vectors1, 3);
-
-
-        float[] vectors2 = new float[] {
-                -1.0f, 0.25f, -1.0f,
-                -1.0f, -0.5f, 1.0f,
-                1.0f, 0.25f, 1.0f
-        };
-
-        vertexBufferObject2 = new VertexBufferObject();
-        vertexBufferObject2.allocate(vectors2, 3);
+        return vertices;
     }
 
     @Override
     public void render() {
         applySettings();
 
-        vertexBufferObject1.render();
-        vertexBufferObject2.render();
+        vertexBufferObject.render();
     }
 }
