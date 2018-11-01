@@ -1,19 +1,18 @@
 #version 410 core
 
-// Triangles this is the domain the PG will work on.
-// Triangle edges will be subdivided into segments with equal lengths
-// PG will emit triangles in counter-clockwise order
-layout(quads, fractional_odd_spacing, cw) in;
+// Triangles is the domain the PG will work on.
+// Segments of equal lengths
+// Counter-clockwise order
+layout(triangles, fractional_odd_spacing, cw) in;
 
 void main() {
     float u = gl_TessCoord.x;
     float v = gl_TessCoord.y;
+    float w = gl_TessCoord.z;
 
-    // world position
-    vec4 position = ((1 - u) * (1 - v) * gl_in[0].gl_Position +
-                   	u * (1 - v) * gl_in[1].gl_Position +
-                   	u * v * gl_in[2].gl_Position +
-                   	(1 - u) * v * gl_in[3].gl_Position);
+    vec4 position = u * gl_in[0].gl_Position +
+                          v * gl_in[1].gl_Position +
+                          w * gl_in[2].gl_Position;
 
     gl_Position = position;
 }

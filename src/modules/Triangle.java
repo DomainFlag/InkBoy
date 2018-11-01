@@ -1,23 +1,12 @@
 package modules;
 
 import core.features.VertexBufferObject;
-import core.math.Matrix;
-import core.math.Vector;
 import core.math.Vector2f;
-import core.math.Vector3f;
 import core.tools.BufferTools;
-import org.lwjgl.BufferUtils;
-import sun.security.provider.certpath.Vertex;
 import tools.Camera;
 import tools.Program;
-import core.Settings;
 
-import java.nio.FloatBuffer;
-import java.util.ArrayList;
-
-import static org.lwjgl.opengl.ARBVertexArrayObject.glGenVertexArrays;
 import static org.lwjgl.opengl.GL46.*;
-import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Triangle extends Program {
 
@@ -37,19 +26,22 @@ public class Triangle extends Program {
 
         addTexture("heightmap.bmp");
 
-        setTessellationShaders(4);
+        setTessellationShaders(3);
 
         vertexBufferObject = new VertexBufferObject();
-        vertexBufferObject.allocate(BufferTools.createFloatArray(generatePatch()), 4, -1);
+        vertexBufferObject.allocate(generatePatch(), 3);
     }
 
     public Vector2f[] generatePatch(){
-        // 6 vertices for each patch
+        // 3 vertices for each patch
         Vector2f[] vertices = new Vector2f[] {
                 new Vector2f(-0.5f, -0.5f),
-                new Vector2f(0.5f,-0.5f),
+                new Vector2f(-0.5f,0.5f),
                 new Vector2f(0.5f,0.5f),
-                new Vector2f(-0.5f,0.5f)
+
+                new Vector2f(0.5f,0.5f),
+                new Vector2f(0.5f,-0.5f),
+                new Vector2f(-0.5f, -0.5f)
         };
 
         return vertices;

@@ -12,33 +12,71 @@ import java.util.List;
 
 
 public class Node {
+
+    static VertexBufferObject vertexBufferObject1 = new VertexBufferObject();
+    static VertexBufferObject vertexBufferObject2 = new VertexBufferObject();
+
+    static {
+        vertexBufferObject1.allocate(generateRootPatch1(), 3);
+        vertexBufferObject2.allocate(generateRootPatch2(), 3);
+    }
+
+    private static Vector2f[] generateRootPatch1() {
+        // 3 vertices for each patch
+        Vector2f[] vertices = new Vector2f[] {
+                new Vector2f(0.0f, 0.0f),
+                new Vector2f(0.0f,1.0f),
+                new Vector2f(1.0f,1.0f),
+
+                new Vector2f(1.0f, 1.0f),
+                new Vector2f(1.0f,0.0f),
+                new Vector2f(0.0f,0.0f)
+        };
+
+        return vertices;
+    }
+
+    private static Vector2f[] generateRootPatch2() {
+        // 3 vertices for each patch
+        Vector2f[] vertices = new Vector2f[] {
+                new Vector2f(0.0f, 1.0f),
+                new Vector2f(0.0f,0.0f),
+                new Vector2f(1.0f,0.0f),
+
+                new Vector2f(1.0f, 0.0f),
+                new Vector2f(1.0f,1.0f),
+                new Vector2f(0.0f,1.0f)
+        };
+
+        return vertices;
+    }
+
     private static final int rootNodes = 2;
 
     private int lod;
-
-    private VertexBufferObject vertexBufferObject;
     private double span;
 	private List<Node> children;
 	private Camera camera;
 	private Vector index;
-	private Vector worldindex;
+	private Vector worldLocation;
 	private Vector location;
+	private Vector center;
 
-	public Node(VertexBufferObject vertexBufferObject, Camera camera, Vector location, Vector index, int lod) {
-	    this.vertexBufferObject = vertexBufferObject;
+	public Node(Camera camera, Vector location, Vector center, Vector index, int lod) {
 	    this.children = new ArrayList<>();
 	    this.camera = camera;
 	    this.index = index;
 	    this.location = location;
-	    this.worldindex = computeWorldPosition();
-        this.lod = lod;
         this.span = 1.0f / Math.pow(2.0f, lod);
-
+        this.center = center;
+	    this.worldLocation = computeWorldPosition();
+        this.lod = lod;
         addNodes();
 	}
 
 	public Vector computeWorldPosition() {
-	    Vector4f loc = new Vector4f(location.get(0) * Settings.SCALE_XZ, 0, location.get(1) * Settings.SCALE_XZ, 1.0f);
+	    Vector4f loc = new Vector4f(this.center.get(0) * Settings.SCALE_XZ, 0, this.center.get(1) * Settings.SCALE_XZ, 1.0f);
+
         return camera.getCamera().multiplyVector(loc);
     }
 
@@ -47,13 +85,13 @@ public class Node {
     }
 
     public void addNodes() {
-        if(Vector.distanceVectors(worldindex) < Settings.TERRAIN_THRESHOLDS[lod])
+        if(Vector.distanceVectors(worldLocation) < Settings.TERRAIN_THRESHOLDS[lod]) {
             addNodes(lod);
-        else removeNodes();
+        } else removeNodes();
     }
 
     public void updateNode() {
-        worldindex = computeWorldPosition();
+        worldLocation = computeWorldPosition();
 
         addNodes();
     }
@@ -67,10 +105,11 @@ public class Node {
             for(Node child : children)
                 child.updateNode();
         } else {
-            for(int i = 0; i < rootNodes; i++) {
-                for(int j = 0; j < rootNodes; j++) {
-                    Vector vec = Vector.addition(location, new Vector2f((float) (i /  span), (float) (j / span)));
-                    Node node = new Node(vertexBufferObject, camera, vec, new Vector2f(i, j), lod + 1);
+            for(int g = 0; g < rootNodes; g++) {
+                for(int h = 0; h < rootNodes; h++) {
+                    Vector vec = Vector.addition(location, new Vector2f((float) (h *  span), (float) (g * span)));
+
+                    Node node = new Node(camera, vec, getCenterLocation(), new Vector2f(g, h), lod + 1);
 
                     children.add(node);
                 }
@@ -78,12 +117,16 @@ public class Node {
         }
     }
 
+    private Vector getCenterLocation() {
+        return Vector.addition(location,
+                new Vector2f((float) span, (float) span));
+    }
+
     public void updateUniforms(Program program) {
-	    program.updateUniform("u_center", Vector.addition(location,
-                new Vector2f((float) (index.get(0) / span), (float) (index.get(1) / span))));
-	    program.updateUniform("u_location", location.multiply(Settings.SCALE_XZ));
+	    program.updateUniform("u_center", center);
+	    program.updateUniform("u_location", location);
 	    program.updateUniform("u_index", index);
-        program.updateUniform("u_span", span);
+        program.updateUniform("u_span", span * 2.0f);
         program.updateUniform("u_lod", lod);
     }
 
@@ -93,7 +136,10 @@ public class Node {
 
 	    if(children.size() == 0) {
             updateUniforms(program);
-            vertexBufferObject.render();
+            if(index.get(0) == 0 && index.get(1) == 0 ||
+                    index.get(0) == 1 && index.get(1) == 1)
+                vertexBufferObject1.render();
+            else vertexBufferObject2.render();
         }
     }
 }

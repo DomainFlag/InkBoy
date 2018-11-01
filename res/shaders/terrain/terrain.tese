@@ -1,20 +1,27 @@
 #version 430
 
-layout(quads, fractional_odd_spacing, cw) in;
+// Triangles is the domain the PG will work on.
+// Segments of equal lengths
+// Counter-clockwise order
+layout(triangles, fractional_odd_spacing, cw) in;
 
 uniform mat4 u_projection;
 uniform mat4 u_camera;
 uniform mat4 u_model;
 
+in vec3 v_tecolor[];
+out vec3 v_gcolor;
+
 void main() {
     float u = gl_TessCoord.x;
     float v = gl_TessCoord.y;
+    float w = gl_TessCoord.z;
 
-	vec4 position =
-	((1 - u) * (1 - v) * gl_in[12].gl_Position +
-	u * (1 - v) * gl_in[0].gl_Position +
-	u * v * gl_in[3].gl_Position +
-	(1 - u) * v * gl_in[15].gl_Position);
+    vec4 position = u * gl_in[0].gl_Position +
+        v * gl_in[1].gl_Position +
+        w * gl_in[2].gl_Position;
 
-	gl_Position = u_projection * u_camera * u_model * position;
+    v_gcolor = v_tecolor[0];
+
+    gl_Position = u_projection * u_camera * u_model * position;
 }

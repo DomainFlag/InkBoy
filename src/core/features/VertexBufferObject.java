@@ -40,20 +40,6 @@ public class VertexBufferObject {
         glBindVertexArray(0);
     }
 
-    public void allocate(Vector[] vertices, int mode) {
-        this.size = vertices.length;
-
-        glBindVertexArray(vertexArrayObject);
-
-        glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
-        glBufferData(GL_ARRAY_BUFFER, BufferTools.createFlippedBuffer(vertices), GL_STATIC_DRAW);
-
-        glVertexAttribPointer(0, 2, GL_FLOAT, false, Float.BYTES * 2, 0);
-        glPatchParameteri(GL_PATCH_VERTICES, size);
-
-        glBindVertexArray(0);
-    }
-
     public void allocate(float[] vertices, int size) {
         this.size = vertices.length / size;
 
@@ -67,13 +53,13 @@ public class VertexBufferObject {
         glBindVertexArray(0);
     }
 
-    public void allocate(float[] vertices, int size, int drawingMode) {
+    public void allocate(Vector[] vertices, int size) {
         this.size = vertices.length;
 
         glBindVertexArray(vertexArrayObject);
 
         glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
-        glBufferData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, BufferTools.createFlippedBuffer(vertices), GL_STATIC_DRAW);
 
         glVertexAttribPointer(0, 2, GL_FLOAT, false, Float.BYTES * 2, 0);
         glPatchParameteri(GL_PATCH_VERTICES, size);

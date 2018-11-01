@@ -1,6 +1,8 @@
 package modules.terrain;
 
+import core.Settings;
 import core.features.VertexBufferObject;
+import core.math.Vector;
 import core.math.Vector2f;
 import tools.Camera;
 import tools.Program;
@@ -10,10 +12,7 @@ public class TerrainQuadtree {
     private Node rootNode;
 
     public TerrainQuadtree(Camera camera) {
-        VertexBufferObject vertexBufferObject = new VertexBufferObject();
-        vertexBufferObject.allocate(generateRootPatch(), -1);
-
-        rootNode = new Node(vertexBufferObject, camera, new Vector2f(0, 0), null, 0);
+        rootNode = new Node(camera, new Vector2f(0, 0), new Vector2f(0.5f, 0.5f), null, 1);
     }
 
     public Node getRootNode() {
@@ -28,29 +27,5 @@ public class TerrainQuadtree {
         for(Node child : rootNode.getChildren()) {
             child.render(program);
         }
-    }
-
-    private Vector2f[] generateRootPatch() {
-        return new Vector2f[] {
-                new Vector2f(0,0),
-                new Vector2f(0.333f,0),
-                new Vector2f(0.666f,0),
-                new Vector2f(1,0),
-
-                new Vector2f(0,0.333f),
-                new Vector2f(0.333f,0.333f),
-                new Vector2f(0.666f,0.333f),
-                new Vector2f(1,0.333f),
-
-                new Vector2f(0,0.666f),
-                new Vector2f(0.333f,0.666f),
-                new Vector2f(0.666f,0.666f),
-                new Vector2f(1,0.666f),
-
-                new Vector2f(0,1),
-                new Vector2f(0.333f,1),
-                new Vector2f(0.666f,1),
-                new Vector2f(1,1)
-        };
     }
 }

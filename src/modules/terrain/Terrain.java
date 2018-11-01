@@ -22,13 +22,14 @@ public class Terrain extends Program {
         addSetting(GL_CULL_FACE);
         addSetting(GL_DEPTH_TEST);
 
-        setTessellationShaders(16);
+        setTessellationShaders(3);
         addUniforms();
 
         terrainQuadtree = new TerrainQuadtree(camera);
 	}
 	
 	public void addUniforms() {
+	    addUniform("u_scale", Settings.SCALE_XZ);
 	    addUniform("u_center");
 	    addUniform("u_location");
 	    addUniform("u_index");
