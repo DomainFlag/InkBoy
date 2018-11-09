@@ -61,6 +61,7 @@ public class Node {
 	private Vector worldLocation;
 	private Vector location;
 	private Vector center;
+	private float cameraDist;
 
 	public Node(Camera camera, Vector location, Vector center, Vector index, int lod) {
 	    this.children = new ArrayList<>();
@@ -69,13 +70,16 @@ public class Node {
 	    this.location = location;
         this.span = 1.0f / Math.pow(2.0f, lod);
         this.center = center;
-	    this.worldLocation = computeWorldPosition();
         this.lod = lod;
+        this.worldLocation = computeWorldPosition();
+        this.cameraDist = getCameraDist();
+
         addNodes();
 	}
 
-	public Vector computeWorldPosition() {
-	    Vector4f loc = new Vector4f(this.center.get(0) * Settings.SCALE_XZ, 0, this.center.get(1) * Settings.SCALE_XZ, 1.0f);
+	private Vector computeWorldPosition() {
+	    Vector4f loc = new Vector4f((float) (location.get(0) + span / 2.0f) * Settings.SCALE_XZ, 0,
+                (float) (location.get(1) + span / 2.0f) * Settings.SCALE_XZ, 1.0f);
 
         return camera.getCamera().multiplyVector(loc);
     }
@@ -84,30 +88,35 @@ public class Node {
         return children;
     }
 
-    public void addNodes() {
-        if(Vector.distanceVectors(worldLocation) < Settings.TERRAIN_THRESHOLDS[lod]) {
+    private void addNodes() {
+        if(cameraDist < Settings.TERRAIN_THRESHOLDS[lod]) {
             addNodes(lod);
         } else removeNodes();
     }
 
+    private float getCameraDist() {
+	    return Vector.distanceVectors(worldLocation);
+    }
+
     public void updateNode() {
         worldLocation = computeWorldPosition();
+        cameraDist = getCameraDist();
 
         addNodes();
     }
 
-    public void removeNodes() {
+    private void removeNodes() {
 	    children.clear();
     }
 
-    public void addNodes(int lod) {
+    private void addNodes(int lod) {
 	    if(children.size() != 0) {
             for(Node child : children)
                 child.updateNode();
         } else {
             for(int g = 0; g < rootNodes; g++) {
                 for(int h = 0; h < rootNodes; h++) {
-                    Vector vec = Vector.addition(location, new Vector2f((float) (h *  span), (float) (g * span)));
+                    Vector vec = Vector.addition(location, new Vector2f((float) (h *  span / 2.0f), (float) (g * span  / 2.0f)));
 
                     Node node = new Node(camera, vec, getCenterLocation(), new Vector2f(g, h), lod + 1);
 
@@ -119,20 +128,20 @@ public class Node {
 
     private Vector getCenterLocation() {
         return Vector.addition(location,
-                new Vector2f((float) span, (float) span));
+                new Vector2f((float) span / 2.0f, (float) span  / 2.0f));
     }
 
-    public void updateUniforms(Program program) {
+    private void updateUniforms(Program program) {
 	    program.updateUniform("u_center", center);
 	    program.updateUniform("u_location", location);
 	    program.updateUniform("u_index", index);
-        program.updateUniform("u_span", span * 2.0f);
+        program.updateUniform("u_span", span);
         program.updateUniform("u_lod", lod);
+        program.updateUniform("u_camera_position", cameraDist);
     }
 
 	public void render(Program program) {
-	    for(int it = 0; it < children.size(); it++)
-	        children.get(it).render(program);
+        for(Node child : children) child.render(program);
 
 	    if(children.size() == 0) {
             updateUniforms(program);
@@ -141,5 +150,14 @@ public class Node {
                 vertexBufferObject1.render();
             else vertexBufferObject2.render();
         }
+    }
+
+    private void print() {
+        Log.v("center:   ", center);
+        Log.v("location: ", location);
+        Log.v("index:    ", index);
+        Log.v("span:     " + span);
+        Log.v("lod:      " + lod);
+        Log.v("------------------");
     }
 }

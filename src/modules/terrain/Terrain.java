@@ -40,6 +40,11 @@ public class Terrain extends Program {
 	        addUniform("u_morphing_thresholds[" + g + "]", Settings.TERRAIN_THRESHOLDS[g]);
         }
 
+        addUniform("u_camera_position");
+
+        addUniform("u_max_tess_factor", 1.0f);
+	    addUniform("u_min_tess_factor", 5.0f);
+
         addUniform("u_camera", camera.getCamera());
         addUniform("u_projection", camera.getProjection());
         addUniform("u_model", camera.getModel());

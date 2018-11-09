@@ -65,6 +65,12 @@ public class Log {
         System.out.println(stringBuilder.toString());
     }
 
+    public static void v(String message, Vector vector) {
+        System.out.print(message);
+
+        v(vector);
+    }
+
     public static void v(MatrixCore matrix) {
         StringBuilder stringBuilder = new StringBuilder();
 

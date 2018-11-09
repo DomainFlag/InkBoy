@@ -12,7 +12,7 @@ public class TerrainQuadtree {
     private Node rootNode;
 
     public TerrainQuadtree(Camera camera) {
-        rootNode = new Node(camera, new Vector2f(0, 0), new Vector2f(0.5f, 0.5f), null, 1);
+        rootNode = new Node(camera, new Vector2f(0, 0), new Vector2f(0, 0f), null, 0);
     }
 
     public Node getRootNode() {

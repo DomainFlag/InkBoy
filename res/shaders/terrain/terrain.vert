@@ -74,20 +74,23 @@ vec4 morph(vec2 position, float morph_area) {
 
     v_color = vec3(0.7, 0.15, 0.21);
 
+//    NOTE
+//    left <-> right (-x, x)
+//    up   <-> down  (-z, z)
     if(u_index == vec2(0, 0)) {
-        // Left bottom corner
+        // Left up corner
         longitude = u_center + vec2(0, -gap);
         latitude = u_center + vec2(-gap, 0);
     } else if(u_index == vec2(0, 1)) {
-        // Right bottom coner
+        // Right up coner
         longitude = u_center + vec2(0, -gap);
         latitude = u_center + vec2(gap, 0);
     } else if(u_index == vec2(1, 0)) {
-        // Left up corner
+        // Left bottom corner
         longitude = u_center + vec2(0, gap);
         latitude = u_center + vec2(-gap, 0);
     } else if(u_index == vec2(1, 1)) {
-        // Right up corner vec2(1, 1)
+        // Right bottom corner
         longitude = u_center + vec2(0, gap);
         latitude = u_center + vec2(gap, 0);
     };
@@ -115,7 +118,7 @@ void main() {
     vec4 pos_scaled = position * u_span;
     vec4 pos_translated = vec4(pos_scaled.x + u_location.x, 0, pos_scaled.y + u_location.y, 1);
 
-    vec4 pos = pos_translated - morph(pos_translated.xz, u_morphing_thresholds[u_lod - 1]);
+    vec4 pos = pos_translated + morph(pos_translated.xz, u_morphing_thresholds[u_lod - 1]);
     pos.xz *= u_scale;
 
 	gl_Position = pos;

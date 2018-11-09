@@ -53,7 +53,7 @@ public class Camera {
 
     public Matrix getCamera() {
         Matrix transl = new Matrix(4);
-        transl.translate(Settings.SCALE_XZ / 2.0f, 0.15f, Settings.SCALE_XZ / 2.0f);
+        transl.translate(Settings.SCALE_XZ / 2.0f, 0.5f, Settings.SCALE_XZ / 2.0f);
         transl.translate(translation);
 
         Vector4f quaternion = Vector.fromEuler(rotation);
