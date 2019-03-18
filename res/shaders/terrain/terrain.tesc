@@ -19,8 +19,13 @@ const float TESSELATION_OUTER_FACTOR = 1;
 const float TESSELATION_INNER_FACTOR = 1;
 
 float calculateTesselationFactor() {
-    float tessFactor = (u_camera_position - u_morphing_thresholds[u_lod]) / (u_morphing_thresholds[u_lod - 1] - u_morphing_thresholds[u_lod]);
-    return mix(u_min_tess_factor, u_max_tess_factor, tessFactor);
+    float tessFactor = (u_camera_position - u_morphing_thresholds[u_lod])
+        / (u_morphing_thresholds[u_lod - 1] - u_morphing_thresholds[u_lod]);
+
+    float tessLowerBand = mix(u_min_tess_factor, u_max_tess_factor, (u_lod) / 9.0f);
+    float tessHigherBand = mix(u_min_tess_factor, u_max_tess_factor, (u_lod - 1) / 9.0f);
+
+    return mix(tessLowerBand, tessHigherBand, tessFactor);
 }
 
 void main() {

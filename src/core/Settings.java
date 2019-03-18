@@ -15,22 +15,22 @@ public class Settings {
     public static final String PRODUCTION_MODE = "PRODUCTION_MODE";
     public static final String TESTING_MODE = "TESTING_MODE";
 
-    public static final float Z_FAR = 3000.0f;
-    public static final float Z_NEAR = 0.0001f;
+    public static final float Z_FAR = 30000.0f;
+    public static final float Z_NEAR = 0.001f;
 
     public static final int TERRAIN_DRAWING_TYPE = GL_PATCHES;
 
-    public static final float SCALE_XZ = 1750;
+    public static final float SCALE_XZ = 2500;
 
     public static final float[] TERRAIN_THRESHOLDS = new float[] {
+            2250,
             1750,
-            1400,
-            990,
-            710,
-            455,
+            1350,
+            910,
+            530,
             320,
             230,
-            140,
+            175,
             50,
             0,
     };

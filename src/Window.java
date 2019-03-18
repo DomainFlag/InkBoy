@@ -1,5 +1,6 @@
 import core.Settings;
 import modules.Triangle;
+import modules.fighter.Fighter;
 import modules.terrain.Terrain;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
@@ -87,7 +88,7 @@ public class Window {
         vidmode = glfwGetVideoMode(primaryMonitor);
 
         // Create the window
-        window = glfwCreateWindow(800, 450, "Ink Man", NULL, NULL);
+        window = glfwCreateWindow(1280, 720, "StarCannon", NULL, NULL);
 //        window = glfwCreateWindow(vidmode.width(), vidmode.height(), "Ink Man", primaryMonitor, NULL);
         if(window == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
@@ -153,7 +154,8 @@ public class Window {
         // Generating the programs that need to be rendered
         programs.addAll(
                 Arrays.asList(
-                        new Terrain(camera)
+                        new Terrain(camera),
+                        new Fighter(camera)
                 )
         );
 
@@ -172,6 +174,8 @@ public class Window {
             // Rendering every program
             for(Program program : programs)
                 program.render();
+
+            camera.change();
 
             glfwSwapBuffers(window); // swap the color buffers
             // Poll for window events. The key callback above will only be

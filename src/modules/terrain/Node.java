@@ -141,23 +141,16 @@ public class Node {
     }
 
 	public void render(Program program) {
-        for(Node child : children) child.render(program);
+        for(Node child : children)
+            child.render(program);
 
 	    if(children.size() == 0) {
             updateUniforms(program);
+
             if(index.get(0) == 0 && index.get(1) == 0 ||
                     index.get(0) == 1 && index.get(1) == 1)
                 vertexBufferObject1.render();
             else vertexBufferObject2.render();
         }
-    }
-
-    private void print() {
-        Log.v("center:   ", center);
-        Log.v("location: ", location);
-        Log.v("index:    ", index);
-        Log.v("span:     " + span);
-        Log.v("lod:      " + lod);
-        Log.v("------------------");
     }
 }

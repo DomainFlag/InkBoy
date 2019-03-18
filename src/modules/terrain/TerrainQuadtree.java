@@ -1,8 +1,5 @@
 package modules.terrain;
 
-import core.Settings;
-import core.features.VertexBufferObject;
-import core.math.Vector;
 import core.math.Vector2f;
 import tools.Camera;
 import tools.Program;

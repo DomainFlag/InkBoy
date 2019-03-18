@@ -6,6 +6,8 @@ uniform mat4 u_projection;
 uniform mat4 u_camera;
 uniform mat4 u_model;
 
+uniform sampler2D u_texture;
+
 uniform vec2 u_center;
 uniform vec2 u_location;
 uniform vec2 u_index;
@@ -15,6 +17,7 @@ uniform int u_lod;
 uniform float[10] u_morphing_thresholds;
 
 out vec3 v_color;
+out float height;
 
 float morphLatitude(vec2 position, float gap) {
     float morphing = 0.0f;
@@ -119,7 +122,6 @@ void main() {
     vec4 pos_translated = vec4(pos_scaled.x + u_location.x, 0, pos_scaled.y + u_location.y, 1);
 
     vec4 pos = pos_translated + morph(pos_translated.xz, u_morphing_thresholds[u_lod - 1]);
-    pos.xz *= u_scale;
 
 	gl_Position = pos;
 }

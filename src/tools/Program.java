@@ -1,6 +1,5 @@
 package tools;
 
-import core.Settings;
 import core.math.Matrix;
 import core.math.Vector;
 import org.lwjgl.BufferUtils;
@@ -31,22 +30,23 @@ public abstract class Program {
 
     private Set<Integer> parameters = new HashSet<>();
 
-    private int program;
+    public int program;
 
     private int drawingType = GL_STATIC_DRAW;
-    private int renderingType = GL_TRIANGLES;
-
-    private int nb;
+    public int renderingType = GL_TRIANGLES;
+    public int nb;
 
     public Program(String pathProgram, Integer drawingType, Integer renderingType) {
         this.program = Utilities.createProgram(pathProgram);
-        glUseProgram(program);
 
         if(drawingType != null)
             this.drawingType = drawingType;
 
-        if(drawingType != null)
+        if(renderingType != null)
             this.renderingType = renderingType;
+
+        glUseProgram(this.program);
+        Log.v(this.program);
     }
 
     public Program(String pathProgram, int drawingType, int renderingType, String model) {
@@ -81,13 +81,26 @@ public abstract class Program {
         }
     }
 
-    private void removeSettings() {
+    public void removeSettings() {
         for(int parameter : parameters) {
             glDisable(parameter);
         }
     }
 
-    private void loadData(String attributeName, ArrayList<Float> data) {
+    public void loadData(String attributeName, Vector[] data) {
+        FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(data.length * 2);
+        for(int it = 0; it < data.length; it++) {
+            Vector vector = data[it];
+
+            floatBuffer.put(vector.getData(), 0, vector.size());
+        }
+
+        floatBuffer.flip();
+
+        addAttribute(attributeName, floatBuffer);
+    }
+
+    private void loadData(String attributeName, List<Float> data) {
         FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(data.size());
         for(int it = 0; it < data.size(); it++)
             floatBuffer.put(data.get(it));
@@ -95,14 +108,36 @@ public abstract class Program {
         addAttribute(attributeName, floatBuffer);
     }
 
-    private void loadModel(String model) {
-        if(model != null) {
-            ObjReader objReader = new ObjReader();
-            objReader.readDir(model);
+    private void loadData3V(String attributeName, List<Vector> data) {
+        FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(data.size() * 3);
+        for(int g = 0; g < data.size(); g++) {
+            Vector vector = data.get(g);
 
-            loadData("a_position", objReader.getGeometricVertices());
-            loadData("a_texture", objReader.getTextureVertices());
-            loadData("a_normal", objReader.getNormalVertices());
+            floatBuffer.put(vector.getData(), 0, vector.size());
+        }
+
+        floatBuffer.flip();
+
+        addAttribute(attributeName, floatBuffer);
+    }
+
+    private void loadModel(String pathName) {
+        if(pathName != null) {
+            Model model = Model.readModel(pathName);
+
+            if(model != null) {
+                loadData3V("a_position", model.vertices);
+                loadData3V("a_texture", model.textures);
+                loadData3V("a_normals", model.normals);
+
+                String pathModels = "models/" + pathName + "/";
+
+                for(Model.Material material : model.materials.values()) {
+                    String name = "u_texture[" + material.index + "]";
+
+                    addTexture(pathModels + material.texture, name, material.index + 1);
+                }
+            }
         }
     }
 
@@ -148,6 +183,7 @@ public abstract class Program {
     public void addAttribute(String name, FloatBuffer vertices) {
         if(name.equals("a_position")) {
             Log.v(vertices.capacity());
+
             setCount(vertices.capacity());
         }
 
@@ -318,7 +354,11 @@ public abstract class Program {
         glUniform1i(uniform, value);
     }
 
-    public void addTexture(String pathSourceName) {
+    public void addTexture(String pathSourceName, String name, int textureUnitIndex) {
+        int imageLoc = glGetUniformLocation(program, name);
+        glUniform1i(imageLoc, textureUnitIndex);
+        glActiveTexture(GL_TEXTURE0 + textureUnitIndex);
+
         int tex = glGenTextures();
         glBindTexture(GL_TEXTURE_2D, tex);
 
@@ -328,7 +368,7 @@ public abstract class Program {
         IntBuffer comp = stack.mallocInt(1);
 
         stbi_set_flip_vertically_on_load(true);
-        ByteBuffer image = stbi_load("./res/heightmaps/" + pathSourceName, w, h, comp, 4);
+        ByteBuffer image = stbi_load("./res/" + pathSourceName, w, h, comp, 4);
         if(image == null) {
             throw new RuntimeException("Failed to load a texture file!"
                     + System.lineSeparator() + stbi_failure_reason());
@@ -351,12 +391,12 @@ public abstract class Program {
         glActiveTexture(GL_TEXTURE0 + index);
     }
 
-    public void spawnTextures(String[] textures) {
-        for(int it = 0; it < textures.length; it++) {
-            generateTexture(it);
-            addTexture(textures[it]);
-        }
-    }
+//    public void spawnTextures(String[] textures) {
+//        for(int it = 0; it < textures.length; it++) {
+//            generateTexture(it);
+//            addTexture(textures[it]);
+//        }
+//    }
 
     public void free() {
         removeSettings();
@@ -366,5 +406,17 @@ public abstract class Program {
         }
     }
 
-    public abstract void render();
+    public void render() {
+        glUseProgram(program);
+        applySettings();
+
+        draw();
+
+        updateUniforms();
+        removeSettings();
+    }
+
+
+    public abstract void updateUniforms();
+    public abstract void draw();
 }

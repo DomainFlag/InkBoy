@@ -1,11 +1,14 @@
 package modules;
 
+import core.Settings;
 import core.features.VertexBufferObject;
 import core.math.Vector2f;
 import core.tools.BufferTools;
 import tools.Camera;
+import tools.Log;
 import tools.Program;
 
+import static org.lwjgl.opengl.ARBVertexArrayObject.glBindVertexArray;
 import static org.lwjgl.opengl.GL46.*;
 
 public class Triangle extends Program {
@@ -20,11 +23,6 @@ public class Triangle extends Program {
         super("Triangle", GL_STATIC_DRAW, GL_TRIANGLES, null);
 
         this.camera = camera;
-
-        addSetting(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-        addTexture("heightmap.bmp");
 
         setTessellationShaders(3);
 
@@ -48,9 +46,12 @@ public class Triangle extends Program {
     }
 
     @Override
-    public void render() {
-        applySettings();
+    public void updateUniforms() {
 
+    }
+
+    @Override
+    public void draw() {
         vertexBufferObject.render();
     }
 }

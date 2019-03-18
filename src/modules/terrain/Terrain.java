@@ -8,6 +8,7 @@ import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
+import static org.lwjgl.opengl.GL20.glUseProgram;
 
 public class Terrain extends Program {
 
@@ -19,11 +20,13 @@ public class Terrain extends Program {
 
 		this.camera = camera;
 
-        addSetting(GL_CULL_FACE);
+//        addSetting(GL_CULL_FACE);
         addSetting(GL_DEPTH_TEST);
 
         setTessellationShaders(3);
         addUniforms();
+
+        addTexture("heightmaps/heightmap.bmp", "u_texture", 0);
 
         terrainQuadtree = new TerrainQuadtree(camera);
 	}
@@ -42,7 +45,7 @@ public class Terrain extends Program {
 
         addUniform("u_camera_position");
 
-        addUniform("u_max_tess_factor", 1.0f);
+        addUniform("u_max_tess_factor", 12.0f);
 	    addUniform("u_min_tess_factor", 5.0f);
 
         addUniform("u_camera", camera.getCamera());
@@ -57,13 +60,11 @@ public class Terrain extends Program {
     }
 
     @Override
-    public void render() {
-        updateUniforms();
-
-        camera.change();
-
+    public void draw() {
 	    terrainQuadtree.render(this);
         terrainQuadtree.updateTree();
+
+        removeSettings();
     }
 }
 
