@@ -7,6 +7,7 @@ import tools.Program;
 import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 
@@ -16,7 +17,7 @@ public class Terrain extends Program {
     private Camera camera;
 
 	public Terrain(Camera camera) {
-		super("terrain", GL_DYNAMIC_DRAW, GL_TRIANGLES, null);
+		super("terrain", GL_DYNAMIC_DRAW, GL_TRIANGLES);
 
 		this.camera = camera;
 
@@ -26,7 +27,7 @@ public class Terrain extends Program {
         setTessellationShaders(3);
         addUniforms();
 
-        addTexture("heightmaps/heightmap.bmp", "u_texture", 0);
+        addTexture("heightmaps/heightmap1.bmp", "u_texture", 0, GL_CLAMP_TO_EDGE);
 
         terrainQuadtree = new TerrainQuadtree(camera);
 	}

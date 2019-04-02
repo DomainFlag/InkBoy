@@ -154,7 +154,7 @@ public class Window {
         // Generating the programs that need to be rendered
         programs.addAll(
                 Arrays.asList(
-                        new Terrain(camera),
+//                        new Terrain(camera)
                         new Fighter(camera)
                 )
         );

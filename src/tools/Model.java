@@ -1,205 +1,122 @@
 package tools;
 
+import core.features.light.PointLight;
+import core.features.obj.Material;
+import core.features.obj.Obj;
 import core.math.Vector;
-import core.math.Vector2f;
 import core.math.Vector3f;
+import core.math.Vector4f;
 
-import java.io.*;
-import java.nio.FloatBuffer;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+public abstract class Model extends Program {
 
-public class Model {
+    private Obj model = null;
 
-    public HashMap<String, Material> materials = new HashMap<>();
+    private PointLight pointLight;
 
-    public List<Vector> vertices = new ArrayList<>();
-    public List<Vector> textures = new ArrayList<>();
-    public List<Vector> normals = new ArrayList<>();
+    private String pathName;
 
-    private List<Vector> verticesIndices = new ArrayList<>();
-    private List<Vector> textureIndices = new ArrayList<>();
-    private List<Vector> normalsIndices = new ArrayList<>();
+    public Model(String pathProgram, int drawingType, int renderingType, String pathName) {
+        super(pathProgram, drawingType, renderingType);
 
-    public static Model readModel(String pathName) {
-        ModelContainer modelContainer = readDir("res/models/" + pathName);
+        this.pathName = pathName;
 
-        if(modelContainer != null && modelContainer.isValid()) {
-            File objFile = modelContainer.obj;
+        this.pointLight = new PointLight(
+                new Vector3f(1.0f, 1.0f, 1.0f),
+                new Vector4f(0.0f, 0.0f, 2.0f, 1.0f),
+                10.0f);
 
-            try {
-                FileReader fileReader = new FileReader(objFile);
-                BufferedReader bufferedReader = new BufferedReader(fileReader);
+        this.pointLight.setAttenuation(
+                new PointLight.Attenuation(1.0f, 0.05f, 0.05f)
+        );
+    }
 
-                Model model = new Model();
-                model.readMtl(modelContainer.mtl);
+    public void init() {
+        if(pathName != null) {
+            this.model = Obj.readModel(pathName);
 
-                int textureIndex = -1;
+            if(this.model != null) {
+                this.model.print();
+                parseModel(pathName);
+            }
+        }
+    }
 
-                String line = bufferedReader.readLine();
-                while(line != null) {
-                    String[] values = line.split(" ");
+    private void parseModel(String pathName) {
+        Log.v(model.vertices.size());
 
-                    if(values.length > 0 ) {
-                        switch(values[0]) {
-                            case "v" : {
-                                Vector3f vec = new Vector3f(
-                                    Float.valueOf(values[1]),
-                                    Float.valueOf(values[2]),
-                                    Float.valueOf(values[3])
-                                );
+        loadDataV("a_position", model.vertices, 3);
+        loadDataV("a_texture", model.textures, 3);
+        loadDataV("a_normals", model.normals, 3);
 
-                                model.verticesIndices.add(vec);
+        String pathModels = "models/" + pathName + "/";
 
-                                break;
-                            }
-                            case "vt" : {
-                                Vector2f vec = new Vector2f(
-                                        Float.valueOf(values[1]),
-                                        Float.valueOf(values[2])
-                                );
+        for(Material material : this.model.materials.values()) {
+            for(Material.LightingColor lightingColor : material.colors) {
+                if(lightingColor.index != -1) {
+                    String name = "u_textures[" + lightingColor.index + "]";
 
-                                model.textureIndices.add(vec);
-
-                                break;
-                            }
-                            case "vn" : {
-                                Vector3f vec = new Vector3f(
-                                        Float.valueOf(values[1]),
-                                        Float.valueOf(values[2]),
-                                        Float.valueOf(values[3])
-                                );
-
-                                model.normalsIndices.add(vec);
-
-                                break;
-                            }
-                            case "f" : {
-                                for(int g = 1; g <= 3; g++) {
-                                    String[] split = values[g].split("/");
-
-                                    Vector geometricVertex = model.verticesIndices.get(Integer.parseInt(split[0]) - 1);
-                                    Vector textureVertex = model.textureIndices.get(Integer.parseInt(split[1]) - 1);
-                                    Vector normalVertex = model.normalsIndices.get(Integer.parseInt(split[2]) - 1);
-
-                                    Vector3f texture = new Vector3f(textureVertex.getX(), textureVertex.getY(), textureIndex);
-
-                                    model.vertices.add(geometricVertex);
-                                    model.textures.add(texture);
-                                    model.normals.add(normalVertex);
-                                }
-
-                                break;
-                            }
-                            case "usemtl" : {
-                                String materialName = values[1];
-
-                                if(model.materials.containsKey(materialName)) {
-                                    textureIndex = model.materials.get(materialName).index;
-                                } else {
-                                    textureIndex = -1;
-                                }
-                            }
-                        }
-                    }
-
-                    line = bufferedReader.readLine();
+                    addTexture(pathModels + lightingColor.texture, name, lightingColor.index, material.mode);
                 }
-
-                fileReader.close();
-
-                return model;
-            } catch(IOException e) {
-                throw new Error(e.toString());
             }
         }
 
-        return null;
+        createPointLightUniform("u_point_light");
+        updatePointLightUniform("u_point_light", this.pointLight);
+
+        createMaterialUniform("u_materials");
+        updateMaterialUniform("u_materials");
     }
 
-    private void readMtl(File file) {
-        try {
-            FileReader fileReader = new FileReader(file);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+    public void createPointLightUniform(String name) {
+        addUniform(name + ".colour");
+        addUniform(name + ".position");
+        addUniform(name + ".intensity");
+        addUniform(name + ".attenuation.constant");
+        addUniform(name + ".attenuation.linear");
+        addUniform(name + ".attenuation.exponent");
+    }
 
-            String materialName = null;
-            int counter = 0;
+    public void updatePointLightUniform(String name, PointLight pointLight) {
+        updateUniform(name + ".colour", pointLight.getColor() );
+        updateUniform(name + ".position", pointLight.getPosition());
+        updateUniform(name + ".intensity", pointLight.getIntensity());
 
-            String line = bufferedReader.readLine();
-            while(line != null) {
-                String[] split = line.split(" ");
+        PointLight.Attenuation att = pointLight.getAttenuation();
 
-                if(split[0].equals("newmtl")) {
-                    materialName = split[1];
-                } else if(split[0].equals("map_Kd")) {
-                    if(materialName != null) {
-                        Material material = new Material(split[1], counter);
-                        materials.put(materialName, material);
+        updateUniform(name + ".attenuation.constant", att.getConstant());
+        updateUniform(name + ".attenuation.linear", att.getLinear());
+        updateUniform(name + ".attenuation.exponent", att.getExponent());
+    }
 
-                        counter++;
-                    }
-                }
+    public void updateMaterialUniform(String name) {
+        for(Material material : this.model.materials.values()) {
 
-                line = bufferedReader.readLine();
+            for(int g = 0; g < material.colors.length; g++) {
+                updateUniform(name + "[" + material.index + "].Kx[" + g + "].Kx", material.colors[g].color);
+                updateUniform(name + "[" + material.index + "].Kx[" + g + "].Mx", material.colors[g].index);
             }
-        } catch(IOException e) {
-            Log.v(e.toString());
+
+            updateUniform(name + "[" + material.index + "].Tf", material.Tf);
+            updateUniform(name + "[" + material.index + "].Ni", material.Ni);
+            updateUniform(name + "[" + material.index + "].Ns", material.Ns);
         }
     }
 
-    private static ModelContainer readDir(String pathName) {
-        File directory = new File(pathName);
+    public void createMaterialUniform(String name) {
+        for(Material material : this.model.materials.values()) {
 
-        if(directory.isDirectory()) {
-            ModelContainer modelContainer = new ModelContainer();
-
-            File[] files = directory.listFiles();
-
-            if(files != null) {
-                for(File file : files) {
-                    String fileName = file.getName();
-
-                    if(fileName.endsWith(".png")) {
-                        modelContainer.assets.add(file);
-                    } else if(fileName.endsWith(".obj")) {
-                        modelContainer.obj = file;
-                    } else if(fileName.endsWith(".mtl")) {
-                        modelContainer.mtl = file;
-                    }
-                }
-
-                return modelContainer;
+            for(int g = 0; g < material.colors.length; g++) {
+                addUniform(name + "[" + material.index + "].Kx[" + g + "].Kx");
+                addUniform(name + "[" + material.index + "].Kx[" + g + "].Mx");
             }
-        } else {
-            throw new Error("The pathname specified is not a directory");
-        }
 
-        return null;
-    }
-
-    public static class Material {
-
-        public String texture;
-        public int index;
-
-        public Material(String texture, int index) {
-            this.texture = texture;
-            this.index = index;
+            addUniform(name + "[" + material.index + "].Tf");
+            addUniform(name + "[" + material.index + "].Ni");
+            addUniform(name + "[" + material.index + "].Ns");
         }
     }
 
-    private static class ModelContainer {
+    public abstract void updateUniforms();
 
-        private List<File> assets = new ArrayList<>();
-        private File obj = null;
-        private File mtl = null;
-
-        boolean isValid() {
-            return obj != null && mtl != null;
-        }
-    }
+    public abstract void draw();
 }
-
-
-

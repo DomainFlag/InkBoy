@@ -92,6 +92,16 @@ public class Vector {
         return this;
     }
 
+    public static Vector parseLine(String line[], int offset, int len) {
+        Vector vector = new Vector(len);
+
+        for(int g = 0; g < len; g++) {
+            vector.set(g, Float.parseFloat(line[g + offset]));
+        }
+
+        return vector;
+    }
+
     public static Vector multiply(Vector vector, float scalar) {
         Vector res = new Vector(vector.getSize());
 

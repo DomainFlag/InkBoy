@@ -9,7 +9,7 @@ import static org.lwjgl.glfw.GLFW.*;
 public class Camera {
 
     private static final float ROTATION = 0.4f;
-    private static final float SPEED_RATIO = 0.0002f * Settings.SCALE_XZ;
+    private static final float SPEED_RATIO = 0.02f;
     private boolean freeze = false;
     private float speed = 0;
 
@@ -53,7 +53,7 @@ public class Camera {
 
     public Matrix getCamera() {
         Matrix transl = new Matrix(4);
-        transl.translate(Settings.SCALE_XZ / 2.0f, 0.5f, Settings.SCALE_XZ / 2.0f);
+        transl.translate(0, 0, 1.5f);
         transl.translate(translation);
 
         Vector4f quaternion = Vector.fromEuler(rotation);
@@ -70,6 +70,17 @@ public class Camera {
         Vector4f quaternion = Vector.fromEuler(rotation);
 
         return Matrix.transformQuat(new Vector4f(0, 0, -speed, 1.0f), quaternion);
+    }
+
+    public Matrix getViewMatrix() {
+        Matrix transl = new Matrix(4);
+        transl.translate(0, 1.0f, 2.5f);
+        transl.translate(translation);
+
+        Vector4f quaternion = Vector.fromEuler(rotation);
+        Matrix camera = Matrix.fromQuat(quaternion);
+
+        return camera.multiply(transl);
     }
 
     public void keyCallback(int key, int action) {

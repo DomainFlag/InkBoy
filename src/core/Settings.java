@@ -20,18 +20,18 @@ public class Settings {
 
     public static final int TERRAIN_DRAWING_TYPE = GL_PATCHES;
 
-    public static final float SCALE_XZ = 2500;
+    public static final float SCALE_XZ = 5000;
 
     public static final float[] TERRAIN_THRESHOLDS = new float[] {
-            2250,
-            1750,
+            4250,
+            2550,
             1350,
             910,
-            530,
-            320,
-            230,
-            175,
-            50,
+            630,
+            420,
+            330,
+            275,
+            100,
             0,
     };
 }

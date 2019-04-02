@@ -6,9 +6,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.system.MemoryStack;
 
 import static org.lwjgl.opengl.GL46.*;
-import static org.lwjgl.stb.STBImage.stbi_failure_reason;
-import static org.lwjgl.stb.STBImage.stbi_load;
-import static org.lwjgl.stb.STBImage.stbi_set_flip_vertically_on_load;
+import static org.lwjgl.stb.STBImage.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.nio.ByteBuffer;
@@ -30,6 +28,8 @@ public abstract class Program {
 
     private Set<Integer> parameters = new HashSet<>();
 
+    private Camera camera;
+
     public int program;
 
     private int drawingType = GL_STATIC_DRAW;
@@ -46,13 +46,14 @@ public abstract class Program {
             this.renderingType = renderingType;
 
         glUseProgram(this.program);
-        Log.v(this.program);
     }
 
-    public Program(String pathProgram, int drawingType, int renderingType, String model) {
-        this(pathProgram, drawingType, renderingType);
+    public Camera getCamera() {
+        return camera;
+    }
 
-        loadModel(model);
+    public void setCamera(Camera camera) {
+        this.camera = camera;
     }
 
     public void setCount(int nbElements) {
@@ -108,8 +109,8 @@ public abstract class Program {
         addAttribute(attributeName, floatBuffer);
     }
 
-    private void loadData3V(String attributeName, List<Vector> data) {
-        FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(data.size() * 3);
+    public void loadDataV(String attributeName, List<Vector> data, int count) {
+        FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(data.size() * count);
         for(int g = 0; g < data.size(); g++) {
             Vector vector = data.get(g);
 
@@ -119,26 +120,6 @@ public abstract class Program {
         floatBuffer.flip();
 
         addAttribute(attributeName, floatBuffer);
-    }
-
-    private void loadModel(String pathName) {
-        if(pathName != null) {
-            Model model = Model.readModel(pathName);
-
-            if(model != null) {
-                loadData3V("a_position", model.vertices);
-                loadData3V("a_texture", model.textures);
-                loadData3V("a_normals", model.normals);
-
-                String pathModels = "models/" + pathName + "/";
-
-                for(Model.Material material : model.materials.values()) {
-                    String name = "u_texture[" + material.index + "]";
-
-                    addTexture(pathModels + material.texture, name, material.index + 1);
-                }
-            }
-        }
     }
 
     private void bindBuffer(String bufferName, FloatBuffer vertices) {
@@ -182,8 +163,6 @@ public abstract class Program {
 
     public void addAttribute(String name, FloatBuffer vertices) {
         if(name.equals("a_position")) {
-            Log.v(vertices.capacity());
-
             setCount(vertices.capacity());
         }
 
@@ -320,11 +299,13 @@ public abstract class Program {
 
     public void updateUniform(String name, float value) {
         int uniform = getUniform(name);
+
         glUniform1f(uniform, value);
     }
 
     public void updateUniform(String name, double value) {
         int uniform = getUniform(name);
+
         glUniform1f(uniform, (float) value);
     }
 
@@ -351,10 +332,11 @@ public abstract class Program {
 
     public void updateUniform(String name, int value) {
         int uniform = uniforms.get(name);
+
         glUniform1i(uniform, value);
     }
 
-    public void addTexture(String pathSourceName, String name, int textureUnitIndex) {
+    public void addTexture(String pathSourceName, String name, int textureUnitIndex, int mode) {
         int imageLoc = glGetUniformLocation(program, name);
         glUniform1i(imageLoc, textureUnitIndex);
         glActiveTexture(GL_TEXTURE0 + textureUnitIndex);
@@ -367,22 +349,34 @@ public abstract class Program {
         IntBuffer h = stack.mallocInt(1);
         IntBuffer comp = stack.mallocInt(1);
 
+
         stbi_set_flip_vertically_on_load(true);
         ByteBuffer image = stbi_load("./res/" + pathSourceName, w, h, comp, 4);
         if(image == null) {
             throw new RuntimeException("Failed to load a texture file!"
-                    + System.lineSeparator() + stbi_failure_reason());
+                    + System.lineSeparator() + stbi_failure_reason() + " " + pathSourceName);
         }
 
         int width = w.get();
         int height = h.get();
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_BYTE, image);
+        if(width == 0 || height == 0) {
+            throw new RuntimeException("Failed to load a texture file!"
+                    + System.lineSeparator() + stbi_failure_reason() + " " + pathSourceName);
+        }
 
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mode);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, mode);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        stbi_image_free(image);
     }
 
     public void generateTexture(int index) {
@@ -415,7 +409,6 @@ public abstract class Program {
         updateUniforms();
         removeSettings();
     }
-
 
     public abstract void updateUniforms();
     public abstract void draw();

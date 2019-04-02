@@ -4,45 +4,51 @@ import core.Settings;
 import core.math.Matrix;
 import core.math.Vector3f;
 import tools.Camera;
-import tools.Program;
+import tools.Model;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
-import static org.lwjgl.opengl.GL20.glUseProgram;
 
-public class Fighter extends Program {
-
-    private Camera camera;
+public class Fighter extends Model {
 
     private Matrix model = new Matrix(4);
-
-    private Vector3f light = new Vector3f(0, 1.0f, 0);
 
 	public Fighter(Camera camera) {
 		super("fighter", GL_STATIC_DRAW, GL_TRIANGLES, "x-fighter");
 
-		this.camera = camera;
+		setCamera(camera);
 
-        model.translate(Settings.SCALE_XZ / 2.0f, 0, Settings.SCALE_XZ / 2.0f - 5);
-        model.scaling(0.1f, 0.1f, 0.1f);
+		init();
+
+        model.translate(0, 0, 0);
+
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         addSetting(GL_CULL_FACE);
+        addSetting(GL_BLEND);
         addSetting(GL_DEPTH_TEST);
 
         addUniforms();
 	}
 	
 	public void addUniforms() {
-        addUniform("u_camera", camera.getCamera());
-        addUniform("u_projection", camera.getProjection());
+        addUniform("u_camera", getCamera().getCamera());
+        addUniform("u_projection", getCamera().getProjection());
         addUniform("u_model", model);
-        addUniform("u_light", light.getData());
+
+        addUniform("u_ambient_light");
+//        addUniform("u_camera_position");
+        addUniform("u_specular_power");
 	}
 
 	public void updateUniforms() {
-        updateUniform("u_camera", camera.getCamera());
-        updateUniform("u_projection", camera.getProjection());
+        updateUniform("u_camera", getCamera().getCamera());
+        updateUniform("u_projection", getCamera().getProjection());
         updateUniform("u_model", model);
+
+        updateUniform("u_ambient_light", new Vector3f(1.0f, 1.0f, 0));
+//        updateUniform("u_camera_position", camera.getCamera());
+        updateUniform("u_specular_power", 3.0f);
     }
 
     @Override

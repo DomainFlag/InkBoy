@@ -20,7 +20,7 @@ public class Triangle extends Program {
     private int size = 0;
 
     public Triangle(Camera camera) {
-        super("Triangle", GL_STATIC_DRAW, GL_TRIANGLES, null);
+        super("Triangle", GL_STATIC_DRAW, GL_TRIANGLES);
 
         this.camera = camera;
 
