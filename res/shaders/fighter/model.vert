@@ -17,6 +17,7 @@ void main() {
 
     v_position = position.xyz;
     v_texture = a_texture;
+
     // w is set to 0 as vector's direction is what counts and not it's position, translation scalars are the last row in transform matrix
     v_normals = normalize(u_camera * u_model * vec4(a_normals, 0.0)).xyz;
 

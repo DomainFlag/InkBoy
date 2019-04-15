@@ -2,6 +2,17 @@
 
 const int MAX_MATERIALS = 32;
 
+layout(location = 0) out vec4 outColor;
+
+uniform sampler2D u_textures[10];
+
+in vec3 v_texture;
+in vec3 v_normals;
+in vec3 v_position;
+
+uniform mat4 u_model;
+uniform mat4 u_camera;
+
 // light attenuation, gradual extinction of photons in medium to respect of distance
 struct Attenuation {
     float constant;
@@ -9,12 +20,26 @@ struct Attenuation {
     float exponent;
 };
 
-// point lighting, light coming from every direction from its origin
+// point lighting, light coming from every direction starting from its origin
 struct PointLight {
     Attenuation attenuation;
     vec3 colour;
     vec4 position;
     float intensity;
+};
+
+// directional lighting, light coming from a direction with constant intensity
+struct DirectionalLight {
+    vec3 colour;
+    vec3 direction;
+    float intensity;
+};
+
+// spot lighting, light coming from its origin in conic form
+struct SpotLight {
+    PointLight pointLight;
+    vec3 direction;
+    float angle;
 };
 
 // color lighting and mapping to texture
@@ -32,22 +57,19 @@ struct Material {
     float Ns;
 };
 
-layout(location = 0) out vec4 outColor;
-
-uniform sampler2D u_textures[10];
-
-in vec3 v_texture;
-in vec3 v_normals;
-in vec3 v_position;
-
 uniform vec3 u_ambient_light;
 uniform float u_specular_power;
 
 uniform Material u_materials[MAX_MATERIALS];
+
+/* Point Light */
 uniform PointLight u_point_light;
 
-uniform mat4 u_model;
-uniform mat4 u_camera;
+/* Directional Light */
+uniform DirectionalLight u_directional_light;
+
+/* Spot Light */
+uniform SpotLight u_spot_light;
 
 vec4 ambientColor, diffuseColor, specularColor;
 
@@ -67,41 +89,92 @@ void setupColors(Material material) {
     specularColor = getColor(material, 2);
 }
 
-vec4 setupPointLight(Material material, vec3 point_light) {
+vec4 setupLightColor(Material material, vec3 to_light_direction, vec3 light_colour, float light_intensity) {
 
     /* Diffuse Light */
-    vec3 to_light_source = point_light - v_position;
-    vec3 to_light_direction = normalize(to_light_source);
+    if(diffuseColor.a == 0.0)
+        discard;
 
     // retain factor when both normal and the direction from position to light source are in the same direction -90 <-> 90
     float diffuseFactor = max(dot(v_normals, to_light_direction), 0.0);
 
     // diffuse light
-    vec4 diffuse_color = diffuseColor * vec4(u_point_light.colour, 1.0) * u_point_light.intensity * diffuseFactor;
+    vec4 diffuse_color = diffuseColor * vec4(light_colour, 1.0) * light_intensity * diffuseFactor;
+
 
     /* Specular Light */
-    vec3 to_camera_position = normalize(- v_position);
+    vec3 to_camera_direction = normalize(- v_position);
     vec3 to_position_direction = - to_light_direction;
 
     // direction of reflected light from the surface
     vec3 reflected_light = normalize(reflect(to_position_direction, v_normals));
 
     // retain factor when both direction of reflected light and surface to camera are in the same direction
-    float specularFactor = max(dot(to_camera_position, reflected_light), 0.0);
+    float specularFactor = max(dot(to_camera_direction, reflected_light), 0.0);
 
     // control the intensity of light as the derivative from 0 to 1 is an increasing positive function
     specularFactor = pow(specularFactor, u_specular_power);
 
     // specular light
-    vec4 specular_color = specularColor * specularFactor * material.Ns * vec4(u_point_light.colour, 1.0);
+    vec4 specular_color = specularColor * specularFactor * light_intensity * material.Ns * vec4(light_colour, 1.0);
 
+    return (diffuse_color + specular_color);
+}
+
+vec4 setPointLight(PointLight point_light, Material material) {
+    /* point light position */
+    vec3 point_light_position = (u_camera * vec4(point_light.position.xyz - v_position, 1)).xyz + v_position;
+
+    /* Diffuse Light */
+    vec3 to_light_source = point_light_position - v_position;
+    vec3 to_light_direction = normalize(to_light_source);
+
+    /* calculate light color */
+    vec4 light_color = setupLightColor(material, to_light_direction, point_light.colour, point_light.intensity);
 
     /* Attenuation coefficient */
     float distance = length(to_light_source);
-    float attenuationInv = u_point_light.attenuation.constant + u_point_light.attenuation.linear * distance +
-        u_point_light.attenuation.exponent * pow(distance, 2.0);
+    float attenuationInv = point_light.attenuation.constant + point_light.attenuation.linear * distance +
+        point_light.attenuation.exponent * pow(distance, 2.0);
 
-    return (diffuse_color + specular_color) / attenuationInv;
+    return light_color / attenuationInv;
+}
+
+vec4 setDirectionalLight(DirectionalLight directionalLight, Material material) {
+    /* Directional light direction */
+    vec3 directional_light_direction = (u_camera * vec4(directionalLight.direction.xyz, 0)).xyz;
+
+    return setupLightColor(material, normalize(directional_light_direction), directionalLight.colour, directionalLight.intensity);
+}
+
+vec4 setSpotLight(SpotLight spotLight, Material material) {
+
+    /* Point light */
+    PointLight point_light = spotLight.pointLight;
+
+    // point light position
+    vec3 point_light_position = (u_camera * vec4(point_light.position.xyz - v_position, 1)).xyz + v_position;
+
+    /* Diffuse Light */
+    vec3 to_light_source = point_light_position - v_position;
+    vec3 to_light_direction = normalize(to_light_source);
+
+    // spot light direction
+    vec3 spot_light_direction = normalize((u_camera * vec4(spotLight.direction, 0)).xyz);
+
+    // spot light angle
+    float light_angle = dot(-to_light_direction, spot_light_direction);
+
+    vec4 light_color = vec4(0, 0, 0, 0);
+
+    if(light_angle > spotLight.angle) {
+        // calculate light color
+        light_color = setPointLight(point_light, material);
+
+        light_color *= (1.0 - (1.0 - light_angle) / (1.0 - spotLight.angle));
+    }
+
+    return light_color;
 }
 
 void main() {
@@ -109,9 +182,14 @@ void main() {
 
     setupColors(material);
 
-    vec3 point_light = (u_camera * vec4(u_point_light.position.xyz - v_position, 0)).xyz + v_position;
+    /* Point Light */
+    vec4 diffuseSpecularComp = setPointLight(u_point_light, material);
 
-    vec4 diffuseSpecularComp = setupPointLight(material, point_light);
+    /* Directional Light */
+    diffuseSpecularComp += setDirectionalLight(u_directional_light, material);
+
+    /* Spot Light */
+    diffuseSpecularComp += setSpotLight(u_spot_light, material);
 
     outColor = ambientColor * vec4(u_ambient_light, 1) + diffuseSpecularComp;
 }

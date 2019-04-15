@@ -98,8 +98,9 @@ public class Obj {
                                 break;
                             }
                             case "usemtl" : {
-                                String materialName = values[1];
+                                values = values[1].split(":");
 
+                                String materialName = values[values.length - 1];
                                 material = obj.materials.getOrDefault(materialName, null);
                             }
                         }

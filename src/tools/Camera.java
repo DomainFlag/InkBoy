@@ -28,7 +28,7 @@ public class Camera {
         this.width = width;
         this.height = height;
 
-        projection.perspective((float) Math.PI/3, (float) width / height, Settings.Z_NEAR, Settings.Z_FAR);
+        projection.perspective((float) Math.PI / 3, (float) width / height, Settings.Z_NEAR, Settings.Z_FAR);
     }
 
     public void setModel(Matrix model) {
@@ -53,7 +53,7 @@ public class Camera {
 
     public Matrix getCamera() {
         Matrix transl = new Matrix(4);
-        transl.translate(0, 0, 1.5f);
+        transl.translate(0, 0, 2);
         transl.translate(translation);
 
         Vector4f quaternion = Vector.fromEuler(rotation);

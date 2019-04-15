@@ -1,9 +1,8 @@
 import core.Settings;
-import modules.Triangle;
+import modules.Plane;
 import modules.fighter.Fighter;
 import modules.terrain.Terrain;
 import org.lwjgl.Version;
-import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.*;
@@ -12,10 +11,7 @@ import tools.Camera;
 import tools.Log;
 import tools.Program;
 
-import javafx.scene.media.*;
-
 import java.nio.IntBuffer;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -40,20 +36,7 @@ public class Window {
         run();
     }
 
-    private void audio() {
-        Thread thread = new Thread(() -> {
-            String path = Paths.get("src/res/the_xx_intro.mp3").toUri().toString();
-            Media pick = new Media(path);
-            MediaPlayer player = new MediaPlayer(pick);
-
-            player.play();
-        });
-
-        thread.start();
-    }
-
     private void run() {
-//        audio();
         init();
         loop();
 
@@ -154,17 +137,16 @@ public class Window {
         // Generating the programs that need to be rendered
         programs.addAll(
                 Arrays.asList(
-//                        new Terrain(camera)
                         new Fighter(camera)
                 )
         );
 
         // Set the clear color
         glClearColor(
-                Settings.CLEAR_COLOR.x,
-                Settings.CLEAR_COLOR.y,
-                Settings.CLEAR_COLOR.z,
-                Settings.CLEAR_COLOR.w);
+                Settings.CLEAR_COLOR.get(0),
+                Settings.CLEAR_COLOR.get(1),
+                Settings.CLEAR_COLOR.get(2),
+                Settings.CLEAR_COLOR.get(3));
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
@@ -177,7 +159,9 @@ public class Window {
 
             camera.change();
 
-            glfwSwapBuffers(window); // swap the color buffers
+            // swap the color buffers
+            glfwSwapBuffers(window);
+
             // Poll for window events. The key callback above will only be
             // invoked during this call.
             glfwPollEvents();

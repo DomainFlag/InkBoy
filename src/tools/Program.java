@@ -89,7 +89,12 @@ public abstract class Program {
     }
 
     public void loadData(String attributeName, Vector[] data) {
-        FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(data.length * 2);
+        int size = 0;
+        if(data.length > 0) {
+            size = data[0].getSize();
+        }
+
+        FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(data.length * size);
         for(int it = 0; it < data.length; it++) {
             Vector vector = data[it];
 
@@ -105,6 +110,8 @@ public abstract class Program {
         FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(data.size());
         for(int it = 0; it < data.size(); it++)
             floatBuffer.put(data.get(it));
+
+        floatBuffer.flip();
 
         addAttribute(attributeName, floatBuffer);
     }
@@ -162,7 +169,7 @@ public abstract class Program {
     }
 
     public void addAttribute(String name, FloatBuffer vertices) {
-        if(name.equals("a_position")) {
+        if(name.startsWith("a_position")) {
             setCount(vertices.capacity());
         }
 

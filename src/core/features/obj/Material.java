@@ -4,6 +4,8 @@ import core.math.Vector;
 import core.math.Vector3f;
 import tools.Log;
 
+import java.util.Arrays;
+
 import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 
 public class Material {
@@ -75,7 +77,7 @@ public class Material {
 
                 if(values[0].startsWith("map_")) {
                     lightingColor.index = index;
-                    lightingColor.texture = values[1];
+                    lightingColor.texture = String.join(" ", Arrays.copyOfRange(values, 1, values.length));
 
                     return 1;
                 } else {

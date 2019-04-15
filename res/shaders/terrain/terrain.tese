@@ -26,11 +26,11 @@ void main() {
         v * gl_in[1].gl_Position +
         w * gl_in[2].gl_Position;
 
-    position.y = texture(u_texture, position.xz).r * 150;
+    position.y = texture(u_texture, position.xz).r * 300;
     position.xz *= u_scale;
 
     v_gcolor = v_tecolor[0];
-    v_gheight = position.y / 150;
+    v_gheight = position.y / 300;
 
     gl_Position = u_projection * u_camera * u_model * position;
 }

@@ -21,13 +21,12 @@ public class Terrain extends Program {
 
 		this.camera = camera;
 
-//        addSetting(GL_CULL_FACE);
         addSetting(GL_DEPTH_TEST);
 
         setTessellationShaders(3);
         addUniforms();
 
-        addTexture("heightmaps/heightmap1.bmp", "u_texture", 0, GL_CLAMP_TO_EDGE);
+        addTexture("heightmaps/heightmap.bmp", "u_texture", 0, GL_CLAMP_TO_EDGE);
 
         terrainQuadtree = new TerrainQuadtree(camera);
 	}
@@ -64,8 +63,6 @@ public class Terrain extends Program {
     public void draw() {
 	    terrainQuadtree.render(this);
         terrainQuadtree.updateTree();
-
-        removeSettings();
     }
 }
 

@@ -35,6 +35,7 @@ void main() {
         gl_TessLevelOuter[CD] = TESSELATION_OUTER_FACTOR;
 
         gl_TessLevelInner[0] = calculateTesselationFactor();
+//        gl_TessLevelInner[0] = TESSELATION_INNER_FACTOR;
 	}
 
 	v_tecolor[gl_InvocationID] = v_color[gl_InvocationID];

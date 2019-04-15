@@ -1,8 +1,9 @@
 package core.features.light;
 
 import core.math.Vector;
+import tools.Program;
 
-public class PointLight {
+public class PointLight extends Lighting {
 
     private Attenuation attenuation;
 
@@ -36,6 +37,29 @@ public class PointLight {
 
     public float getIntensity() {
         return intensity;
+    }
+
+    @Override
+    public void createUniforms(Program program, String uniformName) {
+        program.addUniform(uniformName + ".colour");
+        program.addUniform(uniformName + ".position");
+        program.addUniform(uniformName + ".intensity");
+        program.addUniform(uniformName + ".attenuation.constant");
+        program.addUniform(uniformName + ".attenuation.linear");
+        program.addUniform(uniformName + ".attenuation.exponent");
+    }
+
+    @Override
+    public void updateUniforms(Program program, String uniformName) {
+        program.updateUniform(uniformName + ".colour", getColor());
+        program.updateUniform(uniformName + ".position", getPosition());
+        program.updateUniform(uniformName + ".intensity", getIntensity());
+
+        PointLight.Attenuation att = getAttenuation();
+
+        program.updateUniform(uniformName + ".attenuation.constant", att.getConstant());
+        program.updateUniform(uniformName + ".attenuation.linear", att.getLinear());
+        program.updateUniform(uniformName + ".attenuation.exponent", att.getExponent());
     }
 
     public static class Attenuation {
