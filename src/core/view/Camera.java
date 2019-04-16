@@ -1,8 +1,8 @@
-package tools;
+package core.view;
 
 import core.Settings;
 import core.math.*;
-import org.lwjgl.glfw.GLFWVidMode;
+import core.tools.Log;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -115,11 +115,11 @@ public class Camera {
     }
 
     public void scrollCallback(double xoffset, double yoffset) {
-        if(yoffset > 0.0f) {
-            // Do something
-        } else {
-            // Do something
-        }
+//        if(yoffset > 0.0f) {
+//            translation.add(0, 0, (float) yoffset / 4.0f);
+//        } else {
+//            translation.add(0, 0, (float) yoffset / 4.0f);
+//        }
     }
 
     public void cursorPosCallback(double xpos, double ypos) {

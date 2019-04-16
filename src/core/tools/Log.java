@@ -1,4 +1,4 @@
-package tools;
+package core.tools;
 
 import core.math.MatrixCore;
 import core.math.Vector;

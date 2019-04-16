@@ -12,6 +12,8 @@ public class SpotLight extends Lighting {
     private float angle;
 
     public SpotLight(PointLight pointLight, Vector3f direction, float angle) {
+        super(Light.SPOT_KEY);
+
         this.pointLight = pointLight;
         this.direction = direction;
         this.angle = angle;

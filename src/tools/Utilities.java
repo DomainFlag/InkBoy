@@ -1,5 +1,7 @@
 package tools;
 
+import core.tools.Log;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;

@@ -3,7 +3,7 @@ package core.features.obj;
 import core.math.Vector;
 import core.math.Vector2f;
 import core.math.Vector3f;
-import tools.Log;
+import core.tools.Log;
 
 import java.io.*;
 import java.util.*;

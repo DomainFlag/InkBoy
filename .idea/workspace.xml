@@ -2,52 +2,28 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5f5ace46-869f-4eab-a2bc-b0700de46445" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/models/cube/cube.mtl" beforeDir="false" afterPath="$PROJECT_DIR$/res/models/cube/cube.mtl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/models/cube/cube.obj" beforeDir="false" afterPath="$PROJECT_DIR$/res/models/cube/cube.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/models/x-fighter/Fighter.mtl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/models/x-fighter/Fighter.obj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/models/x-fighter/aripa buna.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/models/x-fighter/carlinga specular.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/models/x-fighter/carlinga.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/models/x-fighter/carma creasta.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/models/x-fighter/carmaaripi.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/models/x-fighter/engine cover bump.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/models/x-fighter/engine-cover.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/models/x-fighter/engine-covers specular.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/models/x-fighter/face specular.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/models/x-fighter/face-bump.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/models/x-fighter/face.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/models/x-fighter/gun romb.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/models/x-fighter/wing bump.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/models/x-fighter/wing specular.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/models/x-fighter/wing-up bump.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/models/x-fighter/wing-up specular.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/models/x-fighter/wing-up.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hs_err_pid10968.log" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/res/shaders/fighter/model.frag" beforeDir="false" afterPath="$PROJECT_DIR$/res/shaders/fighter/model.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/shaders/fighter/model.vert" beforeDir="false" afterPath="$PROJECT_DIR$/res/shaders/fighter/model.vert" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/shaders/plane/triangle.frag" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/shaders/plane/triangle.geom" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/shaders/plane/triangle.tesc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/shaders/plane/triangle.tese" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/shaders/plane/triangle.vert" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/shaders/terrain/terrain.frag" beforeDir="false" afterPath="$PROJECT_DIR$/res/shaders/terrain/terrain.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/shaders/terrain/terrain.geom" beforeDir="false" afterPath="$PROJECT_DIR$/res/shaders/terrain/terrain.geom" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/shaders/terrain/terrain.tesc" beforeDir="false" afterPath="$PROJECT_DIR$/res/shaders/terrain/terrain.tesc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/shaders/terrain/terrain.tese" beforeDir="false" afterPath="$PROJECT_DIR$/res/shaders/terrain/terrain.tese" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Window.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Window.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/core/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Settings.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/core/features/light/DirectionalLight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/features/light/DirectionalLight.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/features/light/Lighting.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/features/light/Lighting.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/core/features/light/PointLight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/features/light/PointLight.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/core/features/light/SpotLight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/features/light/SpotLight.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/core/features/obj/Material.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/features/obj/Material.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/core/features/obj/Obj.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/features/obj/Obj.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/modules/Triangle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/Plane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/math/Matrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/math/Matrix.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/math/MatrixCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/math/MatrixCore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/math/Vector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/math/Vector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/Plane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/Plane.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/modules/fighter/Fighter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/fighter/Fighter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/terrain/Extremity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/terrain/Extremity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/terrain/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/terrain/Node.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/modules/terrain/Terrain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/terrain/Terrain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/Camera.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/Model.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/Model.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/terrain/TerrainQuadtree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/terrain/TerrainQuadtree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tools/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/view/Camera.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tools/Log.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/tools/Log.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/tools/Program.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/Program.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/tools/Utilities.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/Utilities.java" afterDir="false" />
     </list>
@@ -129,22 +105,22 @@
     <session id="745749016">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="23" />
-          <entry key="project.open.time.1" value="2" />
+          <entry key="project.closed" value="25" />
+          <entry key="project.open.time.1" value="3" />
           <entry key="project.open.time.12" value="3" />
           <entry key="project.open.time.13" value="2" />
           <entry key="project.open.time.15" value="1" />
           <entry key="project.open.time.16" value="3" />
           <entry key="project.open.time.18" value="1" />
           <entry key="project.open.time.19" value="1" />
-          <entry key="project.open.time.2" value="3" />
+          <entry key="project.open.time.2" value="4" />
           <entry key="project.open.time.20" value="1" />
           <entry key="project.open.time.22" value="1" />
           <entry key="project.open.time.3" value="1" />
           <entry key="project.open.time.36" value="1" />
           <entry key="project.open.time.4" value="2" />
           <entry key="project.open.time.47" value="1" />
-          <entry key="project.opened" value="23" />
+          <entry key="project.opened" value="25" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -164,11 +140,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="GLSL shader file" value="126" />
+          <entry key="Font" value="1" />
+          <entry key="GLSL shader file" value="147" />
           <entry key="IDEA_MODULE" value="1" />
           <entry key="Image" value="20" />
-          <entry key="JAVA" value="192" />
-          <entry key="PLAIN_TEXT" value="37" />
+          <entry key="JAVA" value="244" />
+          <entry key="PLAIN_TEXT" value="45" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
@@ -185,9 +162,9 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="GLSL shader file" value="9318" />
-          <entry key="JAVA" value="15670" />
-          <entry key="PLAIN_TEXT" value="54" />
+          <entry key="GLSL shader file" value="9867" />
+          <entry key="JAVA" value="24477" />
+          <entry key="PLAIN_TEXT" value="91" />
         </counts>
       </usages-collector>
     </session>
@@ -195,40 +172,24 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/tools/Camera.java">
+        <entry file="file://$PROJECT_DIR$/src/core/view/Camera.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="16" column="38" selection-start-line="16" selection-start-column="38" selection-end-line="16" selection-end-column="38" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/modules/fighter/Fighter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-751">
-              <caret line="32" column="20" selection-start-line="32" selection-start-column="20" selection-end-line="32" selection-end-column="20" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core/features/light/DirectionalLight.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="52" column="25" selection-start-line="52" selection-start-column="25" selection-end-line="52" selection-end-column="25" />
+            <state relative-caret-position="-1079">
+              <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/res/shaders/fighter/model.frag">
+        <entry file="file://$PROJECT_DIR$/src/modules/display/Display.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="401">
-              <caret line="185" column="34" lean-forward="true" selection-start-line="185" selection-start-column="34" selection-end-line="185" selection-end-column="34" />
+            <state relative-caret-position="179">
+              <caret line="38" column="49" lean-forward="true" selection-start-line="38" selection-start-column="49" selection-end-line="38" selection-end-column="49" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1326#1327#0" expanded="true" />
+                <element signature="e#1358#1359#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -236,22 +197,68 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/tools/Program.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="83">
-              <caret line="295" column="34" lean-forward="true" selection-start-line="295" selection-start-column="34" selection-end-line="295" selection-end-column="34" />
+            <state relative-caret-position="131">
+              <caret line="410" lean-forward="true" selection-start-line="410" selection-end-line="410" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1401#1402#0" expanded="true" />
                 <element signature="e#1430#1431#0" expanded="true" />
+                <element signature="e#1543#1544#0" expanded="true" />
+                <element signature="e#1573#1574#0" expanded="true" />
+                <element signature="e#1700#1701#0" expanded="true" />
+                <element signature="e#1738#1739#0" expanded="true" />
+                <element signature="e#6880#6881#0" expanded="true" />
+                <element signature="e#6928#6929#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core/features/light/SpotLight.java">
+        <entry file="file://$PROJECT_DIR$/res/shaders/text/text.frag">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="218">
-              <caret line="53" column="74" selection-start-line="53" selection-start-column="64" selection-end-line="53" selection-end-column="74" />
+            <state relative-caret-position="102">
+              <caret line="6" column="28" lean-forward="true" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/shaders/text/text.vert">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="221">
+              <caret line="13" column="43" lean-forward="true" selection-start-line="13" selection-start-column="43" selection-end-line="13" selection-end-column="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/core/features/text/Text.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="4" column="26" selection-start-line="4" selection-start-column="26" selection-end-line="4" selection-end-column="26" />
+              <folding>
+                <element signature="e#2295#2296#0" expanded="true" />
+                <element signature="e#2322#2323#0" expanded="true" />
+                <element signature="e#2046#2047#0" expanded="true" />
+                <element signature="e#2090#2091#0" expanded="true" />
+                <element signature="e#4983#4984#0" expanded="true" />
+                <element signature="e#5041#5042#0" expanded="true" />
+                <element signature="e#8146#8147#0" expanded="true" />
+                <element signature="e#8178#8179#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/core/features/text/InputFileReader.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="77">
+              <caret line="9" column="27" lean-forward="true" selection-start-line="9" selection-start-column="27" selection-end-line="9" selection-end-column="27" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -259,32 +266,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Window.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1921">
-              <caret line="136" column="56" selection-start-line="136" selection-start-column="56" selection-end-line="136" selection-end-column="56" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core/Settings.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="12" column="33" selection-start-line="12" selection-start-column="33" selection-end-line="12" selection-end-column="33" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/tools/Model.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="816">
-              <caret line="49" column="35" selection-start-line="49" selection-start-column="35" selection-end-line="49" selection-end-column="35" />
+            <state relative-caret-position="-212">
+              <caret line="140" column="38" lean-forward="true" selection-start-line="140" selection-start-column="38" selection-end-line="140" selection-end-column="38" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -304,36 +287,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>material</find>
-      <find>u_point_light.intensity</find>
-      <find>itens</find>
-      <find>inten</find>
-      <find>setDirectionalLight</find>
-      <find>u_ambient_light</find>
-      <find>Unfortunately you used this uniform before</find>
-      <find>checkUniform</find>
-      <find>u_specular_power</find>
-      <find>addUniforms</find>
-      <find>ROTATION</find>
-      <find>SHA</find>
-      <find>SHA.</find>
-      <find>camera</find>
-      <find>loadData</find>
-      <find>nb</find>
+      <find>pattern</find>
+      <find>x</find>
+      <find>contentScaleX</find>
+      <find>scale</find>
       <find>setCount</find>
-      <find>verb</find>
-      <find>prin</find>
-      <find>a_pos</find>
-      <find>enable</find>
-      <find>glEnableVertexAttribArray</find>
-      <find>clea</find>
-      <find>point_light_position</find>
-      <find>to_light_direction</find>
-      <find>to_camera_position</find>
-      <find>to_light_source</find>
-      <find>SpotLight</find>
-      <find>pointLight</find>
-      <find>setSpotLight</find>
+      <find>updateA</find>
+      <find>updateAttr</find>
+      <find>cdata</find>
+      <find>log</find>
+      <find>er</find>
+      <find>u_projection</find>
+      <find>fontHeight</find>
+      <find>u_texture</find>
+      <find>addTexture</find>
+      <find>a_texture</find>
+      <find>Log.v</find>
+      <find>bindBuffer</find>
+      <find>g</find>
+      <find>factorX</find>
+      <find>stbtt_GetBakedQuad</find>
+      <find>renderText</find>
+      <find>BITM</find>
+      <find>lineStart</find>
+      <find>lineGap</find>
+      <find>stackPush</find>
+      <find>memAlloc</find>
+      <find>setTex</find>
+      <find>widthText</find>
+      <find>getStringWidth</find>
+      <find>this.text</find>
     </findStrings>
     <replaceStrings>
       <replace>Math.sin</replace>
@@ -363,6 +346,7 @@
       <replace>u_location</replace>
       <replace>0.5</replace>
       <replace>worldLocation</replace>
+      <replace>readFileResource</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -371,26 +355,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/res/shaders/triangle/triangle.vert" />
-        <option value="$PROJECT_DIR$/res/shaders/triangle/triangle.frag" />
-        <option value="$PROJECT_DIR$/src/core/features/VertexBufferObject.java" />
-        <option value="$PROJECT_DIR$/res/models/cube/cube.obj" />
-        <option value="$PROJECT_DIR$/src/modules/model/Model.java" />
-        <option value="$PROJECT_DIR$/src/tools/ModelReader.java" />
-        <option value="$PROJECT_DIR$/src/modules/fighter/Terrain.java" />
-        <option value="$PROJECT_DIR$/res/shaders/model/model.vert" />
-        <option value="$PROJECT_DIR$/res/shaders/model/model.frag" />
-        <option value="$PROJECT_DIR$/res/shaders/triangle/triangle.tesc.glsl" />
-        <option value="$PROJECT_DIR$/res/shaders/triangle/triangle.tesc" />
-        <option value="$PROJECT_DIR$/res/shaders/triangle/triangle.tese" />
-        <option value="$PROJECT_DIR$/res/shaders/triangle/triangle.geom" />
-        <option value="$PROJECT_DIR$/src/modules/terrain/Node.java" />
-        <option value="$PROJECT_DIR$/res/shaders/terrain/terrain.vert" />
-        <option value="$PROJECT_DIR$/src/modules/terrain/TerrainQuadtree.java" />
-        <option value="$PROJECT_DIR$/src/core/features/model/Model.java" />
-        <option value="$PROJECT_DIR$/src/core/features/model/Obj.java" />
-        <option value="$PROJECT_DIR$/src/core/features/model/ModelContainer.java" />
-        <option value="$PROJECT_DIR$/src/core/features/model/ObjContainer.java" />
         <option value="$PROJECT_DIR$/src/core/features/model/Material.java" />
         <option value="$PROJECT_DIR$/src/modules/Triangle.java" />
         <option value="$PROJECT_DIR$/src/tools/Log.java" />
@@ -399,15 +363,12 @@
         <option value="$PROJECT_DIR$/res/models/cube/cube.mtl" />
         <option value="$PROJECT_DIR$/src/core/features/obj/Material.java" />
         <option value="$PROJECT_DIR$/res/models/x-fighter/Viper-mk-IV-fighter.mtl" />
-        <option value="$PROJECT_DIR$/src/core/features/light/Lighting.java" />
         <option value="$PROJECT_DIR$/src/core/math/Vector3f.java" />
         <option value="$PROJECT_DIR$/src/core/math/Vector.java" />
         <option value="$PROJECT_DIR$/res/shaders/fighter/model.vert" />
-        <option value="$PROJECT_DIR$/src/core/features/light/PointLight.java" />
         <option value="$PROJECT_DIR$/src/tools/Utilities.java" />
         <option value="$PROJECT_DIR$/src/core/features/obj/Obj.java" />
         <option value="$PROJECT_DIR$/src/tools/Model.java" />
-        <option value="$PROJECT_DIR$/src/tools/Program.java" />
         <option value="$PROJECT_DIR$/res/shaders/plane/plane.vert" />
         <option value="$PROJECT_DIR$/src/modules/Plane.java" />
         <option value="$PROJECT_DIR$/res/shaders/terrain/terrain.tesc" />
@@ -415,13 +376,36 @@
         <option value="$PROJECT_DIR$/res/shaders/terrain/terrain.tese" />
         <option value="$PROJECT_DIR$/res/shaders/terrain/terrain.frag" />
         <option value="$PROJECT_DIR$/src/modules/terrain/Terrain.java" />
-        <option value="$PROJECT_DIR$/src/tools/Camera.java" />
-        <option value="$PROJECT_DIR$/src/Window.java" />
-        <option value="$PROJECT_DIR$/src/core/Settings.java" />
+        <option value="$PROJECT_DIR$/src/core/features/light/PointLight.java" />
         <option value="$PROJECT_DIR$/src/core/features/light/SpotLight.java" />
-        <option value="$PROJECT_DIR$/src/core/features/light/DirectionalLight.java" />
+        <option value="$PROJECT_DIR$/src/core/features/light/Lighting.java" />
         <option value="$PROJECT_DIR$/res/shaders/fighter/model.frag" />
+        <option value="$PROJECT_DIR$/src/core/features/light/Light.java" />
+        <option value="$PROJECT_DIR$/src/core/features/light/DirectionalLight.java" />
         <option value="$PROJECT_DIR$/src/modules/fighter/Fighter.java" />
+        <option value="$PROJECT_DIR$/src/tools/Camera.java" />
+        <option value="$PROJECT_DIR$/src/core/features/display/Demo.java" />
+        <option value="$PROJECT_DIR$/src/core/features/display/FontDemo.java" />
+        <option value="$PROJECT_DIR$/src/core/features/display/Text.java" />
+        <option value="$PROJECT_DIR$/src/modules/hud/Fighter.java" />
+        <option value="$PROJECT_DIR$/src/modules/display/Fighter.java" />
+        <option value="$PROJECT_DIR$/src/core/features/text/FontDemo.java" />
+        <option value="$PROJECT_DIR$/src/core/features/text/Display.java" />
+        <option value="$PROJECT_DIR$/src/core/features/text/text" />
+        <option value="$PROJECT_DIR$/res/fonts/text.txt" />
+        <option value="$PROJECT_DIR$/src/core/features/text/IOUtils.java" />
+        <option value="$PROJECT_DIR$/src/core/features/text/IOUtil.java" />
+        <option value="$PROJECT_DIR$/src/core/math/Matrix.java" />
+        <option value="$PROJECT_DIR$/src/tools/Context.java" />
+        <option value="$PROJECT_DIR$/src/core/features/text/TextRenderer.java" />
+        <option value="$PROJECT_DIR$/src/core/Settings.java" />
+        <option value="$PROJECT_DIR$/res/shaders/text/text.vert" />
+        <option value="$PROJECT_DIR$/res/shaders/text/text.frag" />
+        <option value="$PROJECT_DIR$/src/Window.java" />
+        <option value="$PROJECT_DIR$/src/tools/Program.java" />
+        <option value="$PROJECT_DIR$/src/core/features/text/InputFileReader.java" />
+        <option value="$PROJECT_DIR$/src/core/features/text/Text.java" />
+        <option value="$PROJECT_DIR$/src/modules/display/Display.java" />
       </list>
     </option>
   </component>
@@ -431,10 +415,10 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="width" value="977" />
-    <option name="height" value="1038" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-10" />
+    <option name="width" value="979" />
+    <option name="height" value="1040" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -445,7 +429,6 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -461,6 +444,32 @@
             <path>
               <item name="InkMan" type="b2602c69:ProjectViewProjectNode" />
               <item name="InkMan" type="462c0819:PsiDirectoryNode" />
+              <item name="res" type="462c0819:PsiDirectoryNode" />
+              <item name="fonts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="InkMan" type="b2602c69:ProjectViewProjectNode" />
+              <item name="InkMan" type="462c0819:PsiDirectoryNode" />
+              <item name="res" type="462c0819:PsiDirectoryNode" />
+              <item name="shaders" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="InkMan" type="b2602c69:ProjectViewProjectNode" />
+              <item name="InkMan" type="462c0819:PsiDirectoryNode" />
+              <item name="res" type="462c0819:PsiDirectoryNode" />
+              <item name="shaders" type="462c0819:PsiDirectoryNode" />
+              <item name="fighter" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="InkMan" type="b2602c69:ProjectViewProjectNode" />
+              <item name="InkMan" type="462c0819:PsiDirectoryNode" />
+              <item name="res" type="462c0819:PsiDirectoryNode" />
+              <item name="shaders" type="462c0819:PsiDirectoryNode" />
+              <item name="text" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="InkMan" type="b2602c69:ProjectViewProjectNode" />
+              <item name="InkMan" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -482,48 +491,39 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="core" type="462c0819:PsiDirectoryNode" />
               <item name="features" type="462c0819:PsiDirectoryNode" />
-              <item name="light" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="InkMan" type="b2602c69:ProjectViewProjectNode" />
-              <item name="InkMan" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="modules" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="InkMan" type="b2602c69:ProjectViewProjectNode" />
-              <item name="InkMan" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="tools" type="462c0819:PsiDirectoryNode" />
+              <item name="text" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://C:/Users/Cchiv/Desktop/Engine/InkMan/res/models/x-fighter/Fighter.mtl" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555277624405" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../lwjglbook/chapter11/c11-p1" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555416469222" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../lwjgl3" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Cchiv\Desktop\Engine\InkMan\res\models" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="modules.fighter" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Cchiv\Desktop\Engine\InkMan\res\shaders\text" />
       <recent name="C:\Users\Cchiv\Desktop\Engine\InkMan\src\tools" />
       <recent name="C:\Users\Cchiv\Desktop\InkMan\res\heightmaps" />
       <recent name="C:\Users\Cchiv\Desktop\InkMan\res\heighmaps" />
       <recent name="C:\Users\Cchiv\Desktop\InkMan\res\shaders\triangle" />
-      <recent name="C:\Users\Cchiv\Desktop\InkMan\src\modules\terrain" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="modules.hud" />
+      <recent name="modules.fighter" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Cchiv\Desktop\Engine\InkMan\res\fonts" />
+      <recent name="C:\Users\Cchiv\Desktop\Engine\InkMan\res\models" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -538,7 +538,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="InkMan" />
@@ -546,9 +546,27 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Text" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="core.features.text.Text" />
+      <module name="InkMan" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="core.features.text.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Main" />
+      <item itemvalue="Application.Text" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
+        <item itemvalue="Application.Text" />
       </list>
     </recent_temporary>
   </component>
@@ -575,10 +593,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-6" y="0" width="781" height="830" extended-state="0" />
-    <editor active="true" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.6588072" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19463088" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -587,7 +604,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49932885" weight="0.3338109" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49932885" weight="0.33427763" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39943343" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -610,208 +627,10 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/res/models/tree/bark_0021.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/features/light.java" />
-    <entry file="file://$PROJECT_DIR$/res/models/tree/Tree.obj">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4335">
-          <caret column="69" selection-start-column="18" selection-end-column="69" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/models/x-fighter/carmaaripi.png" />
-    <entry file="file://$PROJECT_DIR$/res/models/tree/DB2X2_L01.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/models/tree/DB2X2_L01_Spec.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/models/tree/Tree.mtl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="17" lean-forward="true" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/models/cube/cube.mtl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="7" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/models/x-fighter/Fighter.mtl" />
-    <entry file="file://$PROJECT_DIR$/src/core/math/MatrixCore.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="748">
-          <caret line="50" column="18" selection-start-line="50" selection-start-column="15" selection-end-line="50" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/models/x-fighter/gun romb.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/models/x-fighter/untitled.obj" />
-    <entry file="file://$PROJECT_DIR$/res/models/x-fighter/untitled.mtl" />
-    <entry file="file://$PROJECT_DIR$/res/models/x-fighter/Viper-mk-IV-fighter.obj">
-      <provider selected="true" editor-type-id="LargeFileEditor">
-        <state>
-          <caret column="27" selection-start-column="27" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/models/x-fighter/Viper-mk-IV-fighter.mtl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2142">
-          <caret line="126" column="17" selection-start-line="126" selection-start-column="17" selection-end-line="126" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/features/light/Lighting.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="77" selection-start-line="8" selection-start-column="77" selection-end-line="8" selection-end-column="77" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/features/obj/Material.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-25">
-          <caret line="71" column="17" lean-forward="true" selection-start-line="71" selection-start-column="17" selection-end-line="71" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/math/Vector3f.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/math/Vector.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="59" column="23" selection-start-line="59" selection-start-column="23" selection-end-line="59" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/InkMan.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="9" selection-start-line="11" selection-start-column="9" selection-end-line="11" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/shaders/plane/plane.geom" />
-    <entry file="file://$PROJECT_DIR$/res/shaders/plane/plane.tesc" />
-    <entry file="file://$PROJECT_DIR$/res/shaders/plane/plane.tese" />
-    <entry file="file://$PROJECT_DIR$/src/tools/Utilities.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-484">
-          <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/features/obj/Obj.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="89">
-          <caret line="43" column="44" lean-forward="true" selection-start-line="43" selection-start-column="44" selection-end-line="43" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/features/VertexBufferObject.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="952">
-          <caret line="69" column="16" selection-start-line="69" selection-start-column="16" selection-end-line="69" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/modules/terrain/Node.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="141">
-          <caret line="142" column="16" selection-start-line="142" selection-start-column="16" selection-end-line="142" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../LWJGL/lwjgl-opengl-sources.jar!/org/lwjgl/opengl/GL11.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="141">
-          <caret line="1877" column="23" selection-start-line="1877" selection-start-column="23" selection-end-line="1877" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/shaders/plane/plane.vert">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="26" lean-forward="true" selection-start-line="4" selection-start-column="26" selection-end-line="4" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/shaders/plane/plane.frag">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="13" lean-forward="true" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/modules/Plane.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="52" column="48" selection-start-line="52" selection-start-column="48" selection-end-line="52" selection-end-column="48" />
-          <folding>
-            <element signature="e#1736#1737#0" expanded="true" />
-            <element signature="e#1786#1787#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/shaders/fighter/model.vert">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="106">
-          <caret line="10" column="21" lean-forward="true" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/modules/terrain/TerrainQuadtree.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="24" column="22" lean-forward="true" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/heightmaps/heightmap1.bmp">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/heightmaps/heightmap.bmp">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/shaders/terrain/terrain.tesc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="24" column="47" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/shaders/terrain/terrain.tese">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="293">
-          <caret line="32" column="32" selection-start-line="32" selection-start-column="29" selection-end-line="32" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/res/shaders/terrain/terrain.geom">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
           <caret line="16" column="43" lean-forward="true" selection-start-line="16" selection-start-column="43" selection-end-line="16" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/shaders/terrain/terrain.frag">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="1" lean-forward="true" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
         </state>
       </provider>
     </entry>
@@ -822,44 +641,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/shaders/terrain/terrain.vert">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="22" lean-forward="true" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/tools/Camera.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="16" column="38" selection-start-line="16" selection-start-column="38" selection-end-line="16" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Window.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1921">
-          <caret line="136" column="56" selection-start-line="136" selection-start-column="56" selection-end-line="136" selection-end-column="56" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/Settings.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="12" column="33" selection-start-line="12" selection-start-column="33" selection-end-line="12" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/tools/Model.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="816">
-          <caret line="49" column="35" selection-start-line="49" selection-start-column="35" selection-end-line="49" selection-end-column="35" />
+        <state relative-caret-position="9">
+          <caret line="49" column="37" selection-start-line="49" selection-start-column="16" selection-end-line="49" selection-end-column="37" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/fighter/Fighter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="28" column="35" selection-start-line="28" selection-start-column="35" selection-end-line="28" selection-end-column="35" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -869,55 +664,385 @@
     <entry file="file://$PROJECT_DIR$/src/core/features/light/PointLight.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
-          <caret line="52" column="52" selection-start-line="52" selection-start-column="52" selection-end-line="52" selection-end-column="52" />
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#557#558#0" expanded="true" />
-            <element signature="e#603#604#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/tools/Program.java">
+    <entry file="file://$PROJECT_DIR$/src/core/features/light/Light.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="83">
-          <caret line="295" column="34" lean-forward="true" selection-start-line="295" selection-start-column="34" selection-end-line="295" selection-end-column="34" />
+        <state relative-caret-position="1428">
+          <caret line="98" column="50" selection-start-line="98" selection-start-column="50" selection-end-line="98" selection-end-column="50" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1401#1402#0" expanded="true" />
-            <element signature="e#1430#1431#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/core/features/light/SpotLight.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="218">
-          <caret line="53" column="74" selection-start-line="53" selection-start-column="64" selection-end-line="53" selection-end-column="74" />
+        <state relative-caret-position="255">
+          <caret line="16" column="37" selection-start-line="16" selection-start-column="37" selection-end-line="16" selection-end-column="37" />
+          <folding>
+            <element signature="e#547#548#0" expanded="true" />
+            <element signature="e#579#580#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/features/light/Lighting.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="16" column="25" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../LWJGL/lwjgl-stb-sources.jar!/org/lwjgl/stb/STBPerlin.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="148">
+          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/core/features/light/DirectionalLight.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="52" column="25" selection-start-line="52" selection-start-column="25" selection-end-line="52" selection-end-column="25" />
+        <state relative-caret-position="187">
+          <caret line="19" column="86" selection-start-line="19" selection-start-column="86" selection-end-line="19" selection-end-column="86" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/modules/fighter/Fighter.java">
+    <entry file="file://$PROJECT_DIR$/res/shaders/fighter/model.vert">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-751">
-          <caret line="32" column="20" selection-start-line="32" selection-start-column="20" selection-end-line="32" selection-end-column="20" />
+        <state relative-caret-position="136">
+          <caret line="8" column="18" selection-start-line="8" selection-start-column="9" selection-end-line="8" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../LWJGL/lwjgl-sources.jar!/org/lwjgl/system/MemoryStack.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="668" column="30" selection-start-line="668" selection-start-column="30" selection-end-line="668" selection-end-column="30" />
+          <folding>
+            <element signature="e#25746#25747#0" expanded="true" />
+            <element signature="e#25786#25787#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/features/text/fsafsa.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/features/text/text">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="9" selection-start-column="9" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-11.0.2/lib/src.zip!/java.base/java/nio/channels/Channels.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="346" selection-start-line="346" selection-end-line="346" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/fonts/sans-serif/WorkSans-Medium.ttf">
+      <provider selected="true" editor-type-id="fontseditor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/fonts/sans-serif/OFL.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/features/text/IOUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="4" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="4" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-11.0.2/lib/src.zip!/java.base/java/nio/channels/SeekableByteChannel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="52" column="17" selection-start-line="52" selection-start-column="17" selection-end-line="52" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-11.0.2/lib/src.zip!/java.base/java/nio/file/Files.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="92" column="19" selection-start-line="92" selection-start-column="19" selection-end-line="92" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/fonts/text.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="9" lean-forward="true" selection-start-column="9" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hs_err_pid16208.log">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/math/MatrixCore.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-34">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/shaders/plane/plane.frag">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/math/Matrix.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="98" column="28" selection-start-line="98" selection-start-column="16" selection-end-line="98" selection-end-column="28" />
+          <folding>
+            <element signature="e#90#91#0" expanded="true" />
+            <element signature="e#117#118#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/view.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tools/Context.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="502">
+          <caret line="41" column="41" selection-start-line="41" selection-start-column="41" selection-end-line="41" selection-end-column="41" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#460#461#0" expanded="true" />
+            <element signature="e#489#490#0" expanded="true" />
+            <element signature="e#521#522#0" expanded="true" />
+            <element signature="e#550#551#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../LWJGL/lwjgl-opengl-sources.jar!/org/lwjgl/opengl/GL11.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="124">
+          <caret line="596" column="16" selection-start-line="596" selection-start-column="8" selection-end-line="596" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../LWJGL/lwjgl-sources.jar!/org/lwjgl/system/Struct.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="17" column="22" selection-start-line="17" selection-start-column="22" selection-end-line="17" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../LWJGL/lwjgl-stb-sources.jar!/org/lwjgl/stb/STBTTBakedChar.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="73">
+          <caret line="34" column="37" selection-start-line="34" selection-start-column="37" selection-end-line="34" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/features/text/TextRenderer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="145">
+          <caret line="111" column="29" selection-start-line="111" selection-start-column="8" selection-end-line="111" selection-end-column="29" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/Plane.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="485">
+          <caret line="56" column="22" selection-start-line="56" selection-start-column="22" selection-end-line="56" selection-end-column="22" />
+          <folding>
+            <element signature="e#1737#1738#0" expanded="true" />
+            <element signature="e#1787#1788#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/tools/Log.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hs_err_pid7584.log">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1275" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/shaders/plane/plane.vert">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" selection-start-line="2" selection-end-line="2" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/shaders/terrain/terrain.vert">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="22" lean-forward="true" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/shaders/terrain/terrain.frag">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="1" lean-forward="true" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/res/shaders/fighter/model.frag">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="401">
-          <caret line="185" column="34" lean-forward="true" selection-start-line="185" selection-start-column="34" selection-end-line="185" selection-end-column="34" />
+        <state>
+          <caret column="12" selection-start-column="9" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/Settings.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="29" column="16" lean-forward="true" selection-start-line="29" selection-start-column="16" selection-end-line="29" selection-end-column="16" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hs_err_pid1308.log">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="40" column="20" lean-forward="true" selection-start-line="40" selection-start-column="20" selection-end-line="40" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/shaders/text/text.vert">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="43" lean-forward="true" selection-start-line="13" selection-start-column="43" selection-end-line="13" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-11.0.2/lib/src.zip!/java.base/java/lang/Math.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="689" column="22" selection-start-line="689" selection-start-column="22" selection-end-line="689" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/shaders/text/text.frag">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="28" lean-forward="true" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../LWJGL/lwjgl-opengl-sources.jar!/org/lwjgl/opengl/GL.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1975">
+          <caret line="336" column="33" selection-start-line="336" selection-start-column="33" selection-end-line="336" selection-end-column="33" />
+          <folding>
+            <element signature="e#12275#12276#0" expanded="true" />
+            <element signature="e#12323#12324#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/view/Camera.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1079">
+          <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/features/text/Text.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="26" selection-start-line="4" selection-start-column="26" selection-end-line="4" selection-end-column="26" />
+          <folding>
+            <element signature="e#2295#2296#0" expanded="true" />
+            <element signature="e#2322#2323#0" expanded="true" />
+            <element signature="e#2046#2047#0" expanded="true" />
+            <element signature="e#2090#2091#0" expanded="true" />
+            <element signature="e#4983#4984#0" expanded="true" />
+            <element signature="e#5041#5042#0" expanded="true" />
+            <element signature="e#8146#8147#0" expanded="true" />
+            <element signature="e#8178#8179#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/features/text/InputFileReader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="77">
+          <caret line="9" column="27" lean-forward="true" selection-start-line="9" selection-start-column="27" selection-end-line="9" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Window.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-212">
+          <caret line="140" column="38" lean-forward="true" selection-start-line="140" selection-start-column="38" selection-end-line="140" selection-end-column="38" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tools/Program.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="131">
+          <caret line="410" lean-forward="true" selection-start-line="410" selection-end-line="410" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1401#1402#0" expanded="true" />
+            <element signature="e#1430#1431#0" expanded="true" />
+            <element signature="e#1543#1544#0" expanded="true" />
+            <element signature="e#1573#1574#0" expanded="true" />
+            <element signature="e#1700#1701#0" expanded="true" />
+            <element signature="e#1738#1739#0" expanded="true" />
+            <element signature="e#6880#6881#0" expanded="true" />
+            <element signature="e#6928#6929#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/modules/display/Display.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="38" column="49" lean-forward="true" selection-start-line="38" selection-start-column="49" selection-end-line="38" selection-end-column="49" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1326#1327#0" expanded="true" />
+            <element signature="e#1358#1359#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

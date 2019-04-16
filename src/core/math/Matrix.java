@@ -75,25 +75,35 @@ public class Matrix extends MatrixCore {
         scaling(scalar.get(0), scalar.get(1), scalar.get(2));
     }
 
-    public void projection(float x, float y, float z) {
-        data[0] = 2.0f/x;
-        data[5] = -2.0f/y;
-        data[10] = 1.0f/z;
+    public void projection(float width, float height, float depth) {
+        data[0] = 2.0f / width;
+        data[5] = -2.0f / height;
+        data[10] = 2.0f / depth;
         data[12] = -1.0f;
         data[13] = 1.0f;
-        data[15] = 1.0f;
+        data[14] = 1.0f;
     }
 
     public void perspective(float fieldOfView, float aspect, float near, float far) {
-        float f = (float) Math.tan(Math.PI*0.5 - 0.5*fieldOfView);
+        float f = (float) Math.tan(Math.PI * 0.5 - 0.5 * fieldOfView);
         float rangeInv = (float) 1.0 / (near-far);
 
-        data[0] = f/aspect;
+        data[0] = f / aspect;
         data[5] = f;
-        data[10] = (near+far)*rangeInv;
+        data[10] = (near + far) * rangeInv;
         data[11] = -1;
-        data[14] = near*far*rangeInv*2;
+        data[14] = near * far * rangeInv * 2;
         data[15] = 0;
+    }
+
+    public void orthographic(float left, float right, float bottom, float top, float near, float far) {
+        data[0] = 2 / (right - left);
+        data[5] = 2 / (top - bottom);
+        data[10] = -2 / (far - near);
+        data[12] = - (right + left) / (right - left);
+        data[13] = - (top + bottom) / (top - bottom);
+        data[14] = - (far + near) / (far - near);
+        data[15] = 1;
     }
 
     void lookAt(Vector cameraPosition, Vector target, Vector up) {

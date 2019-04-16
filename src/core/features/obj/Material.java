@@ -2,7 +2,7 @@ package core.features.obj;
 
 import core.math.Vector;
 import core.math.Vector3f;
-import tools.Log;
+import core.tools.Log;
 
 import java.util.Arrays;
 

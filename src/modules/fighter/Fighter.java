@@ -1,19 +1,21 @@
 package modules.fighter;
 
 import core.features.light.DirectionalLight;
+import core.features.light.Light;
 import core.features.light.PointLight;
 import core.features.light.SpotLight;
 import core.math.Matrix;
 import core.math.Vector3f;
 import core.math.Vector4f;
-import tools.Camera;
-import tools.Log;
+import core.view.Camera;
 import tools.Model;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 
 public class Fighter extends Model {
+
+    private Light light;
 
     private PointLight pointLight;
 
@@ -24,38 +26,54 @@ public class Fighter extends Model {
     private Matrix model = new Matrix(4);
 
 	public Fighter(Camera camera) {
-		super("fighter", GL_STATIC_DRAW, GL_TRIANGLES, "sphere");
+		super("fighter", GL_STATIC_DRAW, GL_TRIANGLES, "cube");
 
-		/* Point Light */
-        this.pointLight = new PointLight(
-                new Vector3f(0.6f, 0.2f, 0.1f),
-                new Vector4f(0.0f, 0.0f, 4.0f, 1.0f),
-                1.0f);
+		this.light = new Light();
 
-        this.pointLight.setAttenuation(
-                new PointLight.Attenuation(1.0f, 0.5f, 0.5f)
+        /* Point Light */
+		this.light.setLighting(
+		        new PointLight(
+		                new Vector3f(0.6f, 0.2f, 0.1f),
+                        new Vector4f(0.0f, 0.0f, 4.0f, 1.0f),
+                        new PointLight.Attenuation(1.0f, 0.5f, 0.5f),
+                        1.0f
+                )
         );
 
-        /* Directional Light */
-        this.directionalLight = new DirectionalLight(
-                new Vector3f(1.0f, 1.0f, 1.0f),
-                new Vector3f(-1.0f, 0, 0.0f),
-                100.0f
+		/* Directional Light */
+        this.light.setLighting(
+                new DirectionalLight(
+                        new Vector3f(1.0f, 1.0f, 1.0f),
+                        new Vector3f(-1.0f, 0, 0.0f),
+                        1.0f
+                )
         );
 
         /* Spot Light */
-        this.spotLight = new SpotLight(
-                new PointLight(
-                        new Vector3f(1.0f, 1.0f, 1.0f),
-                        new Vector4f(0.0f, 0.0f, 4.0f, 1.0f),
-                        1.0f
-                ),
-                new Vector3f(0f, 0, -1.0f),
-                0.99f
+        this.light.setLighting(
+                new SpotLight(
+                        new PointLight(
+                                new Vector3f(1.0f, 1.0f, 1.0f),
+                                new Vector4f(0.0f, 0.0f, 4.0f, 1.0f),
+                                new PointLight.Attenuation(1.0f, 0.5f, 0.5f),
+                                1.0f
+                        ),
+                        new Vector3f(0f, 0, -1.0f),
+                        0.99f
+                )
         );
 
-        this.spotLight.getPointLight().setAttenuation(
-                new PointLight.Attenuation(1.0f, 8.5f, 0.1f)
+        this.light.setLighting(
+                new SpotLight(
+                        new PointLight(
+                                new Vector3f(1.0f, 1.0f, 1.0f),
+                                new Vector4f(0.0f, 0.0f, -4.0f, 1.0f),
+                                new PointLight.Attenuation(1.0f, 0.5f, 0.5f),
+                                1.0f
+                        ),
+                        new Vector3f(0f, 0, 1.0f),
+                        0.99f
+                )
         );
 
 		setCamera(camera);
@@ -71,11 +89,9 @@ public class Fighter extends Model {
 
         addUniforms();
 	}
-	
+
 	public void addUniforms() {
-        this.pointLight.createUniforms(this, "u_point_light");
-        this.directionalLight.createUniforms(this, "u_directional_light");
-        this.spotLight.createUniforms(this, "u_spot_light");
+	    this.light.createUniforms(this);
 
         addUniform("u_camera", getCamera().getCamera());
         addUniform("u_projection", getCamera().getProjection());
@@ -87,11 +103,7 @@ public class Fighter extends Model {
 
 	@Override
 	public void updateUniforms() {
-        this.pointLight.updateUniforms(this, "u_point_light");
-        this.directionalLight.updateUniforms(this, "u_directional_light");
-        this.spotLight.updateUniforms(this, "u_spot_light");
-
-        this.directionalLight.update();
+	    this.light.updateUniforms(this);
 
         updateUniform("u_camera", getCamera().getCamera());
         updateUniform("u_projection", getCamera().getProjection());

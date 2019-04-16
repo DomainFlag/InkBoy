@@ -1,19 +1,13 @@
 package modules;
 
-import core.Settings;
-import core.features.VertexBufferObject;
 import core.math.Vector;
-import core.math.Vector2f;
 import core.math.Vector3f;
-import core.tools.BufferTools;
-import tools.Camera;
-import tools.Log;
+import core.view.Camera;
 import tools.Program;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.lwjgl.opengl.ARBVertexArrayObject.glBindVertexArray;
 import static org.lwjgl.opengl.GL46.*;
 
 public class Plane extends Program {

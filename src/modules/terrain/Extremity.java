@@ -3,9 +3,7 @@ package modules.terrain;
 import core.Settings;
 import core.math.Vector;
 import core.math.Vector2f;
-import core.math.Vector3f;
 import core.math.Vector4f;
-import tools.Log;
 
 public class Extremity {
 

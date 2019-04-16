@@ -1,14 +1,14 @@
 import core.Settings;
-import modules.Plane;
-import modules.fighter.Fighter;
+import modules.display.Display;
 import modules.terrain.Terrain;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.MemoryStack;
-import tools.Camera;
-import tools.Log;
+import core.view.Camera;
+import core.tools.Log;
+import tools.Context;
 import tools.Program;
 
 import java.nio.IntBuffer;
@@ -23,9 +23,14 @@ import static org.lwjgl.system.MemoryStack.stackPush;
 
 public class Window {
 
+    // Programs
     private HashSet<Program> programs = new HashSet<>();
 
+    // Camera
     private Camera camera = null;
+
+    // Window context
+    private Context context = null;
 
     // The window handle
     private long window;
@@ -46,8 +51,11 @@ public class Window {
 
         // Terminate GLFW and free the error callback
         glfwTerminate();
+
         GLFWErrorCallback glfwErrorCallback = glfwSetErrorCallback(null);
-        if(glfwErrorCallback != null) glfwErrorCallback.free();
+
+        if(glfwErrorCallback != null)
+            glfwErrorCallback.free();
     }
 
     private void init() {
@@ -65,14 +73,16 @@ public class Window {
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
 
         // Get the primary Monitor - default one
-        long primaryMonitor = glfwGetPrimaryMonitor();
+        long monitor = glfwGetPrimaryMonitor();
+
+        // Create window context
+        context = new Context(monitor);
 
         // Get the dimensions & resolution of the primary monitor and set it to global vidmode variable
-        vidmode = glfwGetVideoMode(primaryMonitor);
+        vidmode = glfwGetVideoMode(monitor);
 
         // Create the window
         window = glfwCreateWindow(1280, 720, "StarCannon", NULL, NULL);
-//        window = glfwCreateWindow(vidmode.width(), vidmode.height(), "Ink Man", primaryMonitor, NULL);
         if(window == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
 
@@ -110,10 +120,12 @@ public class Window {
                     (vidmode.width() - pWidth.get(0)) / 2,
                     (vidmode.height() - pHeight.get(0)) / 2
             );
-        } // the stack frame is popped automatically
+        }
+        // the stack frame is popped automatically
 
         // Make the OpenGL context current
         glfwMakeContextCurrent(window);
+
         // Enable v-sync
         glfwSwapInterval(1);
 
@@ -132,12 +144,12 @@ public class Window {
         Log.v("OpenGL version: " + GL11.glGetString(GL11.GL_VERSION));
         Log.v("InkMan " + Version.getVersion() + "! on shading language:" + glGetString(GL_SHADING_LANGUAGE_VERSION));
 
-        camera = new Camera(800, 450);
+        camera = new Camera(Settings.WIDTH, Settings.HEIGHT);
 
         // Generating the programs that need to be rendered
         programs.addAll(
                 Arrays.asList(
-                        new Fighter(camera)
+                        new Display(context, null)
                 )
         );
 
@@ -150,7 +162,7 @@ public class Window {
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
-        while(!glfwWindowShouldClose(window) ) {
+        while(!glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
             // Rendering every program
@@ -166,5 +178,9 @@ public class Window {
             // invoked during this call.
             glfwPollEvents();
         }
+
+        // Clear every program
+        for(Program program : programs)
+            program.clear();
     }
 }

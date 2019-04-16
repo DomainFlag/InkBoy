@@ -3,8 +3,7 @@ package modules.terrain;
 import core.Settings;
 import core.features.VertexBufferObject;
 import core.math.*;
-import tools.Camera;
-import tools.Log;
+import core.view.Camera;
 import tools.Program;
 
 import java.util.ArrayList;

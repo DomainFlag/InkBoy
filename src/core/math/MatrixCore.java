@@ -1,6 +1,6 @@
 package core.math;
 
-import tools.Log;
+import core.tools.Log;
 
 public class MatrixCore {
 

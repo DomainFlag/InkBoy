@@ -1,7 +1,6 @@
 package core.features.light;
 
 import core.math.Vector3f;
-import tools.Log;
 import tools.Program;
 
 public class DirectionalLight extends Lighting {
@@ -12,9 +11,12 @@ public class DirectionalLight extends Lighting {
 
     private float intensity;
 
-    private float lightAngle = -90;
+    private float lightAngle;
 
     public DirectionalLight(Vector3f color, Vector3f direction, float intensity) {
+        super(Light.DIRECTIONAL_KEY);
+
+        this.lightAngle = -((float) Math.toDegrees(Math.acos(direction.get(0))) - 90);
         this.color = color;
         this.direction = direction;
         this.intensity = intensity;
@@ -88,5 +90,7 @@ public class DirectionalLight extends Lighting {
         program.updateUniform(uniformName + ".colour", getColor());
         program.updateUniform(uniformName + ".direction", getDirection());
         program.updateUniform(uniformName + ".intensity", getIntensity());
+
+        this.update();
     }
 }

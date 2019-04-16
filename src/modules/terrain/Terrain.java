@@ -1,15 +1,13 @@
 package modules.terrain;
 
 import core.Settings;
-import tools.Camera;
+import core.view.Camera;
 import tools.Program;
 
-import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
-import static org.lwjgl.opengl.GL20.glUseProgram;
 
 public class Terrain extends Program {
 

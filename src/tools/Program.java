@@ -2,6 +2,8 @@ package tools;
 
 import core.math.Matrix;
 import core.math.Vector;
+import core.tools.Log;
+import core.view.Camera;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.system.MemoryStack;
 
@@ -30,6 +32,8 @@ public abstract class Program {
 
     private Camera camera;
 
+    private Context context;
+
     public int program;
 
     private int drawingType = GL_STATIC_DRAW;
@@ -52,14 +56,22 @@ public abstract class Program {
         return camera;
     }
 
+    public Context getContext() {
+        return context;
+    }
+
     public void setCamera(Camera camera) {
         this.camera = camera;
     }
 
-    public void setCount(int nbElements) {
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public void setCount(int nbElements, int count) {
         switch(renderingType) {
             case GL_TRIANGLES : {
-                nb = nbElements / 3;
+                nb = nbElements / count;
                 break;
             }
             case GL_LINES : {
@@ -88,13 +100,8 @@ public abstract class Program {
         }
     }
 
-    public void loadData(String attributeName, Vector[] data) {
-        int size = 0;
-        if(data.length > 0) {
-            size = data[0].getSize();
-        }
-
-        FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(data.length * size);
+    public void loadData(String attributeName, Vector[] data, int count) {
+        FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(data.length * count);
         for(int it = 0; it < data.length; it++) {
             Vector vector = data[it];
 
@@ -103,17 +110,17 @@ public abstract class Program {
 
         floatBuffer.flip();
 
-        addAttribute(attributeName, floatBuffer);
+        addAttribute(attributeName, floatBuffer, count);
     }
 
-    private void loadData(String attributeName, List<Float> data) {
+    private void loadData(String attributeName, List<Float> data, int count) {
         FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(data.size());
         for(int it = 0; it < data.size(); it++)
             floatBuffer.put(data.get(it));
 
         floatBuffer.flip();
 
-        addAttribute(attributeName, floatBuffer);
+        addAttribute(attributeName, floatBuffer, count);
     }
 
     public void loadDataV(String attributeName, List<Vector> data, int count) {
@@ -126,7 +133,20 @@ public abstract class Program {
 
         floatBuffer.flip();
 
-        addAttribute(attributeName, floatBuffer);
+        addAttribute(attributeName, floatBuffer, count);
+    }
+
+    public void updateDataV(String attributeName, List<Vector> data, int count) {
+        FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(data.size() * count);
+        for(int g = 0; g < data.size(); g++) {
+            Vector vector = data.get(g);
+
+            floatBuffer.put(vector.getData(), 0, vector.size());
+        }
+
+        floatBuffer.flip();
+
+        updateAttribute(attributeName, floatBuffer, count);
     }
 
     private void bindBuffer(String bufferName, FloatBuffer vertices) {
@@ -137,7 +157,7 @@ public abstract class Program {
         if(!buffers.containsKey(bufferName)) {
             buffers.put(bufferName, buffer);
         } else {
-            Log.v(buffer);
+//            Log.v(buffer);
         }
     }
 
@@ -168,11 +188,7 @@ public abstract class Program {
         Log.v("Max supported patch vertices " + parameters[0]);
     }
 
-    public void addAttribute(String name, FloatBuffer vertices) {
-        if(name.startsWith("a_position")) {
-            setCount(vertices.capacity());
-        }
-
+    public void addAttribute(String name) {
         if(attributes.containsKey(name)) {
             Log.v("Unfortunately you used this attribute before: " + name);
         }
@@ -190,14 +206,33 @@ public abstract class Program {
             attributes.put(name, attribute);
         } else {
             Log.v("Check the shader, the location is inappropriate: " + name);
+        }
+    }
+
+    public void addAttribute(String name, FloatBuffer vertices, int count) {
+        // add attribute
+        this.addAttribute(name);
+
+        // update attribute
+        this.updateAttribute(name, vertices, count);
+    }
+
+    public void updateAttribute(String name, FloatBuffer vertices, int count) {
+        if(!attributes.containsKey(name)) {
+            Log.v("Unknown attribute name: " + name);
 
             return;
         }
 
-        glEnableVertexAttribArray(attribute);
-        bindBuffer(matcher.group(1) + "Buffer", vertices);
+        this.setCount(vertices.capacity(), count);
 
-        glVertexAttribPointer(attribute, 3, GL_FLOAT, false, 0, NULL);
+        int attribute = attributes.get(name);
+
+        glEnableVertexAttribArray(attribute);
+
+        bindBuffer(attribute + "Buffer", vertices);
+
+        glVertexAttribPointer(attribute, count, GL_FLOAT, false, 0, NULL);
     }
 
     public int checkUniform(String name) {
@@ -254,6 +289,13 @@ public abstract class Program {
         int uniform = checkUniform(name);
         if(uniform != -1) {
             assignUniformValues(uniform, values);
+        }
+    }
+
+    public void addUniform(String name, Vector vector) {
+        int uniform = checkUniform(name);
+        if(uniform != -1) {
+            assignUniformValues(uniform, vector.getData());
         }
     }
 
@@ -344,13 +386,6 @@ public abstract class Program {
     }
 
     public void addTexture(String pathSourceName, String name, int textureUnitIndex, int mode) {
-        int imageLoc = glGetUniformLocation(program, name);
-        glUniform1i(imageLoc, textureUnitIndex);
-        glActiveTexture(GL_TEXTURE0 + textureUnitIndex);
-
-        int tex = glGenTextures();
-        glBindTexture(GL_TEXTURE_2D, tex);
-
         MemoryStack stack = MemoryStack.stackGet();
         IntBuffer w = stack.mallocInt(1);
         IntBuffer h = stack.mallocInt(1);
@@ -374,16 +409,28 @@ public abstract class Program {
 
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+        addTexture(image, name, textureUnitIndex, width, height, GL_RGBA, mode);
+
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        stbi_image_free(image);
+    }
+
+    public void addTexture(ByteBuffer image, String name, int textureUnitIndex, int width, int height, int type, int mode) {
+        int imageLoc = glGetUniformLocation(program, name);
+
+        glUniform1i(imageLoc, textureUnitIndex);
+        glActiveTexture(GL_TEXTURE0 + textureUnitIndex);
+
+        int tex = glGenTextures();
+        glBindTexture(GL_TEXTURE_2D, tex);
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glTexImage2D(GL_TEXTURE_2D, 0, type, width, height, 0, type, GL_UNSIGNED_BYTE, image);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mode);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, mode);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        glGenerateMipmap(GL_TEXTURE_2D);
-
-        stbi_image_free(image);
     }
 
     public void generateTexture(int index) {
@@ -416,6 +463,8 @@ public abstract class Program {
         updateUniforms();
         removeSettings();
     }
+
+    public void clear() {}
 
     public abstract void updateUniforms();
     public abstract void draw();

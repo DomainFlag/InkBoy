@@ -1,7 +1,7 @@
 package modules.terrain;
 
 import core.math.Vector2f;
-import tools.Camera;
+import core.view.Camera;
 import tools.Program;
 
 public class TerrainQuadtree {

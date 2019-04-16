@@ -14,9 +14,17 @@ public class PointLight extends Lighting {
     private float intensity;
 
     public PointLight(Vector color, Vector position, float intensity) {
+        super(Light.POINT_KEY);
+
         this.color = color;
         this.position = position;
         this.intensity = intensity;
+    }
+
+    public PointLight(Vector color, Vector position, Attenuation attenuation, float intensity) {
+        this(color, position, intensity);
+
+        this.attenuation = attenuation;
     }
 
     public Attenuation getAttenuation() {
