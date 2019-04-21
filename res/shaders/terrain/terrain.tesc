@@ -2,43 +2,40 @@
 
 layout(vertices = 3) out;
 
-in vec3 v_color[];
-out vec3 v_tecolor[];
-
-uniform float[10] u_morphing_thresholds;
-uniform int u_lod;
-uniform float u_max_tess_factor;
-uniform float u_min_tess_factor;
-uniform float u_camera_position;
+in vec2 mapCoord_TC[];
+out vec2 mapCoord_TE[];
 
 const int AB = 0;
 const int BC = 1;
 const int CD = 2;
 
-const float TESSELATION_OUTER_FACTOR = 1;
-const float TESSELATION_INNER_FACTOR = 1;
+uniform mat4 u_camera;
 
-float calculateTesselationFactor() {
-    float tessFactor = (u_camera_position - u_morphing_thresholds[u_lod])
-        / (u_morphing_thresholds[u_lod - 1] - u_morphing_thresholds[u_lod]);
+float calcTessFactor(float dist) {
+    float tessFactor = 540 / pow(dist, 2.1) + 0.2;
 
-    float tessLowerBand = mix(u_min_tess_factor, u_max_tess_factor, (u_lod) / 9.0f);
-    float tessHigherBand = mix(u_min_tess_factor, u_max_tess_factor, (u_lod - 1) / 9.0f);
-
-    return mix(tessLowerBand, tessHigherBand, tessFactor);
+    return mix(1, gl_MaxTessGenLevel, tessFactor);
 }
 
 void main() {
 	if(gl_InvocationID == 0) {
-        gl_TessLevelOuter[AB] = TESSELATION_OUTER_FACTOR;
-        gl_TessLevelOuter[BC] = TESSELATION_OUTER_FACTOR;
-        gl_TessLevelOuter[CD] = TESSELATION_OUTER_FACTOR;
+        vec4 midAB = (gl_in[1].gl_Position + gl_in[2].gl_Position) / 2.0f;
+        vec4 midBC = (gl_in[0].gl_Position + gl_in[2].gl_Position) / 2.0f;
+        vec4 midCD = (gl_in[0].gl_Position + gl_in[1].gl_Position) / 2.0f;
 
-        gl_TessLevelInner[0] = calculateTesselationFactor();
-//        gl_TessLevelInner[0] = TESSELATION_INNER_FACTOR;
+        gl_TessLevelOuter[AB] = calcTessFactor(length(u_camera * midAB));
+        gl_TessLevelOuter[BC] = calcTessFactor(length(u_camera * midBC));
+        gl_TessLevelOuter[CD] = calcTessFactor(length(u_camera * midCD));
+
+        float innerTessFactor = 0.0f;
+        for(int i = 0; i < 3; i++) {
+            innerTessFactor += gl_TessLevelOuter[i];
+        }
+
+        gl_TessLevelInner[0] = innerTessFactor;
 	}
 
-	v_tecolor[gl_InvocationID] = v_color[gl_InvocationID];
+    mapCoord_TE[gl_InvocationID] = mapCoord_TC[gl_InvocationID];
 
 	gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
 }

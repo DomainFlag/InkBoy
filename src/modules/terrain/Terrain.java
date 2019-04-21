@@ -4,8 +4,7 @@ import core.Settings;
 import core.view.Camera;
 import tools.Program;
 
-import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
 
@@ -20,6 +19,7 @@ public class Terrain extends Program {
 		this.camera = camera;
 
         addSetting(GL_DEPTH_TEST);
+        addSetting(GL_CULL_FACE);
 
         setTessellationShaders(3);
         addUniforms();
@@ -41,11 +41,6 @@ public class Terrain extends Program {
 	        addUniform("u_morphing_thresholds[" + g + "]", Settings.TERRAIN_THRESHOLDS[g]);
         }
 
-        addUniform("u_camera_position");
-
-        addUniform("u_max_tess_factor", 12.0f);
-	    addUniform("u_min_tess_factor", 5.0f);
-
         addUniform("u_camera", camera.getCamera());
         addUniform("u_projection", camera.getProjection());
         addUniform("u_model", camera.getModel());
@@ -60,6 +55,7 @@ public class Terrain extends Program {
     @Override
     public void draw() {
 	    terrainQuadtree.render(this);
+
         terrainQuadtree.updateTree();
     }
 }

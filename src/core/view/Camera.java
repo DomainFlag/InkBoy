@@ -9,13 +9,13 @@ import static org.lwjgl.glfw.GLFW.*;
 public class Camera {
 
     private static final float ROTATION = 0.4f;
-    private static final float SPEED_RATIO = 0.02f;
+    private static final float SPEED_RATIO = 2f;
     private boolean freeze = false;
     private float speed = 0;
 
-    private Vector3f rotation = new Vector3f(0, 0, 0);
+    private Vector3f rotation = new Vector3f(-45, 0, 0);
     private Vector2f currentRotation = new Vector2f();
-    private Vector3f translation = new Vector3f(0, 0, 0);
+    private Vector3f translation = new Vector3f(Settings.SCALE_XZ / 2 - 100, 1904.3679f, Settings.SCALE_XZ / 2 - 100);
 
     private Matrix model = new Matrix(4);
     private Matrix projection = new Matrix(4);
@@ -100,7 +100,6 @@ public class Camera {
                 break;
             }
             case GLFW_KEY_P : {
-                Log.v(freeze);
                 freeze = !freeze;
                 break;
             }

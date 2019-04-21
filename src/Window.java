@@ -149,7 +149,7 @@ public class Window {
         // Generating the programs that need to be rendered
         programs.addAll(
                 Arrays.asList(
-                        new Display(context, null)
+                        new Terrain(camera)
                 )
         );
 

@@ -2,6 +2,8 @@
 
 layout (location = 0) in vec4 position;
 
+out vec2 mapCoord_TC;
+
 uniform mat4 u_projection;
 uniform mat4 u_camera;
 uniform mat4 u_model;
@@ -16,8 +18,10 @@ uniform float u_scale;
 uniform int u_lod;
 uniform float[10] u_morphing_thresholds;
 
-out vec3 v_color;
-out float height;
+bool checkOuterBoundary(vec2 position) {
+    return position.x >= 0.0f && position.x <= 1.0f &&
+        position.y >= 0.0f && position.y <= 1.0f;
+}
 
 float morphLatitude(vec2 position, float gap) {
     float morphing = 0.0f;
@@ -71,11 +75,10 @@ float morphLongitude(vec2 position, float gap) {
 }
 
 vec4 morph(vec2 position, float morph_area) {
+    float morphingLongitude = 0.0f, morphingLatitude = 0.0f;
     vec2 longitude, latitude;
 
-    float gap = u_span * 2.0f;
-
-    v_color = vec3(0.7, 0.15, 0.21);
+    float gap = u_span * 2;
 
 //    NOTE
 //    left <-> right (-x, x)
@@ -101,14 +104,12 @@ vec4 morph(vec2 position, float morph_area) {
     vec4 world_position_longitude = u_camera * vec4(longitude.x * u_scale, 0, longitude.y * u_scale, 1);
     float distance_longitude = length(world_position_longitude.xyz);
 
-    vec4 world_position_latitude = u_camera * vec4(latitude.x * u_scale, 0, latitude.y * u_scale, 1);
-    float distance_latitude = length(world_position_latitude.xyz);
-
-    float morphingLongitude = 0.0f, morphingLatitude = 0.0f;
-
     if(distance_longitude > morph_area) {
         morphingLongitude = morphLatitude(position, u_span);
     }
+
+    vec4 world_position_latitude = u_camera * vec4(latitude.x * u_scale, 0, latitude.y * u_scale, 1);
+    float distance_latitude = length(world_position_latitude.xyz);
 
     if(distance_latitude > morph_area) {
         morphingLatitude = morphLongitude(position, u_span);
@@ -123,5 +124,10 @@ void main() {
 
     vec4 pos = pos_translated + morph(pos_translated.xz, u_morphing_thresholds[u_lod - 1]);
 
-	gl_Position = pos;
+    mapCoord_TC = pos.xz;
+
+    pos.y = texture2D(u_texture, pos.xz).r * 500;
+    pos.xz *= u_scale;
+
+	gl_Position = vec4((u_model * pos).xyz, 1.0);
 }

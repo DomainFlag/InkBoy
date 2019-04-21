@@ -3,6 +3,7 @@ package modules.terrain;
 import core.Settings;
 import core.features.VertexBufferObject;
 import core.math.*;
+import core.tools.Log;
 import core.view.Camera;
 import tools.Program;
 
@@ -22,22 +23,20 @@ public class Node {
 
     private static Vector2f[] generateRootPatch1() {
         // 3 vertices for each patch
-        Vector2f[] vertices = new Vector2f[] {
+        return new Vector2f[] {
                 new Vector2f(0.0f, 0.0f),
-                new Vector2f(0.0f,1.0f),
                 new Vector2f(1.0f,1.0f),
+                new Vector2f(0.0f,1.0f),
 
                 new Vector2f(1.0f, 1.0f),
-                new Vector2f(1.0f,0.0f),
-                new Vector2f(0.0f,0.0f)
+                new Vector2f(0.0f,0.0f),
+                new Vector2f(1.0f,0.0f)
         };
-
-        return vertices;
     }
 
     private static Vector2f[] generateRootPatch2() {
         // 3 vertices for each patch
-        Vector2f[] vertices = new Vector2f[] {
+        return new Vector2f[] {
                 new Vector2f(0.0f, 1.0f),
                 new Vector2f(0.0f,0.0f),
                 new Vector2f(1.0f,0.0f),
@@ -46,28 +45,31 @@ public class Node {
                 new Vector2f(1.0f,1.0f),
                 new Vector2f(0.0f,1.0f)
         };
-
-        return vertices;
     }
 
     private static final int rootNodes = 2;
 
-    private int lod;
+    private int lod = -1;
+    // distance of current tile span^2 = A(node)
     private double span;
-	private List<Node> children;
+	private List<Node> children = new ArrayList<>();
 	private Camera camera;
 	private Vector index;
 	private Vector worldLocation;
 	private Vector location;
 	private Vector center;
-	private float cameraDist;
+	private double cameraDist;
+
+	public Node(Camera camera) {
+	    this.camera = camera;
+    }
 
 	public Node(Camera camera, Vector location, Vector center, Vector index, int lod) {
-	    this.children = new ArrayList<>();
-	    this.camera = camera;
+	    this(camera);
+
 	    this.index = index;
 	    this.location = location;
-        this.span = 1.0f / Math.pow(2.0f, lod);
+        this.span = 1.0f / (TerrainQuadtree.rootNodeCount * Math.pow(2.0f, lod));
         this.center = center;
         this.lod = lod;
         this.worldLocation = computeWorldPosition();
@@ -90,7 +92,9 @@ public class Node {
     private void addNodes() {
         if(cameraDist < Settings.TERRAIN_THRESHOLDS[lod]) {
             addNodes(lod);
-        } else removeNodes();
+        } else if(lod > 0) {
+            removeNodes();
+        }
     }
 
     private float getCameraDist() {
@@ -98,8 +102,8 @@ public class Node {
     }
 
     public void updateNode() {
-        worldLocation = computeWorldPosition();
-        cameraDist = getCameraDist();
+        this.worldLocation = computeWorldPosition();
+        this.cameraDist = getCameraDist();
 
         addNodes();
     }
@@ -113,11 +117,14 @@ public class Node {
             for(Node child : children)
                 child.updateNode();
         } else {
+	        // Parent node center
+	        Vector center = getCenterLocation();
+
             for(int g = 0; g < rootNodes; g++) {
                 for(int h = 0; h < rootNodes; h++) {
                     Vector vec = Vector.addition(location, new Vector2f((float) (h *  span / 2.0f), (float) (g * span  / 2.0f)));
 
-                    Node node = new Node(camera, vec, getCenterLocation(), new Vector2f(g, h), lod + 1);
+                    Node node = new Node(camera, vec, center, new Vector2f(g, h), lod + 1);
 
                     children.add(node);
                 }
@@ -126,8 +133,7 @@ public class Node {
     }
 
     private Vector getCenterLocation() {
-        return Vector.addition(location,
-                new Vector2f((float) span / 2.0f, (float) span  / 2.0f));
+        return Vector.addition(location, new Vector2f((float) span / 2.0f, (float) span  / 2.0f));
     }
 
     private void updateUniforms(Program program) {
@@ -136,7 +142,6 @@ public class Node {
 	    program.updateUniform("u_index", index);
         program.updateUniform("u_span", span);
         program.updateUniform("u_lod", lod);
-        program.updateUniform("u_camera_position", cameraDist);
     }
 
 	public void render(Program program) {
