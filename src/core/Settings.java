@@ -11,25 +11,30 @@ public class Settings {
     public static final String TESTING_MODE = "TESTING_MODE";
 
     public static final float Z_FAR = 30000.0f;
-    public static final float Z_NEAR = 0.0001f;
+    public static final float Z_NEAR = 0.1f;
 
     public static final int WIDTH = 800;
     public static final int HEIGHT = 450;
 
-    public static final int TERRAIN_DRAWING_TYPE = GL_PATCHES;
+    public static final class Terrain {
 
-    public static final float SCALE_XZ = 4500;
+        public static final int HEIGHT = 500;
 
-    public static final float[] TERRAIN_THRESHOLDS = new float[] {
-            4250,
-            2810,
-            2120,
-            1350,
-            720,
-            200,
-            50,
-            0,
-            0,
-            0,
-    };
+        public static final int TERRAIN_DRAWING_TYPE = GL_PATCHES;
+
+        public static final float SCALE_XZ = 4500;
+
+        public static final float[] TERRAIN_THRESHOLDS = new float[] {
+                4250,
+                2810,
+                2120,
+                1350,
+                720,
+                200,
+                50,
+                25,
+                0,
+                0,
+        };
+    }
 }

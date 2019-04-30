@@ -1,5 +1,6 @@
 import core.Settings;
 import modules.display.Display;
+import modules.fighter.Fighter;
 import modules.terrain.Terrain;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -34,8 +35,6 @@ public class Window {
 
     // The window handle
     private long window;
-
-    private GLFWVidMode vidmode = null;
 
     public Window() {
         run();
@@ -79,7 +78,7 @@ public class Window {
         context = new Context(monitor);
 
         // Get the dimensions & resolution of the primary monitor and set it to global vidmode variable
-        vidmode = glfwGetVideoMode(monitor);
+        GLFWVidMode vidmode = glfwGetVideoMode(monitor);
 
         // Create the window
         window = glfwCreateWindow(1280, 720, "StarCannon", NULL, NULL);
@@ -121,6 +120,7 @@ public class Window {
                     (vidmode.height() - pHeight.get(0)) / 2
             );
         }
+
         // the stack frame is popped automatically
 
         // Make the OpenGL context current
@@ -149,7 +149,7 @@ public class Window {
         // Generating the programs that need to be rendered
         programs.addAll(
                 Arrays.asList(
-                        new Terrain(camera)
+                        new Terrain(context, camera)
                 )
         );
 
@@ -163,7 +163,8 @@ public class Window {
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         while(!glfwWindowShouldClose(window)) {
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+            // clear the framebuffer
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             // Rendering every program
             for(Program program : programs)

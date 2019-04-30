@@ -5,19 +5,14 @@
 // Counter-clockwise order
 layout(triangles, fractional_odd_spacing, cw) in;
 
-in vec2 mapCoord_TE[];
+in vec2 normal_map_coord_te[];
 
-out vec2 mapCoord_GS;
-
-uniform mat4 u_projection;
-uniform mat4 u_camera;
-uniform mat4 u_model;
+out vec2 normal_map_coord_gs;
 
 uniform float u_scale;
+uniform float u_height;
 
 uniform sampler2D u_texture;
-
-out float v_gheight;
 
 void main() {
     float u = gl_TessCoord.x;
@@ -28,16 +23,11 @@ void main() {
         v * gl_in[1].gl_Position +
         w * gl_in[2].gl_Position;
 
-    vec2 mapCoord_GS = u * mapCoord_TE[0] +
-        v * mapCoord_TE[1] +
-        w * mapCoord_TE[2];
+    normal_map_coord_gs = u * normal_map_coord_te[0] +
+        v * normal_map_coord_te[1] +
+        w * normal_map_coord_te[2];
 
-    float height = texture(u_texture, mapCoord_GS).r;
-    height *= 500;
-
-    position.y = height;
-
-    v_gheight = height / 500;
+    position.y = texture(u_texture, normal_map_coord_gs).r * u_height;
 
     gl_Position = position;
 }

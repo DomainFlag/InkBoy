@@ -72,7 +72,7 @@ public class VertexBufferObject {
             glBindVertexArray(vertexArrayObject);
             glEnableVertexAttribArray(0);
 
-            glDrawArrays(Settings.TERRAIN_DRAWING_TYPE, 0, size);
+            glDrawArrays(Settings.Terrain.TERRAIN_DRAWING_TYPE, 0, size);
 
             glDisableVertexAttribArray(0);
             glBindVertexArray(0);

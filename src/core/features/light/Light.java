@@ -1,5 +1,8 @@
 package core.features.light;
 
+import core.features.light.lighting.Lighting;
+import core.math.Vector;
+import core.math.Vector3f;
 import core.tools.Log;
 import tools.Program;
 
@@ -16,6 +19,10 @@ public class Light {
 
     public static final int SPOT_KEY = 2;
 
+    private Vector ambientLightColour = new Vector3f(0.1f, 0.1f, 0.1f);
+
+    private Float specularPower = null;
+
     private Map<Integer, List<Lighting>> lightings;
 
     private String[] bindings = new String[] {
@@ -27,8 +34,17 @@ public class Light {
     }
 
     public Light(String[] bindings) {
-        this.lightings = new HashMap<>();
+        this();
+
         this.setBindings(bindings);
+    }
+
+    public Vector getAmbientLightColour() {
+        return ambientLightColour;
+    }
+
+    public float getSpecularPower() {
+        return specularPower;
     }
 
     public Map<Integer, List<Lighting>> getLightings() {
@@ -45,6 +61,14 @@ public class Light {
         }
 
         return true;
+    }
+
+    public void setAmbientLightColour(Vector ambientLightColour) {
+        this.ambientLightColour = ambientLightColour;
+    }
+
+    public void setSpecularPower(float specularPower) {
+        this.specularPower = specularPower;
     }
 
     public void setBindings(String[] bindings) {
@@ -79,6 +103,11 @@ public class Light {
     }
 
     public void createUniforms(Program program) {
+        program.addUniform("u_ambient_light");
+
+        if(specularPower != null)
+            program.addUniform("u_specular_power");
+
         for(Map.Entry<Integer, List<Lighting>> light : lightings.entrySet()) {
             List<Lighting> lights = light.getValue();
 
@@ -92,6 +121,11 @@ public class Light {
     }
 
     public void updateUniforms(Program program) {
+        program.updateUniform("u_ambient_light", ambientLightColour);
+
+        if(specularPower != null)
+            program.updateUniform("u_specular_power", specularPower);
+
         for(Map.Entry<Integer, List<Lighting>> light : lightings.entrySet()) {
             List<Lighting> lights = light.getValue();
 

@@ -2,8 +2,8 @@
 
 layout(vertices = 3) out;
 
-in vec2 mapCoord_TC[];
-out vec2 mapCoord_TE[];
+in vec2 normal_map_coord_tc[];
+out vec2 normal_map_coord_te[];
 
 const int AB = 0;
 const int BC = 1;
@@ -32,10 +32,10 @@ void main() {
             innerTessFactor += gl_TessLevelOuter[i];
         }
 
-        gl_TessLevelInner[0] = innerTessFactor;
+        gl_TessLevelInner[0] = innerTessFactor / 3.0f;
 	}
 
-    mapCoord_TE[gl_InvocationID] = mapCoord_TC[gl_InvocationID];
+    normal_map_coord_te[gl_InvocationID] = normal_map_coord_tc[gl_InvocationID];
 
 	gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
 }

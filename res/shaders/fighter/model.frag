@@ -14,7 +14,7 @@ uniform mat4 u_camera;
 // max model materials
 const int MAX_MATERIALS = 32;
 
-// max lights
+// max lighting
 const int MAX_LIGHTS = 6;
 
 // light attenuation, gradual extinction of photons in medium to respect of distance
@@ -46,7 +46,7 @@ struct SpotLight {
     float angle;
 };
 
-// color lighting and mapping to texture
+// color lighting and normal to texture
 struct Color {
     vec3 Kx;
     int Mx;
@@ -126,7 +126,7 @@ vec4 setupLightColor(Material material, vec3 to_light_direction, vec3 light_colo
 }
 
 vec4 setPointLight(PointLight point_light, Material material) {
-    // smiliar to no light
+    // similar to no light
     if(point_light.intensity == 0)
         return vec4(0, 0, 0, 0);
 
@@ -149,7 +149,7 @@ vec4 setPointLight(PointLight point_light, Material material) {
 }
 
 vec4 setDirectionalLight(DirectionalLight directional_light, Material material) {
-    // smiliar to no light
+    // similar to no light
     if(directional_light.intensity == 0)
         return vec4(0, 0, 0, 0);
 
@@ -163,7 +163,7 @@ vec4 setSpotLight(SpotLight spot_light, Material material) {
     /* Point light */
     PointLight point_light = spot_light.pointLight;
 
-    // smiliar to no light
+    // similar to no light
     if(point_light.intensity == 0)
         return vec4(0, 0, 0, 0);
 

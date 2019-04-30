@@ -1,5 +1,6 @@
-package core.features.light;
+package core.features.light.lighting;
 
+import core.features.light.Light;
 import core.math.Vector;
 import tools.Program;
 

@@ -1,4 +1,4 @@
-package core.features.light;
+package core.features.light.lighting;
 
 import tools.Program;
 

@@ -2,7 +2,7 @@
 
 layout (location = 0) in vec4 position;
 
-out vec2 mapCoord_TC;
+out vec2 normal_map_coord_tc;
 
 uniform mat4 u_projection;
 uniform mat4 u_camera;
@@ -16,6 +16,7 @@ uniform vec2 u_index;
 uniform float u_span;
 uniform float u_scale;
 uniform int u_lod;
+uniform float u_height;
 uniform float[10] u_morphing_thresholds;
 
 bool checkOuterBoundary(vec2 position) {
@@ -119,14 +120,22 @@ vec4 morph(vec2 position, float morph_area) {
 }
 
 void main() {
+    /* map (0, 1) position to downscaled one */
     vec4 pos_scaled = position * u_span;
+
+    /* translate downscaled position to current position */
     vec4 pos_translated = vec4(pos_scaled.x + u_location.x, 0, pos_scaled.y + u_location.y, 1);
 
+    /* morph adjacent lods */
     vec4 pos = pos_translated + morph(pos_translated.xz, u_morphing_thresholds[u_lod - 1]);
 
-    mapCoord_TC = pos.xz;
+    /* normal mapping coordinate */
+    normal_map_coord_tc = pos.xz;
 
-    pos.y = texture2D(u_texture, pos.xz).r * 500;
+    /* fetch height as pos.xz <=> [0, 1] */
+    pos.y = texture2D(u_texture, pos.xz).r * u_height;
+
+    /* scale position */
     pos.xz *= u_scale;
 
 	gl_Position = vec4((u_model * pos).xyz, 1.0);

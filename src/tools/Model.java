@@ -9,13 +9,14 @@ public abstract class Model extends Program {
 
     private String pathName;
 
-    public Model(String pathProgram, int drawingType, int renderingType, String pathName) {
-        super(pathProgram, drawingType, renderingType);
+    public Model(Context context, String pathProgram, int drawingType, int renderingType, String pathName) {
+        super(context, pathProgram, drawingType, renderingType);
 
         this.pathName = pathName;
+        this.init();
     }
 
-    public void init() {
+    private void init() {
         if(pathName != null) {
             this.model = Obj.readModel(pathName);
 
@@ -37,7 +38,7 @@ public abstract class Model extends Program {
                 if(lightingColor.index != -1) {
                     String name = "u_textures[" + lightingColor.index + "]";
 
-                    addTexture(pathModels + lightingColor.texture, name, lightingColor.index, material.mode);
+                    getContext().getContextTexture().addTexture(pathModels + lightingColor.texture, name, lightingColor.index, material.mode);
                 }
             }
         }

@@ -3,11 +3,8 @@ package modules.display;
 import core.Settings;
 import core.features.text.Text;
 import core.math.*;
-import core.view.Camera;
 import tools.Context;
 import tools.Program;
-
-import java.util.Set;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
@@ -20,8 +17,8 @@ public class Display extends Program {
 
     private Text text;
 
-    public Display(Context context, Camera camera) {
-        super("text", GL_DYNAMIC_DRAW, GL_TRIANGLES);
+    public Display(Context context) {
+        super(context, "text", GL_DYNAMIC_DRAW, GL_TRIANGLES);
 
         addSetting(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -32,10 +29,11 @@ public class Display extends Program {
         this.text = new Text(context, "./res/fonts/sans-serif/WorkSans-Medium.ttf",32, "Circle of Life");
         this.text.init(this);
 
-        addUniforms();
+        createUniforms();
     }
 
-    public void addUniforms() {
+    @Override
+    public void createUniforms() {
         addUniform("u_projection", orthographic);
         addUniform("u_color", color);
     }

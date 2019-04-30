@@ -15,7 +15,7 @@ public class Camera {
 
     private Vector3f rotation = new Vector3f(-45, 0, 0);
     private Vector2f currentRotation = new Vector2f();
-    private Vector3f translation = new Vector3f(Settings.SCALE_XZ / 2 - 100, 1904.3679f, Settings.SCALE_XZ / 2 - 100);
+    private Vector3f translation = new Vector3f(Settings.Terrain.SCALE_XZ / 2 - 100, 1904.3679f, Settings.Terrain.SCALE_XZ / 2 - 100);
 
     private Matrix model = new Matrix(4);
     private Matrix projection = new Matrix(4);

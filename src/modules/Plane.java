@@ -3,6 +3,7 @@ package modules;
 import core.math.Vector;
 import core.math.Vector3f;
 import core.view.Camera;
+import tools.Context;
 import tools.Program;
 
 import java.util.ArrayList;
@@ -12,20 +13,14 @@ import static org.lwjgl.opengl.GL46.*;
 
 public class Plane extends Program {
 
-    private Camera camera;
-
-    private List<Vector> vectorList = new ArrayList<>();
-
-    public Plane(Camera camera) {
-        super("Plane", GL_STATIC_DRAW, GL_TRIANGLES);
-
-        setCamera(camera);
+    public Plane(Context context) {
+        super(context,"Plane", GL_STATIC_DRAW, GL_TRIANGLES);
 
         addSetting(GL_DEPTH_TEST);
 
-        this.camera = camera;
-
         int offset = 2;
+
+        List<Vector> vectorList = new ArrayList<>();
         for(int g = -100; g < 100; g += offset) {
             for(int h = -100; h < 100; h += offset) {
                 vectorList.add(new Vector3f(g, -100, h));
@@ -39,10 +34,11 @@ public class Plane extends Program {
 
         loadDataV("a_position_a", vectorList, 3);
 
-        addUniforms();
+        createUniforms();
     }
 
-    public void addUniforms() {
+    @Override
+    public void createUniforms() {
         addUniform("u_camera", getCamera().getCamera());
         addUniform("u_projection", getCamera().getProjection());
     }

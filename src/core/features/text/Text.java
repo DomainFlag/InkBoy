@@ -28,7 +28,6 @@ public final class Text  {
 
     private STBTTBakedChar.Buffer data;
 
-
     private final int ascent;
     private final int descent;
     private final int lineGap;
@@ -36,7 +35,9 @@ public final class Text  {
     private int width;
     private int height;
 
+    private String pathSourceName;
     private String text = null;
+
     private float widthText = 0.f;
     private int lineCount;
 
@@ -48,13 +49,14 @@ public final class Text  {
 
     private Context context;
 
-    public Text(Context context, String fontPathLocation, int fontHeight, String text) {
+    public Text(Context context, String pathSourceName, int fontHeight, String text) {
         this.context = context;
+        this.pathSourceName = pathSourceName;
 
         this.fontHeight = fontHeight;
         this.lineHeight = fontHeight;
 
-        this.ttf = InputFileReader.readFileResource(fontPathLocation);
+        this.ttf = InputFileReader.readFileResource(pathSourceName);
         this.info = STBTTFontinfo.create();
 
         if(!stbtt_InitFont(this.info, this.ttf)) {
@@ -119,7 +121,7 @@ public final class Text  {
         ByteBuffer bitmap = BufferUtils.createByteBuffer(this.width * this.height);
         stbtt_BakeFontBitmap(this.ttf, this.fontHeight * context.getScaleY(), bitmap, this.width, this.height, 32, this.data);
 
-        program.addTexture(bitmap, "u_texture", 0, this.width, this.height, GL_ALPHA, GL_CLAMP);
+        program.getContext().getContextTexture().addTexture(bitmap, this.pathSourceName, "u_texture", 0, this.width, this.height, GL_ALPHA, GL_CLAMP);
         program.addAttribute("a_position");
         program.addAttribute("a_texture");
     }

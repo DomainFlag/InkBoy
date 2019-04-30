@@ -56,6 +56,7 @@ public class Utilities {
 
     public static File[] listShaders(String pathDirectorySourceName) {
         File file = new File("res/shaders/" + pathDirectorySourceName);
+
         return file.listFiles();
     }
 
@@ -102,7 +103,7 @@ public class Utilities {
         return -1;
     }
 
-    public static final HashMap<String, Integer> SHADER_TYPES;
+    private static final HashMap<String, Integer> SHADER_TYPES;
 
     static {
         SHADER_TYPES = new HashMap<>();
@@ -112,5 +113,6 @@ public class Utilities {
         SHADER_TYPES.put(".frag", GL_FRAGMENT_SHADER);
         SHADER_TYPES.put(".tesc", GL_TESS_CONTROL_SHADER);
         SHADER_TYPES.put(".tese", GL_TESS_EVALUATION_SHADER);
+        SHADER_TYPES.put(".glsl", GL_COMPUTE_SHADER);
     }
 }

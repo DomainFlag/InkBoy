@@ -5,15 +5,11 @@ import core.math.Vector;
 import core.tools.Log;
 import core.view.Camera;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.system.MemoryStack;
 
 import static org.lwjgl.opengl.GL46.*;
-import static org.lwjgl.stb.STBImage.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,7 +20,6 @@ public abstract class Program {
 
     private HashMap<String, Integer> attributes = new HashMap<>();
     private HashMap<String, Integer> uniforms = new HashMap<>();
-    private HashMap<String, Integer> textures = new HashMap<>();
 
     private HashMap<String, Integer> buffers = new HashMap<>();
 
@@ -40,7 +35,8 @@ public abstract class Program {
     public int renderingType = GL_TRIANGLES;
     public int nb;
 
-    public Program(String pathProgram, Integer drawingType, Integer renderingType) {
+    public Program(Context context, String pathProgram, Integer drawingType, Integer renderingType) {
+        this.context = context;
         this.program = Utilities.createProgram(pathProgram);
 
         if(drawingType != null)
@@ -50,6 +46,7 @@ public abstract class Program {
             this.renderingType = renderingType;
 
         glUseProgram(this.program);
+        getContext().getContextTexture().bindProgram(this.program);
     }
 
     public Camera getCamera() {
@@ -156,8 +153,6 @@ public abstract class Program {
 
         if(!buffers.containsKey(bufferName)) {
             buffers.put(bufferName, buffer);
-        } else {
-//            Log.v(buffer);
         }
     }
 
@@ -180,7 +175,7 @@ public abstract class Program {
         return buffer;
     }
 
-    public void setTessellationShaders(int verticesPerPatch) {
+    public void setTessellationShader(int verticesPerPatch) {
         int[] parameters = new int[1];
         glGetIntegerv(GL_MAX_PATCH_VERTICES, parameters);
         glPatchParameteri(GL_PATCH_VERTICES, verticesPerPatch);
@@ -385,67 +380,6 @@ public abstract class Program {
         glUniform1i(uniform, value);
     }
 
-    public void addTexture(String pathSourceName, String name, int textureUnitIndex, int mode) {
-        MemoryStack stack = MemoryStack.stackGet();
-        IntBuffer w = stack.mallocInt(1);
-        IntBuffer h = stack.mallocInt(1);
-        IntBuffer comp = stack.mallocInt(1);
-
-
-        stbi_set_flip_vertically_on_load(true);
-        ByteBuffer image = stbi_load("./res/" + pathSourceName, w, h, comp, 4);
-        if(image == null) {
-            throw new RuntimeException("Failed to load a texture file!"
-                    + System.lineSeparator() + stbi_failure_reason() + " " + pathSourceName);
-        }
-
-        int width = w.get();
-        int height = h.get();
-
-        if(width == 0 || height == 0) {
-            throw new RuntimeException("Failed to load a texture file!"
-                    + System.lineSeparator() + stbi_failure_reason() + " " + pathSourceName);
-        }
-
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-        addTexture(image, name, textureUnitIndex, width, height, GL_RGBA, mode);
-
-        glGenerateMipmap(GL_TEXTURE_2D);
-
-        stbi_image_free(image);
-    }
-
-    public void addTexture(ByteBuffer image, String name, int textureUnitIndex, int width, int height, int type, int mode) {
-        int imageLoc = glGetUniformLocation(program, name);
-
-        glUniform1i(imageLoc, textureUnitIndex);
-        glActiveTexture(GL_TEXTURE0 + textureUnitIndex);
-
-        int tex = glGenTextures();
-        glBindTexture(GL_TEXTURE_2D, tex);
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        glTexImage2D(GL_TEXTURE_2D, 0, type, width, height, 0, type, GL_UNSIGNED_BYTE, image);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mode);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, mode);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    }
-
-    public void generateTexture(int index) {
-        int uniformTextureLoc = glGetUniformLocation(program, "u_texture[" + index + "]");
-        glUniform1i(uniformTextureLoc, index);
-        glActiveTexture(GL_TEXTURE0 + index);
-    }
-
-//    public void spawnTextures(String[] textures) {
-//        for(int it = 0; it < textures.length; it++) {
-//            generateTexture(it);
-//            addTexture(textures[it]);
-//        }
-//    }
-
     public void free() {
         removeSettings();
 
@@ -454,8 +388,12 @@ public abstract class Program {
         }
     }
 
-    public void render() {
+    public void useProgram() {
         glUseProgram(program);
+    }
+
+    public void render() {
+        useProgram();
         applySettings();
 
         draw();
@@ -466,6 +404,9 @@ public abstract class Program {
 
     public void clear() {}
 
+    public abstract void createUniforms();
+
     public abstract void updateUniforms();
+
     public abstract void draw();
 }

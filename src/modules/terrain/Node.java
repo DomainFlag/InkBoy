@@ -79,8 +79,8 @@ public class Node {
 	}
 
 	private Vector computeWorldPosition() {
-	    Vector4f loc = new Vector4f((float) (location.get(0) + span / 2.0f) * Settings.SCALE_XZ, 0,
-                (float) (location.get(1) + span / 2.0f) * Settings.SCALE_XZ, 1.0f);
+	    Vector4f loc = new Vector4f((float) (location.get(0) + span / 2.0f) * Settings.Terrain.SCALE_XZ, 0,
+                (float) (location.get(1) + span / 2.0f) * Settings.Terrain.SCALE_XZ, 1.0f);
 
         return camera.getCamera().multiplyVector(loc);
     }
@@ -90,7 +90,7 @@ public class Node {
     }
 
     private void addNodes() {
-        if(cameraDist < Settings.TERRAIN_THRESHOLDS[lod]) {
+        if(cameraDist < Settings.Terrain.TERRAIN_THRESHOLDS[lod]) {
             addNodes(lod);
         } else if(lod > 0) {
             removeNodes();

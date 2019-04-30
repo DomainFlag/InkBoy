@@ -1,5 +1,6 @@
-package core.features.light;
+package core.features.light.lighting;
 
+import core.features.light.Light;
 import core.math.Vector3f;
 import tools.Program;
 
@@ -52,7 +53,7 @@ public class DirectionalLight extends Lighting {
 
     public void update() {
         // Update directional light direction, intensity and colour
-        lightAngle += 0.1f;
+        lightAngle += 0.01f;
 
         if(lightAngle > 90) {
             setIntensity(0);
@@ -91,6 +92,6 @@ public class DirectionalLight extends Lighting {
         program.updateUniform(uniformName + ".direction", getDirection());
         program.updateUniform(uniformName + ".intensity", getIntensity());
 
-        this.update();
+//        this.update();
     }
 }

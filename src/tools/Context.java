@@ -1,8 +1,7 @@
 package tools;
 
-import core.tools.Log;
 import org.lwjgl.system.MemoryStack;
-import org.lwjgl.system.Platform;
+import tools.texture.ContextTexture;
 
 import java.nio.FloatBuffer;
 
@@ -12,6 +11,8 @@ import static org.lwjgl.system.MemoryStack.stackPush;
 
 public class Context {
 
+    private ContextTexture contextTexture = new ContextTexture();
+
     private long monitor;
 
     private float scaleX, scaleY;
@@ -20,6 +21,10 @@ public class Context {
         this.monitor = monitor;
 
         setScale();
+    }
+
+    public ContextTexture getContextTexture() {
+        return contextTexture;
     }
 
     public float getScaleX() {
