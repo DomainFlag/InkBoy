@@ -16,12 +16,16 @@ void main() {
 
     float texture_size = 1.0 / u_size;
 
-    float zs[8];
-    for(int g = -1; g <= 1; g++) {
-        for (int h = -1; h <= 1; h++) {
-            zs[(g + 1) * 3 + h + 1] = texture(u_height_map, texture_coordinate + vec2(h * texture_size, g * texture_size)).r;
-        }
-    }
+    float zs[8] = {
+        texture(u_height_map, texture_coordinate + vec2(-texture_size, -texture_size)).r,
+        texture(u_height_map, texture_coordinate + vec2(0, -texture_size)).r,
+        texture(u_height_map, texture_coordinate + vec2(texture_size, -texture_size)).r,
+        texture(u_height_map, texture_coordinate + vec2(-texture_size, 0)).r,
+        texture(u_height_map, texture_coordinate + vec2(texture_size, 0)).r,
+        texture(u_height_map, texture_coordinate + vec2(-texture_size, texture_size)).r,
+        texture(u_height_map, texture_coordinate + vec2(0, texture_size)).r,
+        texture(u_height_map, texture_coordinate + vec2(texture_size, texture_size)).r
+    };
 
     vec3 normal;
 
@@ -31,5 +35,5 @@ void main() {
     normal.y = zs[0] + 2 * zs[1] + zs[2] - zs[5] - 2 * zs[6] - zs[7];
 
     // data​ will be written into the image at the given coordinate, using format conversion glBindImageTexture(GL_RGBA32F)
-    imageStore(u_normal_map, coordinate, vec4((normalize(normal) + 1) / 2, 1));
+    imageStore(u_normal_map, coordinate, vec4((normalize(normal) + 1.0) / 2.0, 1));
 }

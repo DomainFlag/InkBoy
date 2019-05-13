@@ -114,7 +114,6 @@ public class Light {
             for(int g = 0; g < lights.size(); g++) {
                 Lighting lighting = lights.get(g);
 
-                Log.v(bindings[light.getKey()] + "[" + g + "]");
                 lighting.createUniforms(program,  bindings[light.getKey()] + "[" + g + "]");
             }
         }

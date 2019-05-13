@@ -1,6 +1,9 @@
 import core.Settings;
 import modules.display.Display;
 import modules.fighter.Fighter;
+import modules.primitive.BezierCurve;
+import modules.primitive.Quad;
+import modules.primitive.Triangle;
 import modules.terrain.Terrain;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -105,23 +108,25 @@ public class Window {
                 camera.cursorPosCallback(xpos, ypos);
         });
 
-        // Get the thread stack and push a new frame
-        try(MemoryStack stack = stackPush()) {
-            IntBuffer pWidth = stack.mallocInt(1); // int*
-            IntBuffer pHeight = stack.mallocInt(1); // int*
+        if(vidmode != null) {
+            // Get the thread stack and push a new frame
+            try(MemoryStack stack = stackPush()) {
+                IntBuffer width = stack.mallocInt(1);
+                IntBuffer height = stack.mallocInt(1);
 
-            // Get the window size passed to glfwCreateWindow
-            glfwGetWindowSize(window, pWidth, pHeight);
+                // Get the window size passed to glfwCreateWindow
+                glfwGetWindowSize(window, width, height);
 
-            // Center the window
-            glfwSetWindowPos(
-                    window,
-                    (vidmode.width() - pWidth.get(0)) / 2,
-                    (vidmode.height() - pHeight.get(0)) / 2
-            );
+                // Center the window
+                glfwSetWindowPos(
+                        window,
+                        (vidmode.width() - width.get(0)) / 2,
+                        (vidmode.height() - height.get(0)) / 2
+                );
+            }
+
+            // the stack frame is popped automatically
         }
-
-        // the stack frame is popped automatically
 
         // Make the OpenGL context current
         glfwMakeContextCurrent(window);
@@ -142,14 +147,14 @@ public class Window {
         GL.createCapabilities();
 
         Log.v("OpenGL version: " + GL11.glGetString(GL11.GL_VERSION));
-        Log.v("InkMan " + Version.getVersion() + "! on shading language:" + glGetString(GL_SHADING_LANGUAGE_VERSION));
+        Log.v("InkBoy " + Version.getVersion() + "! on shading language:" + glGetString(GL_SHADING_LANGUAGE_VERSION));
 
         camera = new Camera(Settings.WIDTH, Settings.HEIGHT);
 
         // Generating the programs that need to be rendered
         programs.addAll(
                 Arrays.asList(
-                        new Terrain(context, camera)
+                        new Triangle(context)
                 )
         );
 

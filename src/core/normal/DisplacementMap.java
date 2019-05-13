@@ -8,9 +8,7 @@ import tools.texture.Texture;
 import static org.lwjgl.opengl.GL11.glFinish;
 import static org.lwjgl.opengl.GL15.GL_WRITE_ONLY;
 import static org.lwjgl.opengl.GL30.GL_RGBA32F;
-import static org.lwjgl.opengl.GL42.GL_SHADER_IMAGE_ACCESS_BARRIER_BIT;
 import static org.lwjgl.opengl.GL42.glBindImageTexture;
-import static org.lwjgl.opengl.GL42.glMemoryBarrier;
 import static org.lwjgl.opengl.GL43.glDispatchCompute;
 
 public class DisplacementMap extends Program {

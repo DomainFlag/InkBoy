@@ -25,7 +25,7 @@ uniform DirectionalLight u_directional_light[MAX_LIGHTS];
 
 vec4 setupLightColor(vec3 to_light_direction, vec3 normal, vec3 light_colour, float light_intensity) {
 	// retain factor when both normal and the direction from position to light source are in the same direction -90 <-> 90
-	float diffuseFactor = max(dot(normal, to_light_direction), 0.25);
+	float diffuseFactor = max(dot(normal, to_light_direction), 0.01);
 
 	// diffuse light
 	vec4 diffuse_color = vec4(light_colour, 1.0) * light_intensity * diffuseFactor;
@@ -39,13 +39,13 @@ vec4 setDirectionalLight(DirectionalLight directional_light, vec3 normal) {
 		return vec4(0, 0, 0, 0);
 
 	/* Directional light direction */
-	vec3 directional_light_direction = (u_camera * vec4(directional_light.direction.xyz, 0)).xyz;
+	vec3 directional_light_direction = vec4(directional_light.direction.xyz, 0).xyz;
 
 	return setupLightColor(-normalize(directional_light_direction), normal, directional_light.colour, directional_light.intensity);
 }
 
 void main() {
-	vec3 normal = texture(u_normal_map, normal_map_coord_fs).rgb;
+	vec3 normal = normalize(texture(u_normal_map, normal_map_coord_fs).rgb * 2.0 - 1.0);
 
 	vec4 diffuseSpecularComp = vec4(0, 0, 0, 0);
 

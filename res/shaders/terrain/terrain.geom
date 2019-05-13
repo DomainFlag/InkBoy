@@ -5,7 +5,6 @@ layout(triangles) in;
 layout(triangle_strip, max_vertices = 3) out;
 
 in vec2 normal_map_coord_gs[];
-
 out vec2 normal_map_coord_fs;
 
 uniform mat4 u_projection;

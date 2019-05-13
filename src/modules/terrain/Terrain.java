@@ -13,8 +13,6 @@ import tools.texture.Texture;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
-import static org.lwjgl.opengl.GL42.GL_SHADER_IMAGE_ACCESS_BARRIER_BIT;
-import static org.lwjgl.opengl.GL42.glMemoryBarrier;
 
 public class Terrain extends Program {
 
@@ -39,7 +37,7 @@ public class Terrain extends Program {
         this.light.setLighting(new DirectionalLight(
                 new Vector3f(0.9f, 0.8f, 0.02f),
                 new Vector3f(0, -1.0f, 0),
-                1.0f
+                4.0f
         ));
 
         this.displacementMap = new DisplacementMap(context, texture);
