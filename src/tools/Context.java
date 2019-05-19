@@ -1,5 +1,6 @@
 package tools;
 
+import core.view.Camera;
 import org.lwjgl.system.MemoryStack;
 import tools.texture.ContextTexture;
 
@@ -12,6 +13,7 @@ import static org.lwjgl.system.MemoryStack.stackPush;
 public class Context {
 
     private ContextTexture contextTexture = new ContextTexture();
+    private Camera camera;
 
     private long monitor;
 
@@ -25,6 +27,14 @@ public class Context {
 
     public ContextTexture getContextTexture() {
         return contextTexture;
+    }
+
+    public Camera getCamera() {
+        return camera;
+    }
+
+    public void setCamera(Camera camera) {
+        this.camera = camera;
     }
 
     public float getScaleX() {

@@ -1,7 +1,7 @@
 #version 430
 
 // 256 invocations
-layout (local_size_x = 16, local_size_y = 16) in;
+layout (local_size_x = 32, local_size_y = 32) in;
 
 layout (binding = 1, rgba32f) uniform writeonly image2D u_normal_map;
 
@@ -11,7 +11,7 @@ uniform float u_normal_strength;
 uniform int u_size;
 
 void main() {
-    ivec2 coordinate = ivec2(gl_GlobalInvocationID.xy);
+    vec2 coordinate = gl_GlobalInvocationID.xy;
     vec2 texture_coordinate = gl_GlobalInvocationID.xy / float(u_size);
 
     float texture_size = 1.0 / u_size;
@@ -20,8 +20,10 @@ void main() {
         texture(u_height_map, texture_coordinate + vec2(-texture_size, -texture_size)).r,
         texture(u_height_map, texture_coordinate + vec2(0, -texture_size)).r,
         texture(u_height_map, texture_coordinate + vec2(texture_size, -texture_size)).r,
+
         texture(u_height_map, texture_coordinate + vec2(-texture_size, 0)).r,
         texture(u_height_map, texture_coordinate + vec2(texture_size, 0)).r,
+
         texture(u_height_map, texture_coordinate + vec2(-texture_size, texture_size)).r,
         texture(u_height_map, texture_coordinate + vec2(0, texture_size)).r,
         texture(u_height_map, texture_coordinate + vec2(texture_size, texture_size)).r
@@ -35,5 +37,5 @@ void main() {
     normal.y = zs[0] + 2 * zs[1] + zs[2] - zs[5] - 2 * zs[6] - zs[7];
 
     // data​ will be written into the image at the given coordinate, using format conversion glBindImageTexture(GL_RGBA32F)
-    imageStore(u_normal_map, coordinate, vec4((normalize(normal) + 1.0) / 2.0, 1));
+    imageStore(u_normal_map, ivec2(coordinate), vec4(normalize(normal), 1));
 }

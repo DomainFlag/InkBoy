@@ -3,7 +3,6 @@ package tools;
 import core.math.Matrix;
 import core.math.Vector;
 import core.tools.Log;
-import core.view.Camera;
 import org.lwjgl.BufferUtils;
 
 import static org.lwjgl.opengl.GL46.*;
@@ -24,8 +23,6 @@ public abstract class Program {
     private HashMap<String, Integer> buffers = new HashMap<>();
 
     private Set<Integer> parameters = new HashSet<>();
-
-    private Camera camera;
 
     private Context context;
 
@@ -49,16 +46,8 @@ public abstract class Program {
         getContext().getContextTexture().bindProgram(this.program);
     }
 
-    public Camera getCamera() {
-        return camera;
-    }
-
     public Context getContext() {
         return context;
-    }
-
-    public void setCamera(Camera camera) {
-        this.camera = camera;
     }
 
     public void setContext(Context context) {

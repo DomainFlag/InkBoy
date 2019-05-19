@@ -39,14 +39,14 @@ public class Plane extends Program {
 
     @Override
     public void createUniforms() {
-        addUniform("u_camera", getCamera().getCamera());
-        addUniform("u_projection", getCamera().getProjection());
+        addUniform("u_camera", getContext().getCamera().getCamera());
+        addUniform("u_projection", getContext().getCamera().getProjection());
     }
 
     @Override
     public void updateUniforms() {
-        updateUniform("u_camera", getCamera().getCamera());
-        updateUniform("u_projection", getCamera().getProjection());
+        updateUniform("u_camera", getContext().getCamera().getCamera());
+        updateUniform("u_projection", getContext().getCamera().getProjection());
     }
 
     @Override

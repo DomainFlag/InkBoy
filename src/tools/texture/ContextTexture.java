@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_LINEAR;
+import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL20.glGetUniformLocation;
@@ -36,29 +37,33 @@ public class ContextTexture {
         this.program = program;
     }
 
+    public Texture getTexture(String pathSourceName) {
+        return textures.get(pathSourceName);
+    }
+
     public Texture addTexture(String pathSourceName, String uniformName, int textureUnitIndex, int mode) {
         Texture texture = new Texture();
         ByteBuffer image = texture.fetchTexture(pathSourceName);
 
-        addTexture(texture, image, uniformName, textureUnitIndex, GL_RGBA, mode);
+        addTexture(texture, image, uniformName, textureUnitIndex, mode);
 
-        stbi_image_free(image);
+//        stbi_image_free(image);
 
         textures.put(pathSourceName, texture);
 
         return texture;
     }
 
-    public Texture addTexture(ByteBuffer image, String pathSourceName, String uniformName, int textureUnitIndex, int width, int height, int type, int mode) {
+    public Texture addTexture(ByteBuffer image, String pathSourceName, String uniformName, int textureUnitIndex, int width, int height, int mode) {
         Texture texture = new Texture(width, height);
-        addTexture(texture, image, uniformName, textureUnitIndex, type, mode);
+        addTexture(texture, image, uniformName, textureUnitIndex, mode);
 
         textures.put(pathSourceName, texture);
 
         return texture;
     }
 
-    private void addTexture(Texture texture, ByteBuffer image, String uniformName, int textureUnitIndex, int type, int mode) {
+    private void addTexture(Texture texture, ByteBuffer image, String uniformName, int textureUnitIndex, int mode) {
         Texture.Dimension dimension = texture.getDimension();
 
         int imageLoc = glGetUniformLocation(program, uniformName);
@@ -68,7 +73,8 @@ public class ContextTexture {
 
         glBindTexture(GL_TEXTURE_2D, texture.getTextureName());
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        glTexImage2D(GL_TEXTURE_2D, 0, type, dimension.getWidth(), dimension.getHeight(), 0, type, GL_UNSIGNED_BYTE, image);
+        glTexImage2D(GL_TEXTURE_2D, 0, texture.getType(), dimension.getWidth(), dimension.getHeight(),
+                0, texture.getType(), GL_UNSIGNED_BYTE, image);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mode);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, mode);
@@ -85,17 +91,6 @@ public class ContextTexture {
         glActiveTexture(GL_TEXTURE0 + textureUnitIndex);
 
         glBindTexture(GL_TEXTURE_2D, texture.getTextureName());
-    }
-
-    public void bindTexture(Texture texture, String uniformName, int textureUnitIndex, int size) {
-        int imageLoc = glGetUniformLocation(program, uniformName);
-
-        glUniform1i(imageLoc, textureUnitIndex);
-        glActiveTexture(GL_TEXTURE0 + textureUnitIndex);
-
-        glBindTexture(GL_TEXTURE_2D, texture.getTextureName());
-
-        glTexStorage2D(GL_TEXTURE_2D, (int) (Math.log(size) / Math.log(2)), GL_RGBA32F, size, size);
     }
 
     public void generateTexture(int index) {

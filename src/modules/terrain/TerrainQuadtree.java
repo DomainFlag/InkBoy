@@ -1,9 +1,8 @@
 package modules.terrain;
 
+import core.math.Vector;
 import core.math.Vector2f;
-import core.math.Vector4f;
-import core.tools.Log;
-import core.view.Camera;
+import tools.Context;
 import tools.Program;
 
 public class TerrainQuadtree {
@@ -12,13 +11,17 @@ public class TerrainQuadtree {
 
     private Node rootNode;
 
-    public TerrainQuadtree(Camera camera) {
-        rootNode = new Node(camera);
+    public TerrainQuadtree(Context context) {
+        rootNode = new Node(context);
+
+        float span = 1.0f / (TerrainQuadtree.rootNodeCount * 2.0f);
 
         for(int g = 0; g < rootNodeCount; g++) {
             for(int h = 0; h < rootNodeCount; h++) {
-                Vector2f location = new Vector2f((float) g / rootNodeCount, (float) h / rootNodeCount);
-                Node node = new Node(camera, location, location, null, 0);
+                Vector location = new Vector2f((float) g / rootNodeCount, (float) h / rootNodeCount);
+                Vector center = Vector.addition(location, new Vector2f(span, span));
+
+                Node node = new Node(context, location, center, new Vector2f(g % 2, h % 2), 0);
 
                 rootNode.getChildren().add(node);
             }

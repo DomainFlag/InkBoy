@@ -4,7 +4,6 @@ layout(location = 0) out vec4 outColor;
 
 in vec2 normal_map_coord_fs;
 
-uniform mat4 u_camera;
 uniform sampler2D u_normal_map;
 
 // max lighting
@@ -41,12 +40,11 @@ vec4 setDirectionalLight(DirectionalLight directional_light, vec3 normal) {
 	/* Directional light direction */
 	vec3 directional_light_direction = vec4(directional_light.direction.xyz, 0).xyz;
 
-	return setupLightColor(-normalize(directional_light_direction), normal, directional_light.colour, directional_light.intensity);
+	return setupLightColor(normalize(directional_light_direction), normal, directional_light.colour, directional_light.intensity);
 }
 
 void main() {
-	vec3 normal = normalize(texture(u_normal_map, normal_map_coord_fs).rgb * 2.0 - 1.0);
-
+	vec3 normal = texture(u_normal_map, normal_map_coord_fs).rgb;
 	vec4 diffuseSpecularComp = vec4(0, 0, 0, 0);
 
 	for(int g = 0; g < MAX_LIGHTS; g++) {

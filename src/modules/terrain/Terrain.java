@@ -22,22 +22,21 @@ public class Terrain extends Program {
 
     private Light light = new Light();
 
-	public Terrain(Context context, Camera camera) {
+	public Terrain(Context context) {
 		super(context, "terrain", GL_DYNAMIC_DRAW, GL_TRIANGLES);
-
-		setCamera(camera);
 
         addSetting(GL_DEPTH_TEST);
         addSetting(GL_CULL_FACE);
 
-        setTessellationShader(3);
+        setTessellationShader(4);
 
-        Texture texture = getContext().getContextTexture().addTexture("heightmaps/heightmap.bmp", "u_texture", 0, GL_CLAMP_TO_EDGE);
+        Texture texture = getContext().getContextTexture().addTexture("heightmaps/heightmap.bmp",
+                "u_texture", 0, GL_CLAMP_TO_EDGE);
 
         this.light.setLighting(new DirectionalLight(
                 new Vector3f(0.9f, 0.8f, 0.02f),
-                new Vector3f(0, -1.0f, 0),
-                4.0f
+                new Vector3f(0, -1.0f, 1.0f),
+                1.0f
         ));
 
         this.displacementMap = new DisplacementMap(context, texture);
@@ -45,7 +44,7 @@ public class Terrain extends Program {
 
         useProgram();
 
-        this.terrainQuadtree = new TerrainQuadtree(camera);
+        this.terrainQuadtree = new TerrainQuadtree(context);
 
         createUniforms();
 	}
@@ -55,7 +54,7 @@ public class Terrain extends Program {
         this.light.createUniforms(this);
 
         addUniform("u_scale", Settings.Terrain.SCALE_XZ);
-        addUniform("u_height", Settings.Terrain.HEIGHT);
+        addUniform("u_height", Settings.Terrain.MAX_HEIGHT);
         addUniform("u_center");
         addUniform("u_location");
         addUniform("u_index");
@@ -66,9 +65,9 @@ public class Terrain extends Program {
             addUniform("u_morphing_thresholds[" + g + "]", Settings.Terrain.TERRAIN_THRESHOLDS[g]);
         }
 
-        addUniform("u_camera", getCamera().getCamera());
-        addUniform("u_projection", getCamera().getProjection());
-        addUniform("u_model", getCamera().getModel());
+        addUniform("u_camera", getContext().getCamera().getCamera());
+        addUniform("u_projection", getContext().getCamera().getProjection());
+        addUniform("u_model", getContext().getCamera().getModel());
     }
 
     public void updateUniforms() {
@@ -77,9 +76,9 @@ public class Terrain extends Program {
 	    getContext().getContextTexture().bindProgram(this.program);
 	    getContext().getContextTexture().bindTexture(this.displacementMap.getNormalMap(), "u_normal_map", 1);
 
-        updateUniform("u_camera", getCamera().getCamera());
-        updateUniform("u_projection", getCamera().getProjection());
-        updateUniform("u_model", getCamera().getModel());
+        updateUniform("u_camera", getContext().getCamera().getCamera());
+        updateUniform("u_projection", getContext().getCamera().getProjection());
+        updateUniform("u_model", getContext().getCamera().getModel());
     }
 
     @Override

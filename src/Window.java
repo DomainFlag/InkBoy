@@ -147,14 +147,17 @@ public class Window {
         GL.createCapabilities();
 
         Log.v("OpenGL version: " + GL11.glGetString(GL11.GL_VERSION));
-        Log.v("InkBoy " + Version.getVersion() + "! on shading language:" + glGetString(GL_SHADING_LANGUAGE_VERSION));
+        Log.v("InkBoy " + Version.getVersion() + "! on shading language: " + glGetString(GL_SHADING_LANGUAGE_VERSION));
+        Log.v("Max compute work group invocations: " + GL11.glGetInteger(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS));
+        Log.v("Max texture image units: " + GL11.glGetInteger(GL_MAX_TEXTURE_IMAGE_UNITS));
 
         camera = new Camera(Settings.WIDTH, Settings.HEIGHT);
+        context.setCamera(camera);
 
         // Generating the programs that need to be rendered
         programs.addAll(
                 Arrays.asList(
-                        new Triangle(context)
+                        new Terrain(context)
                 )
         );
 

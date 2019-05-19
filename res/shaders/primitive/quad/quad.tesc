@@ -7,8 +7,8 @@ const int BC = 2;
 const int CD = 3;
 const int DA = 0;
 
-const int TESSELATION_OUTER_FACTOR = 16;
-const int TESSELATION_INNER_FACTOR = 16;
+const int TESSELATION_OUTER_FACTOR = 1;
+const int TESSELATION_INNER_FACTOR = 1;
 
 void main() {
     //           3

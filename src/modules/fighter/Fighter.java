@@ -20,8 +20,8 @@ public class Fighter extends Model {
 
     private Matrix model = new Matrix(4);
 
-	public Fighter(Context context, Camera camera) {
-		super(context, "fighter", GL_STATIC_DRAW, GL_TRIANGLES, "cube");
+	public Fighter(Context context) {
+		super(context, "fighter", GL_STATIC_DRAW, GL_TRIANGLES, "x-fighter");
 
         /* Point Light */
 		this.light.setLighting(
@@ -36,7 +36,7 @@ public class Fighter extends Model {
 		/* Directional Light */
         this.light.setLighting(
                 new DirectionalLight(
-                        new Vector3f(1.0f, 1.0f, 1.0f),
+                        new Vector3f(0.3f, 0.3f, 0.3f),
                         new Vector3f(-1.0f, 0, 0.0f),
                         1.0f
                 )
@@ -46,7 +46,7 @@ public class Fighter extends Model {
         this.light.setLighting(
                 new SpotLight(
                         new PointLight(
-                                new Vector3f(1.0f, 1.0f, 1.0f),
+                                new Vector3f(0.3f, 0.3f, 0.3f),
                                 new Vector4f(0.0f, 0.0f, 4.0f, 1.0f),
                                 new PointLight.Attenuation(1.0f, 0.5f, 0.5f),
                                 1.0f
@@ -69,8 +69,6 @@ public class Fighter extends Model {
                 )
         );
 
-		setCamera(camera);
-
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         addSetting(GL_BLEND);
@@ -83,8 +81,8 @@ public class Fighter extends Model {
     public void createUniforms() {
         this.light.createUniforms(this);
 
-        addUniform("u_camera", getCamera().getCamera());
-        addUniform("u_projection", getCamera().getProjection());
+        addUniform("u_camera", getContext().getCamera().getCamera());
+        addUniform("u_projection", getContext().getCamera().getProjection());
         addUniform("u_model", model);
     }
 
@@ -92,8 +90,8 @@ public class Fighter extends Model {
 	public void updateUniforms() {
 	    this.light.updateUniforms(this);
 
-        updateUniform("u_camera", getCamera().getCamera());
-        updateUniform("u_projection", getCamera().getProjection());
+        updateUniform("u_camera", getContext().getCamera().getCamera());
+        updateUniform("u_projection", getContext().getCamera().getProjection());
         updateUniform("u_model", model);
     }
 

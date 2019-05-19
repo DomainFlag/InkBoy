@@ -2,6 +2,7 @@ package tools;
 
 import core.features.obj.Material;
 import core.features.obj.Obj;
+import core.tools.Log;
 
 public abstract class Model extends Program {
 

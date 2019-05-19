@@ -1,7 +1,7 @@
 #version 430
 
 layout(triangles) in;
-//layout(line_strip, max_vertices = 4) out;
+// layout(line_strip, max_vertices = 4) out;
 layout(triangle_strip, max_vertices = 3) out;
 
 in vec2 normal_map_coord_gs[];

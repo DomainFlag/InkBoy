@@ -121,7 +121,7 @@ public final class Text  {
         ByteBuffer bitmap = BufferUtils.createByteBuffer(this.width * this.height);
         stbtt_BakeFontBitmap(this.ttf, this.fontHeight * context.getScaleY(), bitmap, this.width, this.height, 32, this.data);
 
-        program.getContext().getContextTexture().addTexture(bitmap, this.pathSourceName, "u_texture", 0, this.width, this.height, GL_ALPHA, GL_CLAMP);
+        program.getContext().getContextTexture().addTexture(bitmap, this.pathSourceName, "u_texture", 0, this.width, this.height, GL_CLAMP);
         program.addAttribute("a_position");
         program.addAttribute("a_texture");
     }
