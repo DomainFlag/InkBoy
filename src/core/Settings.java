@@ -18,8 +18,8 @@ public class Settings {
 
     public static final class Terrain {
 
-        public static final int MIN_HEIGHT = 0;
-        public static final int MAX_HEIGHT = 900;
+        public static final float MIN_HEIGHT = 0;
+        public static final float MAX_HEIGHT = 900;
 
         public static final int TERRAIN_DRAWING_TYPE = GL_PATCHES;
 

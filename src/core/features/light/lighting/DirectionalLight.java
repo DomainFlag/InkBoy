@@ -91,7 +91,5 @@ public class DirectionalLight extends Lighting {
         program.updateUniform(uniformName + ".colour", getColor());
         program.updateUniform(uniformName + ".direction", getDirection());
         program.updateUniform(uniformName + ".intensity", getIntensity());
-
-//        this.update();
     }
 }

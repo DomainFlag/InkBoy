@@ -5,9 +5,10 @@ import core.features.light.Light;
 import core.features.light.lighting.DirectionalLight;
 import core.math.Vector3f;
 import core.normal.DisplacementMap;
-import core.view.Camera;
+import core.tools.Log;
 import tools.Context;
 import tools.Program;
+import tools.texture.material.MaterialTexture;
 import tools.texture.Texture;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -28,23 +29,27 @@ public class Terrain extends Program {
         addSetting(GL_DEPTH_TEST);
         addSetting(GL_CULL_FACE);
 
-        setTessellationShader(4);
-
         Texture texture = getContext().getContextTexture().addTexture("heightmaps/heightmap.bmp",
                 "u_texture", 0, GL_CLAMP_TO_EDGE);
 
         this.light.setLighting(new DirectionalLight(
-                new Vector3f(0.9f, 0.8f, 0.02f),
-                new Vector3f(0, -1.0f, 1.0f),
+                new Vector3f(1.0f, 1.0f, 1.0f),
+                new Vector3f(0, 1.0f, 0f),
                 1.0f
         ));
 
         this.displacementMap = new DisplacementMap(context, texture);
+        this.displacementMap.useProgram();
         this.displacementMap.draw();
 
         useProgram();
 
         this.terrainQuadtree = new TerrainQuadtree(context);
+
+        MaterialTexture.setMaterialTextures(getContext().getContextTexture(), this, new MaterialTexture[] {
+                new MaterialTexture("textures/terrain/grass0", 0.35f, 200.0f),
+                new MaterialTexture("textures/terrain/ground0", 1.85f, 300.0f)
+        }, "u_material_textures");
 
         createUniforms();
 	}
@@ -60,6 +65,10 @@ public class Terrain extends Program {
         addUniform("u_index");
         addUniform("u_span");
         addUniform("u_lod");
+
+        // texture material
+        addUniform("u_distance", 300.0f);
+        addUniform("u_factor", 0.35f);
 
         for(int g = 0; g < Settings.Terrain.TERRAIN_THRESHOLDS.length; g++) {
             addUniform("u_morphing_thresholds[" + g + "]", Settings.Terrain.TERRAIN_THRESHOLDS[g]);

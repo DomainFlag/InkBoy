@@ -3,11 +3,18 @@
 layout(location = 0) out vec4 outColor;
 
 in vec2 normal_map_coord_fs;
+in vec3 tangent_fs;
+in vec4 position_fs;
 
 uniform sampler2D u_normal_map;
 
+uniform mat4 u_camera;
+
 // max lighting
 const int MAX_LIGHTS = 6;
+
+// number of materials allowed
+const int MAX_MATERIALS = 5;
 
 // directional lighting, light coming from a direction with constant intensity
 struct DirectionalLight {
@@ -15,6 +22,23 @@ struct DirectionalLight {
 	vec3 direction;
 	float intensity;
 };
+
+// texture materials for terrain
+struct MaterialTexture {
+    sampler2D diffuse;
+    sampler2D normal;
+    sampler2D displacement;
+
+    float vertical_scale;
+    float horizontal_scale;
+};
+
+uniform MaterialTexture u_material_textures[MAX_MATERIALS];
+
+uniform int u_materials_length;
+uniform float u_distance;
+uniform float u_attenuation;
+uniform float u_exponent;
 
 // ambient dominant colour light
 uniform vec3 u_ambient_light;
@@ -24,7 +48,7 @@ uniform DirectionalLight u_directional_light[MAX_LIGHTS];
 
 vec4 setupLightColor(vec3 to_light_direction, vec3 normal, vec3 light_colour, float light_intensity) {
 	// retain factor when both normal and the direction from position to light source are in the same direction -90 <-> 90
-	float diffuseFactor = max(dot(normal, to_light_direction), 0.01);
+	float diffuseFactor = max(0, dot(to_light_direction, normal));
 
 	// diffuse light
 	vec4 diffuse_color = vec4(light_colour, 1.0) * light_intensity * diffuseFactor;
@@ -38,13 +62,34 @@ vec4 setDirectionalLight(DirectionalLight directional_light, vec3 normal) {
 		return vec4(0, 0, 0, 0);
 
 	/* Directional light direction */
-	vec3 directional_light_direction = vec4(directional_light.direction.xyz, 0).xyz;
+	vec3 directional_light_direction = normalize((u_camera * vec4(directional_light.direction.xyz, 0)).xyz);
 
-	return setupLightColor(normalize(directional_light_direction), normal, directional_light.colour, directional_light.intensity);
+	return setupLightColor(directional_light_direction, normal, directional_light.colour, directional_light.intensity);
 }
 
 void main() {
-	vec3 normal = texture(u_normal_map, normal_map_coord_fs).rgb;
+	vec3 normal = normalize(texture(u_normal_map, normal_map_coord_fs).rgb);
+
+    int size = min(MAX_MATERIALS, u_materials_length);
+    float offset = 1.0 / size;
+
+    int index = int(floor(abs(normal.y) / offset));
+
+    vec2 texture_coordinate = normal_map_coord_fs * u_material_textures[index].horizontal_scale;
+
+    vec3 material_color = texture(u_material_textures[index].diffuse, texture_coordinate).rgb;
+    vec3 bump_normal = texture(u_material_textures[index].normal, normal_map_coord_fs).rgb * 2.0 - 1.0;
+
+    // bitangent one of the two possible vectors
+    vec3 bitangent = normalize(cross(tangent_fs, normal));
+
+    // tbn matrix
+    mat3 tbn = mat3(tangent_fs, bitangent, normal);
+
+    // update normal direction
+    normal = normalize(tbn * bump_normal);
+
+    // lighting
 	vec4 diffuseSpecularComp = vec4(0, 0, 0, 0);
 
 	for(int g = 0; g < MAX_LIGHTS; g++) {
@@ -52,5 +97,5 @@ void main() {
 		diffuseSpecularComp += setDirectionalLight(u_directional_light[g], normal);
 	}
 
-	outColor = vec4(u_ambient_light, 1) + diffuseSpecularComp;
+	outColor = vec4(u_ambient_light + material_color, 1) * diffuseSpecularComp;
 }

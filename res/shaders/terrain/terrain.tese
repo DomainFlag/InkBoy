@@ -22,7 +22,6 @@ void main() {
     + (1 - u) * v * gl_in[2].gl_Position
     + u * v * gl_in[3].gl_Position;
 
-
     normal_map_coord_gs = (1 - u) * (1 - v) * normal_map_coord_te[0]
     + u * (1 - v) * normal_map_coord_te[1]
     + (1 - u) * v * normal_map_coord_te[2]

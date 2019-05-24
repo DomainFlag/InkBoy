@@ -12,7 +12,7 @@ uniform mat4 u_model;
 uniform mat4 u_camera;
 
 // max model materials
-const int MAX_MATERIALS = 32;
+const int MAX_MATERIALS = 16;
 
 // max lighting
 const int MAX_LIGHTS = 6;

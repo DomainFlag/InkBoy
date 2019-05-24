@@ -9,9 +9,7 @@ import java.nio.IntBuffer;
 import static org.lwjgl.opengl.GL11.GL_RGB;
 import static org.lwjgl.opengl.GL11.GL_RGBA;
 import static org.lwjgl.opengl.GL11.glGenTextures;
-import static org.lwjgl.stb.STBImage.stbi_failure_reason;
-import static org.lwjgl.stb.STBImage.stbi_load;
-import static org.lwjgl.stb.STBImage.stbi_set_flip_vertically_on_load;
+import static org.lwjgl.stb.STBImage.*;
 import static org.lwjgl.system.MemoryStack.stackPush;
 
 public class Texture {
@@ -84,7 +82,13 @@ public class Texture {
         }
     }
 
-    public float getHeight(int x, int z, int minHeight, int maxHeight) {
+    public void removeTexture() {
+        if(this.byteBuffer != null) {
+            stbi_image_free(this.byteBuffer);
+        }
+    }
+
+    public float getHeight(int x, int z, float minHeight, float maxHeight) {
         ByteBuffer byteBuffer = getByteBuffer();
         int width = getDimension().getWidth();
         int channels = getChannels();
@@ -104,7 +108,7 @@ public class Texture {
         return minHeight + Math.abs(maxHeight - minHeight) * ((float) argb / (float) MAX_COLOUR);
     }
 
-    public float getHeight(float x, float z, int minHeight, int maxHeight) {
+    public float getHeight(float x, float z, float minHeight, float maxHeight) {
         ByteBuffer byteBuffer = getByteBuffer();
         int size = getDimension().getWidth();
 

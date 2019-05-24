@@ -47,11 +47,11 @@ public class Window {
         init();
         loop();
 
-        // Free the window callbacks and destroy the window
+        // free the window callbacks and destroy the window
         glfwFreeCallbacks(window);
         glfwDestroyWindow(window);
 
-        // Terminate GLFW and free the error callback
+        // terminate GLFW and free the error callback
         glfwTerminate();
 
         GLFWErrorCallback glfwErrorCallback = glfwSetErrorCallback(null);
@@ -61,63 +61,63 @@ public class Window {
     }
 
     private void init() {
-        // Setup an error callback. The default implementation
+        // setup an error callback. The default implementation
         // will print the error message in System.err.
         GLFWErrorCallback.createPrint(System.err).set();
 
-        // Initialize GLFW. Most GLFW functions will not work before doing this.
+        // initialize GLFW. Most GLFW functions will not work before doing this.
         if (!glfwInit())
             throw new IllegalStateException("Unable to initialize GLFW");
 
-        // Configure GLFW
+        // configure GLFW
         glfwDefaultWindowHints(); // optional, the current window hints are already the default
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
 
-        // Get the primary Monitor - default one
+        // get the primary Monitor - default one
         long monitor = glfwGetPrimaryMonitor();
 
-        // Create window context
+        // create window context
         context = new Context(monitor);
 
-        // Get the dimensions & resolution of the primary monitor and set it to global vidmode variable
+        // get the dimensions & resolution of the primary monitor and set it to global vidmode variable
         GLFWVidMode vidmode = glfwGetVideoMode(monitor);
 
-        // Create the window
+        // create the window
         window = glfwCreateWindow(1280, 720, "StarCannon", NULL, NULL);
         if(window == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
 
-        // Setup a key callback. It will be called every time a key is pressed, repeated or released.
+        // setup a key callback. It will be called every time a key is pressed, repeated or released.
         glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
             if(key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
                 glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
 
-            if(camera != null && action == GLFW_PRESS)
-                camera.keyCallback(key, action);
+            if(context.getCamera() != null && action == GLFW_PRESS)
+                context.getCamera().keyCallback(key, action);
         });
 
         glfwSetScrollCallback(window, (window, xoffset, yoffset) -> {
-            if(camera != null)
-                camera.scrollCallback(xoffset, yoffset);
+            if(context.getCamera() != null)
+                context.getCamera().scrollCallback(xoffset, yoffset);
         });
 
 
         glfwSetCursorPosCallback(window, (window, xpos, ypos) -> {
-            if(camera != null)
-                camera.cursorPosCallback(xpos, ypos);
+            if(context.getCamera() != null)
+                context.getCamera().cursorPosCallback(xpos, ypos);
         });
 
         if(vidmode != null) {
-            // Get the thread stack and push a new frame
+            // get the thread stack and push a new frame
             try(MemoryStack stack = stackPush()) {
                 IntBuffer width = stack.mallocInt(1);
                 IntBuffer height = stack.mallocInt(1);
 
-                // Get the window size passed to glfwCreateWindow
+                // get the window size passed to glfwCreateWindow
                 glfwGetWindowSize(window, width, height);
 
-                // Center the window
+                // center the window
                 glfwSetWindowPos(
                         window,
                         (vidmode.width() - width.get(0)) / 2,
@@ -128,13 +128,13 @@ public class Window {
             // the stack frame is popped automatically
         }
 
-        // Make the OpenGL context current
+        // make the OpenGL context current
         glfwMakeContextCurrent(window);
 
-        // Enable v-sync
+        // enable v-sync
         glfwSwapInterval(1);
 
-        // Make the window visible
+        // make the window visible
         glfwShowWindow(window);
     }
 
@@ -146,49 +146,44 @@ public class Window {
         // bindings available for use.
         GL.createCapabilities();
 
-        Log.v("OpenGL version: " + GL11.glGetString(GL11.GL_VERSION));
-        Log.v("InkBoy " + Version.getVersion() + "! on shading language: " + glGetString(GL_SHADING_LANGUAGE_VERSION));
-        Log.v("Max compute work group invocations: " + GL11.glGetInteger(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS));
-        Log.v("Max texture image units: " + GL11.glGetInteger(GL_MAX_TEXTURE_IMAGE_UNITS));
+        // initialize context
+        context.initialize();
 
-        camera = new Camera(Settings.WIDTH, Settings.HEIGHT);
-        context.setCamera(camera);
-
-        // Generating the programs that need to be rendered
+        // generating the programs that need to be rendered
         programs.addAll(
                 Arrays.asList(
                         new Terrain(context)
                 )
         );
 
-        // Set the clear color
+        // set the clear color
         glClearColor(
                 Settings.CLEAR_COLOR.get(0),
                 Settings.CLEAR_COLOR.get(1),
                 Settings.CLEAR_COLOR.get(2),
                 Settings.CLEAR_COLOR.get(3));
 
-        // Run the rendering loop until the user has attempted to close
+        // run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         while(!glfwWindowShouldClose(window)) {
             // clear the framebuffer
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            // Rendering every program
+            // rendering every program
             for(Program program : programs)
                 program.render();
 
-            camera.change();
+            context.getCamera().change();
 
             // swap the color buffers
             glfwSwapBuffers(window);
 
-            // Poll for window events. The key callback above will only be
+            // poll for window events. The key callback above will only be
             // invoked during this call.
             glfwPollEvents();
         }
 
-        // Clear every program
+        // clear every program
         for(Program program : programs)
             program.clear();
     }

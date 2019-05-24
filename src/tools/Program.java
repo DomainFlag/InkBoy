@@ -33,8 +33,8 @@ public abstract class Program {
     public int nb;
 
     public Program(Context context, String pathProgram, Integer drawingType, Integer renderingType) {
-        this.context = context;
         this.program = Utilities.createProgram(pathProgram);
+        this.context = context;
 
         if(drawingType != null)
             this.drawingType = drawingType;
@@ -42,8 +42,7 @@ public abstract class Program {
         if(renderingType != null)
             this.renderingType = renderingType;
 
-        glUseProgram(this.program);
-        getContext().getContextTexture().bindProgram(this.program);
+        useProgram();
     }
 
     public Context getContext() {
@@ -283,6 +282,13 @@ public abstract class Program {
         }
     }
 
+    public void addUniform(String name, int value) {
+        int uniform = checkUniform(name);
+        if(uniform != -1) {
+            glUniform1i(uniform, value);
+        }
+    }
+
     public void addUniform(String name, float value) {
         int uniform = checkUniform(name);
         if(uniform != -1) {
@@ -378,7 +384,9 @@ public abstract class Program {
     }
 
     public void useProgram() {
-        glUseProgram(program);
+        glUseProgram(this.program);
+
+        getContext().getContextTexture().bindProgram(this.program);
     }
 
     public void render() {

@@ -7,8 +7,8 @@ const int BC = 1;
 const int CD = 2;
 const int DA = 3;
 
-const int TESSELATION_OUTER_FACTOR = 2;
-const int TESSELATION_INNER_FACTOR = 2;
+const int TESSELATION_OUTER_FACTOR = 1;
+const int TESSELATION_INNER_FACTOR = 1;
 
 void main() {
     if(gl_InvocationID == 0) {
