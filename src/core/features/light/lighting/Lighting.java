@@ -1,8 +1,8 @@
 package core.features.light.lighting;
 
-import tools.Program;
+import core.features.ProgramState;
 
-public abstract class Lighting {
+public abstract class Lighting implements ProgramState {
 
     private int type;
 
@@ -13,8 +13,4 @@ public abstract class Lighting {
     public int getType() {
         return type;
     }
-
-    public abstract void createUniforms(Program program, String uniformName);
-
-    public abstract void updateUniforms(Program program, String uniformName);
 }

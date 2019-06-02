@@ -73,7 +73,7 @@ void main() {
             for(int g = 0; g < size; g++) {
                 vec3 normal = texture(u_normal_map, normal_map_coord_gs[h]).rgb;
 
-                int index = int(normal.y / offset);
+                int index = int(abs(normal.y) / offset);
 
                 vec2 texture_coord_displaced = normal_map_coord_gs[h] * u_material_textures[index].horizontal_scale;
 
@@ -85,7 +85,6 @@ void main() {
             }
         }
     }
-
 
     for(int i = 0; i < gl_in.length(); i++) {
         tangent_fs = tangent;
@@ -99,9 +98,9 @@ void main() {
         EmitVertex();
     }
 
-//    gl_Position = u_projection * u_camera * gl_in[0].gl_Position;
-//
-//    EmitVertex();
+    //    gl_Position = u_projection * u_camera * gl_in[0].gl_Position;
+    //
+    //    EmitVertex();
 
     EndPrimitive();
 }

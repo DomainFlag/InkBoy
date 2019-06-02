@@ -1,6 +1,7 @@
 package modules.terrain;
 
 import core.Settings;
+import core.features.fog.Fog;
 import core.features.light.Light;
 import core.features.light.lighting.DirectionalLight;
 import core.math.Vector3f;
@@ -20,8 +21,8 @@ public class Terrain extends Program {
     private TerrainQuadtree terrainQuadtree;
 
     private DisplacementMap displacementMap;
-
     private Light light = new Light();
+    private Fog fog;
 
 	public Terrain(Context context) {
 		super(context, "terrain", GL_DYNAMIC_DRAW, GL_TRIANGLES);
@@ -35,8 +36,14 @@ public class Terrain extends Program {
         this.light.setLighting(new DirectionalLight(
                 new Vector3f(1.0f, 1.0f, 1.0f),
                 new Vector3f(0, 1.0f, 0f),
-                1.0f
+                0.55f
         ));
+
+        this.fog = new Fog(
+                new Vector3f(0.5f, 0.5f, 0.5f),
+                0.0005f,
+                4.0f
+        );
 
         this.displacementMap = new DisplacementMap(context, texture);
         this.displacementMap.useProgram();
@@ -47,7 +54,7 @@ public class Terrain extends Program {
         this.terrainQuadtree = new TerrainQuadtree(context);
 
         MaterialTexture.setMaterialTextures(getContext().getContextTexture(), this, new MaterialTexture[] {
-                new MaterialTexture("textures/terrain/grass0", 0.35f, 200.0f),
+                new MaterialTexture("textures/terrain/grass0", 1.25f, 150.0f),
                 new MaterialTexture("textures/terrain/ground0", 1.85f, 300.0f)
         }, "u_material_textures");
 
@@ -57,6 +64,7 @@ public class Terrain extends Program {
     @Override
     public void createUniforms() {
         this.light.createUniforms(this);
+        this.fog.createUniforms(this, "u_fog");
 
         addUniform("u_scale", Settings.Terrain.SCALE_XZ);
         addUniform("u_height", Settings.Terrain.MAX_HEIGHT);
@@ -81,6 +89,7 @@ public class Terrain extends Program {
 
     public void updateUniforms() {
 	    this.light.updateUniforms(this);
+        this.fog.updateUniforms(this, "u_fog");
 
 	    getContext().getContextTexture().bindProgram(this.program);
 	    getContext().getContextTexture().bindTexture(this.displacementMap.getNormalMap(), "u_normal_map", 1);

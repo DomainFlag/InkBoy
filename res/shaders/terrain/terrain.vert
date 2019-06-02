@@ -19,11 +19,6 @@ uniform int u_lod;
 uniform float u_height;
 uniform float[10] u_morphing_thresholds;
 
-bool checkOuterBoundary(vec2 position) {
-    return position.x >= 0.0f && position.x <= 1.0f &&
-    position.y >= 0.0f && position.y <= 1.0f;
-}
-
 float morphLatitude(vec2 position, float gap) {
     float morphing = 0.0f;
 
@@ -107,7 +102,7 @@ vec4 morph(vec2 position, float morph_area) {
     // longitude height
     float world_height_longitude = texture2D(u_texture, longitude).r * u_height;
 
-    vec4 world_position_longitude = u_camera * vec4(longitude.x * u_scale, world_height_longitude, longitude.y * u_scale, 1);
+    vec4 world_position_longitude = u_camera * vec4(longitude.x * u_scale, world_height_longitude, longitude.y * u_scale, 1.0);
     float distance_longitude = length(world_position_longitude.xyz);
 
     if(distance_longitude > morph_area) {
@@ -119,7 +114,7 @@ vec4 morph(vec2 position, float morph_area) {
     // latitude height
     float world_height_latitude = texture2D(u_texture, latitude).r * u_height;
 
-    vec4 world_position_latitude = u_camera * vec4(latitude.x * u_scale, world_height_latitude, latitude.y * u_scale, 1);
+    vec4 world_position_latitude = u_camera * vec4(latitude.x * u_scale, world_height_latitude, latitude.y * u_scale, 1.0);
     float distance_latitude = length(world_position_latitude.xyz);
 
     if(distance_latitude > morph_area) {
@@ -134,7 +129,7 @@ void main() {
     vec4 pos_scaled = position * u_span;
 
     // translate downscaled position to current position
-    vec4 pos_translated = vec4(pos_scaled.x + u_location.x, 0, pos_scaled.y + u_location.y, 1);
+    vec4 pos_translated = vec4(pos_scaled.x + u_location.x, 0, pos_scaled.y + u_location.y, 1.0);
 
     // morph adjacent lods
     vec4 pos = pos_translated + morph(pos_translated.xz, u_morphing_thresholds[u_lod - 1]);
@@ -148,5 +143,5 @@ void main() {
     // scale position
     pos.xz *= u_scale;
 
-    gl_Position = vec4((u_model * pos).xyz, 1.0);
+    gl_Position = vec4((u_model * pos).xyz, 1.0f);
 }

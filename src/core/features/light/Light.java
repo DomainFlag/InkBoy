@@ -19,7 +19,7 @@ public class Light {
 
     public static final int SPOT_KEY = 2;
 
-    private Vector ambientLightColour = new Vector3f(0.3f, 0.3f, 0.3f);
+    private Vector ambientLightColour = new Vector3f(0.1f, 0.1f, 0.1f);
 
     private Float specularPower = null;
 

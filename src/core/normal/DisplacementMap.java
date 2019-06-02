@@ -18,7 +18,7 @@ public class DisplacementMap extends Program {
 
     private static final String pathProgram = "nmapping";
 
-    private static final float strength = 40;
+    private static final float strength = 48.0f;
     private static final int invocations = 32;
 
     private Texture texture;

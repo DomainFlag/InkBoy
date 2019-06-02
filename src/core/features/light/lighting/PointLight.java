@@ -32,10 +32,6 @@ public class PointLight extends Lighting {
         return attenuation;
     }
 
-    public void setAttenuation(Attenuation attenuation) {
-        this.attenuation = attenuation;
-    }
-
     public Vector getColor() {
         return color;
     }
@@ -46,6 +42,10 @@ public class PointLight extends Lighting {
 
     public float getIntensity() {
         return intensity;
+    }
+
+    public void setAttenuation(Attenuation attenuation) {
+        this.attenuation = attenuation;
     }
 
     @Override

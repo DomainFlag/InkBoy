@@ -24,8 +24,8 @@ public class Context {
     private Camera camera;
 
     private long monitor;
-    private long max_texture_image_units;
-    private long max_compute_work_group_invocations;
+    public long max_texture_image_units;
+    public long max_compute_work_group_invocations;
 
     private float scaleX, scaleY;
 

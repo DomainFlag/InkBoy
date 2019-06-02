@@ -13,9 +13,9 @@ const int DA = 1;
 uniform mat4 u_camera;
 
 float calcTessFactor(float dist) {
-    float tessFactor = 640 / pow(dist, 2.1) + 0.2;
+    float tessFactor = 640.0f / pow(dist, 2.1f) + 0.2f;
 
-    return mix(1, gl_MaxTessGenLevel, tessFactor);
+    return mix(1.0f, gl_MaxTessGenLevel, tessFactor);
 }
 
 void main() {
